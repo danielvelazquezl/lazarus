@@ -1,0 +1,12 @@
+<fieldset>
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <%= f.label :product_id, Product.find_by(id: f.object.product_id).description.to_s %>
+      </div>
+      <div class="col-lg">
+        <%= f.text_field :quantity %>
+      </div>
+    </div>
+  </div>
+</fieldset>

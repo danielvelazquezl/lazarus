@@ -1,0 +1,87 @@
+<%= form_with(model: product, local: true, html: { id: "component_form" }) do |form| %>
+  <div class="fields">
+    <%= form.hidden_field :product_type %>
+  </div>
+
+  <div class="card card-default">
+    <div class="card-body">
+      <div class="form-group row">
+        <div class="col"><%= form.file_field :image %></div>
+        <div class="col">
+          <div class="form-group row">
+            <div class="col-4">
+              <strong>Código de barras:</strong>
+            </div>
+            <div class="col">
+              <%= form.text_field :bar_code , class: 'form-control form-control-sm'%>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-4">
+              <strong>Descripción:</strong>
+            </div>
+            <div class="col">
+              <%= form.text_field :description , class: 'form-control form-control-sm'%>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-4">
+              <strong>Ubicación:</strong>
+            </div>
+            <div class="col">
+              <%= form.text_field :location, class: 'form-control form-control-sm' %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-4">
+              <strong>Marca:</strong>
+            </div>
+            <div class="col">
+              <%= form.select :brand_id,
+                              options_from_collection_for_select(Brand.all, "id", "description", form.object.brand_id),
+                              prompt: "Seleccionar" %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-4">
+              <strong>Categoría:</strong>
+            </div>
+            <div class="col">
+              <%= form.select :product_category_id,
+                              options_from_collection_for_select(ProductCategory.all, "id", "description", form.object.product_category_id),
+                              prompt: "Seleccionar" %>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-4">
+              <strong>Terminado <%= form.check_box :product_type, {checked: false}, :both,:component %></strong>
+            </div>
+          </div>
+        </div>
+      </div></div>
+  </div>
+
+  <%= form.hidden_field :unit_cost %>
+
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-12 col-xl-auto">
+      <%= form.submit 'Guardar', class: "btn btn-success" %>
+    </div>
+    <div class="col col-xl-2">
+      <%= link_to products_path do%>
+        <div class="btn btn-primary btn-icon-split">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-arrow-left"></i>
+                      </span>
+          <span class="text">Volver</span>
+        </div>
+      <%end %>
+    </div>
+  </div>
+<% end %>
+
+<script>
+  <%= render "validate.js" %>
+  <%= render "selects.js" %>
+</script>

@@ -1,0 +1,95 @@
+<p id="notice"><%= notice %></p>
+
+<div class="content-heading">
+  <%if @form.form_type == :cpuproduced then%>
+    <div class="text-align-right">
+      <%= link_to forms_path do%>
+        <button class="btn btn-secondary">
+          <i class="fas fa-arrow-left text-primary fa-1x"></i>
+        </button>
+      <%end %>
+    </div>
+
+    <div class="col-8"> Formulario CPU Producidas </div>
+  <%else %>
+    <div class="text-align-right">
+      <%= link_to request_forms_index_forms_path do%>
+        <button class="btn btn-secondary">
+          <i class="fas fa-arrow-left text-primary fa-1x"></i>
+        </button>
+      <%end %>
+    </div>
+
+    <div class="col-8"> Formulario de Solicitud de Componentes </div>
+  <%end %>
+</div>
+
+<div class="card card-default">
+  <div class="card-body">
+    <!--<p class="lead bb">Encargado: </p>-->
+
+    <form class="form-horizontal">
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Encargado:</strong>
+        </div>
+        <div class="col-4">
+          <%= @form.person.name %>
+        </div>
+        <div class="col-2">
+          <strong>Fecha:</strong>
+        </div>
+        <div class="col-4">
+          <%= @form.date.strftime("%d-%m-%Y") %>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Depósito de origen:</strong>
+        </div>
+        <div class="col-4">
+          <%= @form.origin.description %>
+        </div>
+        <div class="col-2">
+          <strong>Depósito de destino:</strong>
+        </div>
+        <div class="col-4">
+          <%= @form.destination.description %>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Comentario:</strong>
+        </div>
+        <div class="col">
+          <%= @form.comments %>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+  <div class="card">
+    <div class="table-responsive">
+      <table class="table table-hover table-bordered">
+        <thead>
+        <tr>
+          <th>Producto Terminado</th>
+          <th>Cantidad</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @form.form_items.each do |m| %>
+          <tr>
+            <td><%= Product.find_by(id: m.product_id).description%></td>
+            <td><%= m.quantity %></td>
+          </tr>
+        <%end %>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+

@@ -1,0 +1,57 @@
+
+  <%= form_tag(cash_movements_path, remote: true, method: :get) do %>
+    <label>Cliente(ID):</label></br>
+    <%= text_field_tag :val %>
+    <%= submit_tag "Buscar", name:'nil' %>
+  <% end %>
+
+
+  <%= form_tag pay_invoices_cash_movements_path, method: :put do %>
+    <%= hidden_field_tag :client_id %>
+    <div class="row">
+      <div class="col-5">
+        <label>Fecha:</label>
+        <%= date_field_tag :date , Date.current, class: 'form-control', id: 'date'%>
+        <label>Observacion:</label>
+        <%= text_area_tag :comments , "" ,class: 'form-control', id: 'comments'%>
+      </div>
+      <div class="col-5">
+        <label>TOTAL:</label>
+        <%= text_field_tag :total , "" ,class: 'form-control', id: 'total-field', readonly: true %>
+      </div>
+    </div>
+  <table class="table mt-3 pd-10">
+    <thead class="thead-dark">
+    <tr>
+      <th scope="col">Tipo Documento</th>
+      <th scope="col">Nro. Factura</th>
+      <th scope="col">Valor Total</th>
+      <th scope="col">Moneda</th>
+      <th scope="col">Pagar</th>
+    </tr>
+    </thead>
+    <tbody id="invoices-table">
+
+    </tbody>
+  </table>
+    <%= form_with(model: @cash_movement, local: true, html: { id: "cash_movements" }) do |form| %>
+      <%= form.fields_for :cash_movement_values do |f1| %>
+        <%= render 'cash_cash_movement_value', f: f1 %>
+      <% end %>
+    <div>
+      <%= link_to_add_fields "Agregar Forma Pago", form , :cash_cash_movement_values %>
+    </div>
+    <% end %>
+  <%= submit_tag 'Pagar', id: 'pay-btn', disabled: true %>
+
+  <% end %>
+
+<script>
+    document.addEventListener('ajax:success', function(event){
+        var detail = event.detail;
+        var data = detail[0], status = detail[1], xhr = detail[2];
+
+        event.preventDefault();
+    })
+
+</script>

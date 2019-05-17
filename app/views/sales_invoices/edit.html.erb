@@ -1,0 +1,15 @@
+<p></p>
+<div class="content-heading">
+  <div class="text-align-right">
+    <%= link_to sales_invoices_path do%>
+      <button class="btn btn-secondary" title="Volver atras">
+        <i class="fas fa-arrow-left text-primary fa-1x"></i>
+      </button>
+    <%end %>
+  </div>
+  <div>Editar Factura de Venta
+  </div>
+</div>
+<%= render 'form', sales_invoice: @sales_invoice %>
+
+

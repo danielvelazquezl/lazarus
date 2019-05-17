@@ -1,0 +1,94 @@
+<%= form_with(model: order_ticket, local: true) do |form| %>
+  <% if order_ticket.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(order_ticket.errors.count, "error") %> prohibited this order_ticket from being saved:</h2>
+
+      <ul>
+        <% order_ticket.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="card card-default">
+    <div class="card-body">
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Número de Pedido:</strong>
+        </div>
+        <div class="col-4">
+          <%= form.text_field :ticket_number , class: 'form-control form-control-sm'%>
+        </div>
+
+        <div class="col-2">
+          <strong>Fecha:</strong>
+        </div>
+        <div class="col-4">
+          <%= form.date_field :date, :class => 'form-control'%>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Cliente:</strong>
+        </div>
+        <div class="col-4">
+          <%= form.select :client_id,
+                          Client.all.map { |c| [c.person.name, c.id] },
+                          class: "custom-select custom-select-sm" %>
+        </div>
+        <div class="col-2">
+          <strong>Empleado:</strong>
+        </div>
+        <div class="col-4">
+          <%= form.select :employee_id,
+                          Employee.all.map { |e| [e.person.name, e.id] },
+                          class: "custom-select custom-select-sm" %>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Forma de pago:</strong>
+        </div>
+        <div class="col-4">
+          <!--<%= form.text_field :pay_method_id , class: 'form-control form-control-sm'%>-->
+          <!--<select class="custom-select">
+            <option value="1">Efectivo</option>
+            <option value="2">Cheque</option>
+            <option value="3">Tarjeta de Crédito</option>
+          </select>-->
+          <%= form.select :pay_method_id,
+                          PayMethod.all.map { |p| [p.description, p.id] },
+                          class: "custom-select custom-select-sm" %>
+        </div>
+
+        <div class="col-2">
+          <strong>Estado:</strong>
+        </div>
+        <div class="col-4">
+          <!--<%= form.text_field :state , class: 'form-control form-control-sm' %>-->
+          <select class="custom-select">
+            <option value="Facturado">Facturado</option>
+            <option value="En tramite">En trámite</option>
+            <option value="Sin facturar">Sin facturar</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-2">
+          <strong><%= form.label 'Observaciones:'%></strong>
+        </div>
+        <div class="col">
+          <%= form.text_field :observation , class: 'form-control form-control-sm'%>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-12 col-xl-auto">
+      <%= form.submit 'Guardar', class: "btn btn-success" %>
+    </div>
+  </div>
+<% end %>

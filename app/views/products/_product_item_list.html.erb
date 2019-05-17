@@ -1,0 +1,8 @@
+<fieldset class="table">
+    <%= f.label :component_id, Product.find_by(id: f.object.component_id).description.to_s%>
+    <%= f.text_field :quantity %>
+<%#= link_to 'Remover',f.object, method: :delete, redirect: products_path%>
+</fieldset>
+<script>
+
+</script>

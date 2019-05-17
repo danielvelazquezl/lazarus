@@ -1,0 +1,131 @@
+
+<div class="invoice-box">
+  <table cellpadding="0" cellspacing="0">
+    <tr class="top">
+      <td colspan="4">
+        <table>
+          <tr>
+            <td class="title">
+              <%= image_tag wicked_pdf_asset_base64('company_logo.png') %>
+            </td>
+
+            <td>
+              Formulario #: <b><%= @form.id %></b>
+              <br>
+              Creado: <b><%= @form.created_at.strftime('%d/%m/%Y') %></b>
+
+              Status: <span>estado</span>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr class="information">
+      <td colspan="4">
+        <table>
+          <tr>
+            <td>
+              <b><%= @form.person.name %></b><br>direccion<br>
+              <i class="far fa-envelope"></i>email<br>
+              <i class="fas fa-phone"></i> telefono
+            </td>
+
+            <td>
+              <b><%= @form.person.name %></b><br>direccion<br>
+              <i class="far fa-envelope"></i>email<br>
+              <i class="fas fa-phone"></i> telefono
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr class="information">
+      <table>
+        <thead>
+        <tr class="heading">
+          <td>Producto Terminado</td>
+          <td>Cantidad</td>
+        </tr>
+        </thead>
+        <tbody>
+        <% @form.form_items.each do |m| %>
+          <tr class="information">
+            <td><%= Product.find_by(id: m.product_id).description%></td>
+            <td><%= m.quantity %></td>
+          </tr>
+        <%end %>
+        </tbody>
+      </table>
+
+    </tr>
+
+
+  </table>
+</div>
+
+<!--form class="form-horizontal">
+  <div class="form-group row">
+    <div class="col-2">
+      <strong>Encargado:</strong>
+    </div>
+    <div class="col-4">
+      <%= @form.person.name %>
+    </div>
+    <div class="col-2">
+      <strong>Fecha:</strong>
+    </div>
+    <div class="col-4">
+      <%= @form.date.strftime("%d-%m-%Y %H:%M") %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-2">
+      <strong>Depósito de origen:</strong>
+    </div>
+    <div class="col-4">
+      <%= @form.origin.description %>
+    </div>
+    <div class="col-2">
+      <strong>Depósito de destino:</strong>
+    </div>
+    <div class="col-4">
+      <%= @form.destination.description %>
+    </div>
+  </div>
+
+  <div class="form-group row">
+    <div class="col-2">
+      <strong>Comentario:</strong>
+    </div>
+    <div class="col">
+      <%= @form.comments %>
+    </div>
+  </div>
+</form>
+</div>
+</div>
+
+<div class="card">
+  <div class="table-responsive">
+    <table class="table table-hover table-bordered">
+      <thead>
+      <tr>
+        <th>Producto Terminado</th>
+        <th>Cantidad</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @form.form_items.each do |m| %>
+        <tr>
+          <td><%= Product.find_by(id: m.product_id).description%></td>
+          <td><%= m.quantity %></td>
+        </tr>
+      <%end %>
+      </tbody>
+    </table>
+  </div>
+
+</div-->

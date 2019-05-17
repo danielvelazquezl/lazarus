@@ -1,0 +1,20 @@
+<fieldset>
+  <table class="table table-borderless">
+    <tr>
+      <th>Producto</th>
+      <th>Cantidad</th>
+      <th></th>
+    </tr>
+    <tr>
+      <td>
+          <%= f.select :product_id, options_from_collection_for_select(Product.all, "id", "description", f.object.product_id), prompt: "Seleccionar"%></td>
+      </td>
+      <td>
+        <%= f.text_field :quantity, class: "validame form-control" %>
+      </td>
+      <td>
+        <%= link_to "Eliminar",'#',class: "remove_fields" %>
+      </td>
+    </tr>
+  </table>
+</fieldset>

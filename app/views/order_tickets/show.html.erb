@@ -1,0 +1,114 @@
+<!--<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Client:</strong>
+  <%= @order_ticket.client_id %>
+</p>
+
+<p>
+  <strong>Ticket number:</strong>
+  <%= @order_ticket.ticket_number %>
+</p>
+
+<p>
+  <strong>Employee:</strong>
+  <%= @order_ticket.employee_id %>
+</p>
+
+<p>
+  <strong>Pay method:</strong>
+  <%= @order_ticket.pay_method_id %>
+</p>
+
+<p>
+  <strong>Date:</strong>
+  <%= @order_ticket.date %>
+</p>
+
+<p>
+  <strong>Observation:</strong>
+  <%= @order_ticket.observation %>
+</p>
+
+<p>
+  <strong>State:</strong>
+  <%= @order_ticket.state %>
+</p>
+
+<%= link_to 'Edit', edit_order_ticket_path(@order_ticket) %> |
+<%= link_to 'Back', order_tickets_path %>-->
+
+<p id="notice"><%= notice %></p>
+
+<div class="content-heading">
+  <div class="text-align-right">
+    <%= link_to order_tickets_path do%>
+      <button class="btn btn-secondary">
+        <i class="fas fa-arrow-left text-primary fa-1x"></i>
+      </button>
+    <%end %>
+  </div>
+
+  <div class="col-8"> Nota de Pedido </div>
+</div>
+
+<div class="card card-default">
+  <div class="card-body">
+
+    <form class="form-horizontal">
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Número de pedido:</strong>
+        </div>
+        <div class="col-4">
+          <%= @order_ticket.ticket_number %>
+        </div>
+        <div class="col-2">
+          <strong>Fecha:</strong>
+        </div>
+        <div class="col-4">
+          <%= @order_ticket.date.strftime("%d-%m-%Y") %>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Cliente:</strong>
+        </div>
+        <div class="col-4">
+          <%= @order_ticket.client.person.name %>
+        </div>
+        <div class="col-2">
+          <strong>Empleado:</strong>
+        </div>
+        <div class="col-4">
+          <%= @order_ticket.employee.person.name %>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Método de pago:</strong>
+        </div>
+        <div class="col-4">
+          <%= @order_ticket.pay_method.description %>
+        </div>
+        <div class="col-2">
+          <strong>Estado:</strong>
+        </div>
+        <div class="col-4">
+          <%= @order_ticket.state %>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Observación:</strong>
+        </div>
+        <div class="col">
+          <%= @order_ticket.observation %>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,18 @@
+<div class="content-heading">Editar Formularios de Movimiento</div>
+
+<%= render 'form', movement_proof: @movement_proof %>
+
+<div class="card">
+  <div class="row">
+    <div class="col-12 col-xl-auto">
+      <%= link_to @movement_proof do%>
+        <button class="mb-1 btn btn-primary" type="button">Mirar</button>
+      <% end %>
+    </div>
+    <div class="col col-xl-2">
+      <%= link_to movement_proofs_path do %>
+        <button class="mb-1 btn btn-primary" type="button">Volver</button>
+      <% end %>
+    </div>
+  </div>
+</div>

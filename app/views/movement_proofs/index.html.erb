@@ -1,0 +1,64 @@
+<div class="content-heading">
+  <div> Formularios de Movimiento </div>
+
+  <div class="ml-auto">
+    <%= link_to new_movement_proof_path do %>
+      <button class="btn btn-secondary">
+        <i class="fas fa-plus text-primary fa-1x"></i>
+      </button>
+    <% end %>
+  </div>
+</div>
+
+<table class="table table-striped table-hover w-100" id="datatable2">
+  <thead>
+  <tr>
+  <tr>
+    <th>
+      <strong>Encargado</strong>
+    </th>
+    <th>
+      <strong>Depósito</strong>
+    </th>
+    <th>
+      <strong>Motivo</strong>
+    </th>
+    <th>
+      <strong>Fecha</strong>
+    </th>
+    <th>
+      <strong>Comentario</strong>
+    </th>
+    <th>
+      <strong></strong>
+    </th>
+
+  </tr>
+  </thead>
+  <tbody>
+          <% @movement_proofs.each do |movement_proof| %>
+            <tr>
+              <td><%= movement_proof.person.name %></td>
+              <td><%= movement_proof.deposit.description %></td>
+              <td><%= movement_proof.movement_type.description %></td>
+              <td><%= movement_proof.date %></td>
+              <td><%= movement_proof.comment %></td>
+
+              <td class="text-right">
+                <div class="btn-group" role="group">
+                  <%= link_to movement_proof do%>
+                    <button class="btn btn-sm btn-secondary"><i class="fas fa-search"></i></button>
+                  <%end%>
+                  <%= link_to edit_movement_proof_path(movement_proof) do%>
+                    <button class="btn btn-sm btn-secondary"><i class="fas fa-edit"></i></button>
+                  <%end %>
+                  <%= link_to movement_proof, method: :delete, data: { confirm: '¿Estás seguro?' },
+                              :remote => true, :class => 'delete_movement_proof' do%>
+                    <button class="btn btn-sm btn-secondary"><i class="fas fa-trash-alt"></i></button>
+                  <%end %>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>

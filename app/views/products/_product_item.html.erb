@@ -1,0 +1,29 @@
+<fieldset style="height: 5px">
+  <table>
+    <thead style="display:none">
+    <tr>
+      <th class="col-6">Producto</th>
+      <th>Cantidad</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td class="col-7">
+        <%= f.select :component_id,
+                     options_from_collection_for_select(Product.where(product_type: :component), "id", "description", f.object.component_id),
+                     prompt: "Seleccionar" %>
+      </td>
+      <td class="col-3">
+        <%= f.text_field :quantity, class: "validate form-control-sm form-control" %>
+      </td>
+      <td class="col">
+        <%= link_to "Eliminar",'#',class: "remove_fields" %>
+      </td>
+
+    </tr>
+    </tbody>
+  </table>
+</fieldset>
+<script type="text/javascript">
+    <%= render "selects.js" %>
+</script>

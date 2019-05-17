@@ -1,0 +1,31 @@
+<%= form_with(model: order, local: true) do |form| %>
+  <% if order.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(order.errors.count, "error") %> prohibited this order from being saved:</h2>
+
+      <ul>
+        <% order.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="fields">
+    <%= form.label "Estado" %>
+    <%= form.select :state, Order.state.options %>
+  </div>
+
+  <%= form.fields_for :order_items, @order_items do |f| %>
+    <%= render 'order_item_list', f: f %>
+  <% end %>
+  <%= link_to_add_fields "Agregar producto", form, :order_items %>
+
+  <div class="actions">
+    <%= form.submit 'Guardar' %>
+  </div>
+<% end %>
+
+<script>
+    <%= render "selects.js" %>
+</script>

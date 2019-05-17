@@ -1,0 +1,41 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Stampeds</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Number</th>
+      <th>First number</th>
+      <th>Last number</th>
+      <th>Start date</th>
+      <th>Finish date</th>
+      <th>Name</th>
+      <th>Expedition</th>
+      <th>Branch office</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @stampeds.each do |stamped| %>
+      <tr>
+        <td><%= stamped.number %></td>
+        <td><%= stamped.first_number %></td>
+        <td><%= stamped.last_number %></td>
+        <td><%= stamped.start_date %></td>
+        <td><%= stamped.finish_date %></td>
+        <td><%= stamped.name %></td>
+        <td><%= stamped.expedition %></td>
+        <td><%= stamped.branch_office %></td>
+        <td><%= link_to 'Show', stamped %></td>
+        <td><%= link_to 'Edit', edit_stamped_path(stamped) %></td>
+        <td><%= link_to 'Destroy', stamped, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Stamped', new_stamped_path %>

@@ -1,0 +1,147 @@
+<!-- START Sidebar (left)-->
+<div class="aside-inner">
+   <nav class="sidebar" data-sidebar-anyclick-close="">
+      <!-- START sidebar nav-->
+      <ul class="sidebar-nav">
+         <!-- START user info-->
+         <li class="has-user-block">
+            <div id="user-block" class="collapse">
+               <div class="item user-block">
+                  <!-- User picture-->
+                  <div class="user-block-picture">
+                     <div class="user-block-status">
+                        <img src="<%= image_path('angle/user/02.jpg') %>" alt="Avatar" width="60" height="60" class="img-thumbnail rounded-circle" />
+                        <!--div class="circle circle-success circle-lg"></div>-->
+                     </div>
+                  </div>
+                  <!-- Name and Job-->
+                  <div class="user-block-info">
+
+                     <span class="user-block-name"><%= current_user.user_name %> </span>
+                    <span class="user-block-name"><%= link_to "Cerrar sesión", destroy_user_session_path, method: :delete, :class=> 'btn btn-primary' %> </span>
+                  </div>
+               </div>
+            </div>
+         </li>
+         <!-- END user info-->
+         <!-- Iterates over all sidebar items-->
+         <li class="nav-heading">
+            <span>Menú</span>
+         </li>
+        <!--STOCK-->
+        <li class="<%= 'active' if controller?('elements') %>">
+          <a href="#elements" title="Stock" data-toggle="collapse">
+            <em class="icon-layers"></em>
+            <span>Stock</span>
+          </a>
+          <ul id="elements" class="sidebar-nav sidebar-subnav collapse <%= 'show' if controller?('elements') %>">
+            <li class="sidebar-subnav-header">Stock</li>
+            <li class="<%= 'active' if controller?('elements') && action?('button') %>">
+              <a href="/products" title="Productos">
+                <span>Productos</span>
+              </a>
+            </li>
+            <li class="<%= 'active' if controller?('multilevel') && action?('level1') %>">
+              <a href="#form_level1" title="Formularios" data-toggle="collapse">
+                <span>Formularios</span>
+              </a>
+              <ul id="form_level1" class="sidebar-nav sidebar-subnav collapse <%= 'show' if controller?('multilevel') && (action?('level1')||action?('level3')) %>">
+                <li class="<%= 'active' if controller?('multilevel') && action?('level1') %>">
+                  <a href="/forms" title="CPU Producidas">
+                    <span>CPU Producidas</span>
+                  </a>
+                </li>
+                <li class="<%= 'active' if controller?('multilevel') && action?('level1') %>">
+                  <a href="/forms/request_forms_index" title="Solicitud de Componentes">
+                    <span>Solicitud de Componentes</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="<%= 'active' if controller?('multilevel') && action?('level1') %>">
+              <a href="#orden_level1" title="Orden" data-toggle="collapse">
+                <span>Ordenes</span>
+              </a>
+              <ul id="orden_level1" class="sidebar-nav sidebar-subnav collapse <%= 'show' if controller?('multilevel') && (action?('level1')||action?('level3')) %>">
+                <li class="<%= 'active' if controller?('multilevel') && action?('level1') %>">
+                  <a href="/orders" title="Orden 1">
+                    <span>Orden de Producción</span>
+                  </a>
+                </li>
+                <li class="<%= 'active' if controller?('multilevel') && action?('level1') %>">
+                  <a href="/orders/component_orders_index" title="Orden 2">
+                    <span>Orden de Componentes</span>
+                  </a>
+                </li>
+              </ul>
+            </li>
+            <li class="<%= 'active' if controller?('multilevel') && action?('level1') %>">
+              <a href="/movement_proofs" title="Movimientos">
+                <span>Movimientos</span>
+              </a>
+            </li>
+            <li class="<%= 'active' if controller?('multilevel') && action?('level1') %>">
+              <a href="/stocks" title="Productos por Deposito">
+                <span>Productos por Deposito</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!--RECURSOS HUMANOS-->
+        <li class="<%= 'active' if controller?('elements') %>">
+          <a href="#elements2" title="Recursos humanos" data-toggle="collapse">
+            <em class="icon-people"></em>
+            <span>Recursos humanos</span>
+          </a>
+          <ul id="elements2" class="sidebar-nav sidebar-subnav collapse <%= 'show' if controller?('elements') %>">
+            <li class="sidebar-subnav-header">Recursos humanos</li>
+            <li class="<%= 'active' if controller?('elements') && action?('button') %>">
+              <a href="/clients" title="Clientes">
+                <span>Clientes</span>
+              </a>
+            </li>
+            <li class="<%= 'active' if controller?('multilevel') && action?('level1') %>">
+              <a href="/employees" title="Funcionarios">
+                <span>Funcionarios</span>
+              </a>
+            </li>
+            <li class="<%= 'active' if controller?('multilevel') && action?('level1') %>">
+              <a href="/providers" title="Proveedores">
+                <span>Proveedores</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!--VENTAS-->
+        <li class="<%= 'active' if controller?('elements') %>">
+          <a href="#elements3" title="Ventas" data-toggle="collapse">
+            <em class="icon-basket"></em>
+            <span>Ventas</span>
+          </a>
+          <ul id="elements3" class="sidebar-nav sidebar-subnav collapse <%= 'show' if controller?('elements') %>">
+            <li class="sidebar-subnav-header">Ventas</li>
+            <li class="<%= 'active' if controller?('elements') && action?('button') %>">
+              <a href="/sales_invoices" title="Facturas de Ventas">
+                <span>Facturas de Ventas</span>
+              </a>
+            </li>
+            <li class="<%= 'active' if controller?('elements') && action?('button') %>">
+              <a href="/cash_movements" title="Facturas de Ventas">
+                <span>Caja</span>
+              </a>
+            </li>
+            <li class="<%= 'active' if controller?('elements') && action?('button') %>">
+              <a href="/order_tickets" title="Nota de Pedido">
+                <span>Nota de Pedido</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+      </ul>
+      <!-- END sidebar nav-->
+   </nav>
+</div>
+<!-- END Sidebar (left)-->

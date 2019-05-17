@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Number:</strong>
+  <%= @stamped.number %>
+</p>
+
+<p>
+  <strong>First number:</strong>
+  <%= @stamped.first_number %>
+</p>
+
+<p>
+  <strong>Last number:</strong>
+  <%= @stamped.last_number %>
+</p>
+
+<p>
+  <strong>Start date:</strong>
+  <%= @stamped.start_date %>
+</p>
+
+<p>
+  <strong>Finish date:</strong>
+  <%= @stamped.finish_date %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @stamped.name %>
+</p>
+
+<p>
+  <strong>Expedition:</strong>
+  <%= @stamped.expedition %>
+</p>
+
+<p>
+  <strong>Branch office:</strong>
+  <%= @stamped.branch_office %>
+</p>
+
+<%= link_to 'Edit', edit_stamped_path(@stamped) %> |
+<%= link_to 'Back', stampeds_path %>

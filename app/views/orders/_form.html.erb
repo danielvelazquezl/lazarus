@@ -1,0 +1,97 @@
+<%= form_with(model: order, local: true, html: {id: "orders_form"}) do |form| %>
+  <% if order.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(order.errors.count, "error") %> prohibited this order from being saved:</h2>
+
+      <ul>
+        <% order.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="card card-default">
+    <div class="card-body">
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>N° de Orden:</strong>
+        </div>
+        <div class="col-4">
+          <input type="text" class="form-control valid" value="<%= @order.number %> " disabled>
+        </div>
+        <% if @order.state != nil then %>
+          <div class="col-2">
+            <strong>Estado:</strong>
+          </div>
+          <div class="col-4">
+            <%= form.select :state, Order.state.options %>
+          </div>
+        <% end %>
+      </div>
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Encargado:</strong>
+        </div>
+        <div class="col-4">
+          <%= form.select :person_id,
+                          options_from_collection_for_select(Person.all, "id", "name", form.object.person_id),
+                          class: "custom-select custom-select-sm" %>
+        </div>
+        <div class="col-2">
+          <strong>Fecha de pedido:</strong>
+        </div>
+        <div class="col-4">
+          <%= form.date_field :date_request, class: "form-control valid" %>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Depósito de origen:</strong>
+        </div>
+        <div class="col-4">
+          <input type="text" class="form-control valid" value="<%= @order.origin.description %> " disabled>
+        </div>
+        <div class="col-2">
+          <strong>Depósito de destino:</strong>
+        </div>
+        <div class="col-4">
+          <input type="text" class="form-control valid" value="<%= @order.destination.description %> " disabled>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <%= form.hidden_field :order_type %>
+  <%= form.hidden_field :origin_id %>
+  <%= form.hidden_field :destination_id %>
+  <%= form.hidden_field :number %>
+
+  <div class="card card-default">
+    <div class="card-body">
+      <div class="table-responsive">
+        <%= form.fields_for :order_items, @order_items do |f| %>
+          <%= render 'order_item', f: f %>
+        <% end %>
+      </div>
+      <%= link_to_add_fields "Agregar producto", form, :order_items %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-12 col-xl-auto">
+      <%= form.submit 'Guardar', class: "btn btn-success" %>
+      <% if @order.state == nil then %>
+        <%= form.check_box :state, {checked: false}, :draft, :created %>
+      <% end %>
+    </div>
+  </div>
+
+<% end %>
+<script>
+    <%= render "validate.js" %>
+    <%= render "selects.js" %>
+</script>

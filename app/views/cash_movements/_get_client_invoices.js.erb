@@ -1,0 +1,19 @@
+$(function() {
+
+    $('#cash_movement_client_id').keypress(function (e) {
+        var key = e.which;
+        if (key == 13)  // the enter key code
+        {
+            let id = "";
+            id = $('#cash_movement_client_id').val();
+            console.log(id);
+
+            $('#val').val(id);
+
+            //alert($('#val').val())
+
+
+            return false;
+        }
+    });
+});

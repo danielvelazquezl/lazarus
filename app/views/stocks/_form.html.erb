@@ -1,0 +1,77 @@
+<%= form_with(model: stock, local: true) do |form| %>
+  <% if stock.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(stock.errors.count, "error") %> prohibited this stock from being saved:</h2>
+
+      <ul>
+      <% stock.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="card card-default">
+    <div class="tab-content">
+      <div class="tab-pane active" id="edit" role="tabpanel">
+
+        <div class="form-group row">
+          <label class="col-lg-2 col-form-label">Producto:</label>
+          <div class="col-lg-2">
+            <%#= <input class="form-control" type="text" placeholder="Product name.." />%>
+            <%= form.text_field :product_id , class: 'form-control'%>
+          </div>
+        </div>
+
+
+        <div class="form-group row">
+          <label class="col-lg-2 col-form-label">Deposito</label>
+          <div class="col-lg-2">
+            <%#= <input class="form-control" type="text" placeholder="$ 123.20" />%>
+            <%= form.text_field :deposit_id, class: 'form-control' %>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-lg-2 col-form-label">Cantidad</label>
+          <div class="col-lg-2">
+            <%#= <input class="form-control" type="text" placeholder="$ 123.20" />%>
+            <%= form.text_field :quantity, class: 'form-control' %>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-lg-2 col-form-label">Codigo Interno:</label>
+          <div class="col-lg-2">
+            <%#= <input class="form-control" type="text" placeholder="$ 123.20" />%>
+            <%= form.text_field :internal_code, class: 'form-control' %>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-lg-2 col-form-label">Stock Minimo:</label>
+          <div class="col-lg-2">
+            <%#= <input class="form-control" type="text" placeholder="$ 123.20" />%>
+            <%= form.text_field :min_stock, class: 'form-control' %>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-lg-2 col-form-label">Tipo de Stock</label>
+          <div class="col-lg-2">
+            <%#= <input class="form-control" type="text" placeholder="$ 123.20" />%>
+            <%= form.text_field :stock_type, class: 'form-control' %>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-12 col-xl-auto">
+      <%= form.submit 'Guardar', class: "btn btn-success" %>
+    </div>
+  </div>
+<% end %>

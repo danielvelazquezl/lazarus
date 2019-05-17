@@ -1,0 +1,57 @@
+<%= form_with(model: stamped, local: true) do |form| %>
+  <% if stamped.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(stamped.errors.count, "error") %> prohibited this stamped from being saved:</h2>
+
+      <ul>
+      <% stamped.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :number %>
+    <%= form.number_field :number %>
+  </div>
+
+  <div class="field">
+    <%= form.label :first_number %>
+    <%= form.text_field :first_number %>
+  </div>
+
+  <div class="field">
+    <%= form.label :last_number %>
+    <%= form.text_field :last_number %>
+  </div>
+
+  <div class="field">
+    <%= form.label :start_date %>
+    <%= form.date_select :start_date %>
+  </div>
+
+  <div class="field">
+    <%= form.label :finish_date %>
+    <%= form.date_select :finish_date %>
+  </div>
+
+  <div class="field">
+    <%= form.label :name %>
+    <%= form.text_field :name %>
+  </div>
+
+  <div class="field">
+    <%= form.label :expedition %>
+    <%= form.text_field :expedition %>
+  </div>
+
+  <div class="field">
+    <%= form.label :branch_office %>
+    <%= form.text_field :branch_office %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

@@ -1,0 +1,78 @@
+<p id="notice"><%= notice %></p>
+
+<div class="content-heading">Producto <%= @product.product_type.text %></div>
+
+<div class="card card-default">
+  <!--div class="card-header">Información del Producto <%= @product.product_type.text %></div-->
+  <div class="card-body">
+    <% if @product.image.attached? %>
+      <td><%= image_tag(@product.image) %></td>
+    <% end %>
+    <p class="lead bb"><%= @product.description %></p>
+      <form class="form-horizontal">
+        <div class="form-group row">
+          <div class="col-2">
+            <strong>Código de barras:</strong>
+          </div>
+          <div class="col-4">
+            <%= @product.bar_code %>
+          </div>
+          <div class="col-2">
+            <strong>Costo unitario:</strong>
+          </div>
+          <div class="col-4">
+            <%= @product.unit_cost %>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-2">
+            <strong>Ubicación:</strong>
+          </div>
+          <div class="col-4">
+            <%= @product.location %>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+
+<% if @product.product_type.product? %>
+  <div class="card">
+    <!--<div class="card-header">Productos</div>-->
+    <div class="table-responsive">
+      <table class="table table-hover table-bordered table-striped">
+        <thead>
+          <tr>
+            <th>Componente</th>
+            <th>Cantidad</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @product.product_items.each do |m| %>
+            <tr>
+              <td><%= Product.find_by(id: m.component_id).description %></td>
+              <td><%= m.quantity %></td>
+            </tr>
+          <%end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+<%end %>
+
+<div class="card">
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-12 col-xl-auto">
+      <%= link_to edit_product_path do%>
+        <button class="mb-1 btn btn-primary" type="button">Editar</button>
+      <%end %>
+    </div>
+    <div class="col col-xl-2">
+      <%= link_to products_path do %>
+        <button class="mb-1 btn btn-primary" type="button">Volver</button>
+      <% end %>
+    </div>
+  </div>
+</div>

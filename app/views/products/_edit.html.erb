@@ -1,0 +1,114 @@
+<%= form_with(model: product, local: true) do |form| %>
+  <% if product.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
+
+      <ul>
+        <% product.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="card card-default">
+    <div class="card-body">
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Descripción:</strong>
+        </div>
+        <div class="col">
+          <%= form.text_field :description , class: 'form-control'%>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Imagen:</strong>
+        </div>
+        <div class="col-4">
+          <%= form.file_field :image %>
+        </div>
+        <div class="col-2">
+          <strong><label>Código de barras:</label></strong>
+        </div>
+        <div class="col-4">
+          <%= form.text_field :bar_code , class: 'form-control form-control-sm'%>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-2">
+          <strong><label>Ubicación:</label></strong>
+        </div>
+        <div class="col-4">
+          <%= form.text_field :location, class: 'form-control' %>
+        </div>
+        <div class="col-2">
+          <strong>Marca:</strong>
+        </div>
+        <div class="col-4">
+          <%= form.select :brand_id,
+                          options_from_collection_for_select(Brand.all, "id", "description", form.object.brand_id),
+                          class: 'form-control', prompt: "Seleccionar"%>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Categoría:</strong>
+        </div>
+        <div class="col-4">
+          <%= form.select :product_category_id,
+                          options_from_collection_for_select(ProductCategory.all, "id", "description", form.object.product_category_id),
+                          prompt: "Seleccionar" %>
+        </div>
+      </div>
+      <%= form.hidden_field :product_type %>
+      <%= form.hidden_field :unit_cost %>
+    </div>
+  </div>
+
+  <div class="text-center">
+    <% if form.object.product_type.product? then %>
+      <div class="card card-default">
+        <div class="card-body">
+          <div class="table-responsive">
+            <table class="table table-hover">
+              <thead>
+              <tr>
+                <th>Producto</th>
+                <th>Cantidad</th>
+                <th></th>
+              </tr>
+              </thead>
+
+            </table>
+            <%= form.fields_for :product_items, @product_items do |f| %>
+              <%= render 'product_item', f: f %>
+            <% end %>
+          </div>
+          <%= link_to_add_fields "Agregar Componente", form, :product_items %>
+        </div>
+      </div>
+    <%end %>
+  </div>
+
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-12 col-xl-auto">
+      <%= form.submit 'Guardar', class: "btn btn-success" %>
+    </div>
+    <div class="col col-xl-2">
+      <%= link_to products_path do%>
+        <div class="btn btn-primary btn-icon-split">
+                      <span class="icon text-white-50">
+                        <i class="fas fa-arrow-left"></i>
+                      </span>
+          <span class="text">Volver</span>
+        </div>
+      <%end %>
+    </div>
+  </div>
+<% end %>
+
+<script>
+   <%= render "selects.js" %>
+</script>
