@@ -44,7 +44,7 @@ class ClientsController < ApplicationController
     end
 
     def client_params
-      params.require(:client).permit(:person_id, :ruc, :credit_limit)
+      params.require(:client).permit(:person_id, :ruc)
     end
 
     def person_params

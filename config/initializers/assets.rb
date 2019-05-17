@@ -74,9 +74,3 @@ Rails.application.config.assets.precompile += %w( stampeds.js )
 
 Rails.application.config.assets.precompile += %w( clients.css )
 Rails.application.config.assets.precompile += %w( clients.js )
-
-Rails.application.config.assets.precompile += %w( employees.css )
-Rails.application.config.assets.precompile += %w( employees.js )
-
-Rails.application.config.assets.precompile += %w( providers.css )
-Rails.application.config.assets.precompile += %w( providers.js )

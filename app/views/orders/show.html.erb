@@ -1,18 +1,38 @@
 <div class="content-heading">
   <% if @order.order_type == :production then %>
-    <%= link_to orders_path do %>
-      <button class="btn btn-secondary " title="Volver atras">
-        <i class="fas fa-arrow-left text-primary fa-1x"></i>
-      </button>
-    <% end %>
-    <div>Orden de Produccion</div>
+    <div class="text-align-right">
+      <%= link_to orders_path do%>
+        <button class="btn btn-secondary" title="Volver atras">
+          <i class="fas fa-arrow-left text-primary fa-1x"></i>
+        </button>
+      <%end %>
+    </div>
+
+    <div class="col-8"> Orden de Produccion </div>
+    <div class="text-align-right">
+      <%= link_to order_url(@order, :format => :pdf) do%>
+        <button class="btn btn-secondary">
+          <i class="fas fa-print text-primary fa-1x"></i> Imprimir PDF
+        </button>
+      <%end %>
+    </div>
   <% else %>
-    <%= link_to component_orders_index_orders_path do %>
-      <button class="btn btn-secondary " title="Volver atras">
-        <i class="fas fa-arrow-left text-primary fa-1x"></i>
-      </button>
-    <% end %>
-    <div>Orden de Componentes</div>
+    <div class="text-align-right">
+      <%= link_to component_orders_index_orders_path do%>
+        <button class="btn btn-secondary" title="Volver atras">
+          <i class="fas fa-arrow-left text-primary fa-1x"></i>
+        </button>
+      <%end %>
+    </div>
+
+    <div class="col-8"> Orden de Componentes </div>
+    <div class="text-align-right">
+      <%= link_to order_url(@order, :format => :pdf) do%>
+        <button class="btn btn-secondary">
+          <i class="fas fa-print text-primary fa-1x"></i> Imprimir PDF
+        </button>
+      <%end %>
+    </div>
   <% end %>
 </div>
 

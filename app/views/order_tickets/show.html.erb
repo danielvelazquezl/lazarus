@@ -112,3 +112,24 @@
     </form>
   </div>
 </div>
+
+<div class="card">
+  <div class="table-responsive">
+    <table class="table table-hover table-bordered">
+      <thead>
+      <tr>
+        <th>Producto Terminado</th>
+        <th>Cantidad</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% @order_ticket.order_ticket_items.each do |m| %>
+        <tr>
+          <td><%= Product.find_by(id: m.product_id).description%></td>
+          <td><%= m.request_quantity %></td>
+        </tr>
+      <%end %>
+      </tbody>
+    </table>
+  </div>
+</div>

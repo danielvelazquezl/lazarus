@@ -102,6 +102,19 @@ class FormsController < ApplicationController
     end
   end
 
+  def check_stock_quantity
+    
+    product_id = form_params[:form_items_attributes][:product_id]
+    user_input_cant = form_params[:form_items_attributes][:quantity]
+    stock_cant = Stock.find(product_id).quantity
+
+    if user_input_cant > stock_cant
+      render json: { valid: false }
+    else
+      render json: { valid: true }
+    end
+  end
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_form

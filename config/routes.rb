@@ -17,6 +17,8 @@ Rails.application.routes.draw do
   root :to => redirect('/welcome')
   get '/welcome' => 'welcome#index'
 
+  get 'check_stock_quantity', to: 'forms#check_stock_quantity'
+
   resources :movement_proofs
   resources :movement_types
   resources :product_categories
@@ -68,5 +70,12 @@ end
   #resources :providers
 
   resources :users, only: [:index]
+
+  resources :people do
+    collection do
+      get :clients
+      get :new_client
+    end
+  end
 
 end

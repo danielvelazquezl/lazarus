@@ -16,6 +16,13 @@ class OrdersController < ApplicationController
   # GET /orders/1
   # GET /orders/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json
+      format.pdf {render template: 'orders/reporte', pdf: 'Reporte', page_size: 'A4',lowquality: true,
+                         zoom: 1, layout: "pdf.html",
+                         dpi: 75}
+    end
   end
 
   # GET /orders/new

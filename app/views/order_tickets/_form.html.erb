@@ -66,12 +66,7 @@
           <strong>Estado:</strong>
         </div>
         <div class="col-4">
-          <!--<%= form.text_field :state , class: 'form-control form-control-sm' %>-->
-          <select class="custom-select">
-            <option value="Facturado">Facturado</option>
-            <option value="En tramite">En trámite</option>
-            <option value="Sin facturar">Sin facturar</option>
-          </select>
+          <%= form.select :state, OrderTicket.state.options, {}, { value: order_ticket.state} %>
         </div>
       </div>
       <div class="form-group row">
@@ -82,6 +77,17 @@
           <%= form.text_field :observation , class: 'form-control form-control-sm'%>
         </div>
       </div>
+    </div>
+  </div>
+
+  <div class="card card-default">
+    <div class="card-body">
+      <div class="table-responsive">
+        <%= form.fields_for :order_ticket_items, @order_ticket_items do |f| %>
+          <%= render 'order_ticket_item', f: f %>
+        <% end %>
+      </div>
+      <%= link_to_add_fields "Agregar Producto", form, :order_ticket_items %>
     </div>
   </div>
 

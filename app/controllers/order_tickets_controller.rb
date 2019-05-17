@@ -15,10 +15,14 @@ class OrderTicketsController < ApplicationController
   # GET /order_tickets/new
   def new
     @order_ticket = OrderTicket.new
+    @order_ticket.date = Time.now
+    @products = Product.products_all
+    @order_ticket_items = @order_ticket.order_ticket_items.build
   end
 
   # GET /order_tickets/1/edit
   def edit
+    @products = Product.all
   end
 
   # POST /order_tickets
@@ -28,7 +32,7 @@ class OrderTicketsController < ApplicationController
 
     respond_to do |format|
       if @order_ticket.save
-        format.html { redirect_to @order_ticket, notice: 'Order ticket was successfully created.' }
+        format.html { redirect_to @order_ticket, notice: 'Nota de pedido creado.' }
         format.json { render :show, status: :created, location: @order_ticket }
       else
         format.html { render :new }
@@ -42,7 +46,7 @@ class OrderTicketsController < ApplicationController
   def update
     respond_to do |format|
       if @order_ticket.update(order_ticket_params)
-        format.html { redirect_to @order_ticket, notice: 'Order ticket was successfully updated.' }
+        format.html { redirect_to @order_ticket, notice: 'Nota de pedido actualizado.' }
         format.json { render :show, status: :ok, location: @order_ticket }
       else
         format.html { render :edit }
@@ -56,8 +60,9 @@ class OrderTicketsController < ApplicationController
   def destroy
     @order_ticket.destroy
     respond_to do |format|
-      format.html { redirect_to order_tickets_url, notice: 'Order ticket was successfully destroyed.' }
+      format.html { redirect_to order_tickets_url, notice: 'Nota de pedido eliminado.' }
       format.json { head :no_content }
+      format.js { render :layout => false }
     end
   end
 
@@ -69,6 +74,6 @@ class OrderTicketsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_ticket_params
-      params.require(:order_ticket).permit(:client_id, :ticket_number, :employee_id, :pay_method_id, :date, :observation, :state)
+      params.require(:order_ticket).permit(:client_id, :ticket_number, :employee_id, :pay_method_id, :date, :observation, :state, order_ticket_items_attributes: [:id, :request_quantity, :pending_quantity, :order_ticket_id, :product_id])
     end
 end
