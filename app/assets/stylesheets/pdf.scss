@@ -42,12 +42,22 @@
 
 .invoice-box table tr.information table td {
   padding-bottom: 40px;
+  text-align: left;
+}
+
+.invoice-box table tr.title table td {
+  text-align: center;
 }
 
 .invoice-box table tr.heading td {
   background: #eee;
   border-bottom: 1px solid #ddd;
   font-weight: bold;
+  text-align: center;
+}
+
+.invoice-box table tr.center td {
+  text-align: center;
 }
 
 .invoice-box table tr.details td {

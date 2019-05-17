@@ -8,13 +8,24 @@
             <td class="title">
               <%= image_tag wicked_pdf_asset_base64('company_logo.png') %>
             </td>
-
             <td>
-              Formulario #: <b><%= @form.id %></b>
-              <br>
-              Creado: <b><%= @form.created_at.strftime('%d/%m/%Y') %></b>
+              <h5>Formulario N°: <%= @form.id %></h5>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
 
-              Status: <span>estado</span>
+    <tr class="title">
+      <td colspan="4">
+        <table>
+          <tr>
+            <td>
+              <%if @form.form_type == :cpuproduced then%>
+                <h1>Formulario CPU Producidas</h1>
+              <%else %>
+                <h1>Formulario de Solicitud de Componentes</h1>
+              <%end %>
             </td>
           </tr>
         </table>
@@ -26,15 +37,19 @@
         <table>
           <tr>
             <td>
-              <b><%= @form.person.name %></b><br>direccion<br>
-              <i class="far fa-envelope"></i>email<br>
-              <i class="fas fa-phone"></i> telefono
+              <b>Encargado/a: </b><%= @form.person.name %><br>
+              <b>Depósito de origen: </b><%= @form.origin.description %><br>
+              <b>Comentarios: </b><%= @form.comments %><br>
             </td>
-
             <td>
-              <b><%= @form.person.name %></b><br>direccion<br>
-              <i class="far fa-envelope"></i>email<br>
-              <i class="fas fa-phone"></i> telefono
+              <b>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                Creado:
+              </b><%= @form.created_at.strftime('%d/%m/%Y %H:%M')%><br>
+              <b>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                Depósito de destino:
+              </b><%= @form.destination.description %><br>
             </td>
           </tr>
         </table>
@@ -51,7 +66,7 @@
         </thead>
         <tbody>
         <% @form.form_items.each do |m| %>
-          <tr class="information">
+          <tr class="center">
             <td><%= Product.find_by(id: m.product_id).description%></td>
             <td><%= m.quantity %></td>
           </tr>
@@ -61,71 +76,19 @@
 
     </tr>
 
+    <tr class="information">
+      <td colspan="4">
+        <table>
+          <tr>
+            <td></td>
+            <td>
+              <br><br><br><br><br>___________________________<br>
+              <b>Firma del Encargado/a &nbsp &nbsp &nbsp &nbsp</b>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
 
   </table>
 </div>
-
-<!--form class="form-horizontal">
-  <div class="form-group row">
-    <div class="col-2">
-      <strong>Encargado:</strong>
-    </div>
-    <div class="col-4">
-      <%= @form.person.name %>
-    </div>
-    <div class="col-2">
-      <strong>Fecha:</strong>
-    </div>
-    <div class="col-4">
-      <%= @form.date.strftime("%d-%m-%Y %H:%M") %>
-    </div>
-  </div>
-
-  <div class="form-group row">
-    <div class="col-2">
-      <strong>Depósito de origen:</strong>
-    </div>
-    <div class="col-4">
-      <%= @form.origin.description %>
-    </div>
-    <div class="col-2">
-      <strong>Depósito de destino:</strong>
-    </div>
-    <div class="col-4">
-      <%= @form.destination.description %>
-    </div>
-  </div>
-
-  <div class="form-group row">
-    <div class="col-2">
-      <strong>Comentario:</strong>
-    </div>
-    <div class="col">
-      <%= @form.comments %>
-    </div>
-  </div>
-</form>
-</div>
-</div>
-
-<div class="card">
-  <div class="table-responsive">
-    <table class="table table-hover table-bordered">
-      <thead>
-      <tr>
-        <th>Producto Terminado</th>
-        <th>Cantidad</th>
-      </tr>
-      </thead>
-      <tbody>
-      <% @form.form_items.each do |m| %>
-        <tr>
-          <td><%= Product.find_by(id: m.product_id).description%></td>
-          <td><%= m.quantity %></td>
-        </tr>
-      <%end %>
-      </tbody>
-    </table>
-  </div>
-
-</div-->

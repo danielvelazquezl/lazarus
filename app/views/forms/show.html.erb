@@ -11,6 +11,13 @@
     </div>
 
     <div class="col-8"> Formulario CPU Producidas </div>
+    <div class="text-align-right">
+      <%= link_to form_url(@form, :format => :pdf) do%>
+        <button class="btn btn-secondary">
+          <i class="fas fa-print text-primary fa-1x"></i> Imprimir PDF
+        </button>
+      <%end %>
+    </div>
   <%else %>
     <div class="text-align-right">
       <%= link_to request_forms_index_forms_path do%>
@@ -20,7 +27,15 @@
       <%end %>
     </div>
 
+
     <div class="col-8"> Formulario de Solicitud de Componentes </div>
+    <div class="text-align-right">
+      <%= link_to form_url(@form, :format => :pdf) do%>
+        <button class="btn btn-secondary">
+          <i class="fas fa-print text-primary fa-1x"></i> Imprimir PDF
+        </button>
+      <%end %>
+    </div>
   <%end %>
 </div>
 
@@ -40,7 +55,7 @@
           <strong>Fecha:</strong>
         </div>
         <div class="col-4">
-          <%= @form.date.strftime("%d-%m-%Y") %>
+          <%= @form.date.strftime("%d-%m-%Y %H:%M") %>
         </div>
       </div>
 

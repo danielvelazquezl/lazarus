@@ -34,14 +34,8 @@
 
     </tbody>
   </table>
-    <%= form_with(model: @cash_movement, local: true, html: { id: "cash_movements" }) do |form| %>
-      <%= form.fields_for :cash_movement_values do |f1| %>
-        <%= render 'cash_cash_movement_value', f: f1 %>
-      <% end %>
-    <div>
-      <%= link_to_add_fields "Agregar Forma Pago", form , :cash_cash_movement_values %>
-    </div>
-    <% end %>
+
+
   <%= submit_tag 'Pagar', id: 'pay-btn', disabled: true %>
 
   <% end %>

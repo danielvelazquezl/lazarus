@@ -20,8 +20,8 @@ class CashMovementsController < ApplicationController
     if params[:client_id].present?
       @cash_movement = CashMovement.new
       #anidado con cash_movement_value
-      @cash_movement_values = @cash_movement.cash_cash_movement_values.build
-      @pay_methods_values = @cash_movement.pay_methods_values.build
+      #@cash_movement_values = @cash_movement.cash_cash_movement_values.build
+      #@pay_methods_values = @cash_movement.pay_methods_values.build
       #movimiento de caja
       @cash_movement.client_id = params[:client_id]
       #fecha,observacion y total
