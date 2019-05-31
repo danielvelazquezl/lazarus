@@ -18,15 +18,24 @@ class Form < ApplicationRecord
 
   private
   def update_stock
+    begin
+      Order.transaction do
+        form_items.each do |ft|
+          quantity = ft.quantity
+          product_id = ft.product_id
 
-    form_items.each do |ft|
-      quantity = ft.quantity
-      product_id = ft.product_id
+          @stock_origin = Stock.where(deposit_id: self.origin, product_id: product_id).first
+          @stock_origin.reduce_stock!(product_id, quantity)
 
-      Stock.reduce_stock(product_id, self.origin, quantity)
-
-      Stock.increase_stock(product_id, self.destination, quantity)
-
+          @stock_destination = Stock.where(deposit_id: self.destination, product_id: product_id).first
+          @stock_destination.increase_stock!(quantity)
+        end
       end
+
+    rescue StandardError => e
+
+      self.errors.add(:quantity, "Cantidad insuficiente para realizar esta transaccion")
+      raise ActiveRecord::RecordInvalid.new(self)
+    end
   end
 end

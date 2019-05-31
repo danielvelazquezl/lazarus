@@ -4,9 +4,64 @@
   <div>Clientes</div>
   <div class="ml-auto">
     <%= link_to new_client_path do %>
-      <button class="btn btn-secondary" title="Nuevo cliente">
+      <button class="btn btn-secondary">
         <i class="fas fa-plus text-primary fa-1x"></i>
       </button>
     <% end %>
   </div>
 </div>
+
+<table class="table table-striped table-hover w-100" id="datatable2">
+  <thead>
+    <tr>
+    <tr>
+      <th class="text-center">
+        <strong>NOMBRE Y APELLIDO</strong>
+      </th>
+      <th class="text-center">
+        <strong>R.U.C.</strong>
+      </th>
+      <th class="text-center">
+        <strong>E-MAIL</strong>
+      </th>
+      <th class="text-center">
+        <stron>TELÉFONO</stron>
+      </th>
+      <!--th class="text-center">
+        <strong>DIRECCION</strong>
+      </th-->
+      <th>
+        <strong></strong>
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @client.each do |client| %>
+      <tr>
+        <td><%= Person.find_by(id: client.person_id).name %></td>
+        <td><%= client.ruc %></td>
+        <td><%= Person.find_by(id: client.person_id).email %></td>
+        <td><%= Person.find_by(id: client.person_id).phone %></td>
+        <!--td><%#= Person.find_by(id: client.person_id).address %></td-->
+
+        <td class="text-center">
+          <div class="btn-group" role="group">
+            <%= link_to client do %>
+              <button class="btn btn-sm btn-secondary"><i class="fas fa-search"></i></button>
+            <% end %>
+            <%= link_to edit_client_path(client) do %>
+              <button class="btn btn-sm btn-secondary"><i class="fas fa-edit"></i></button>
+            <% end %>
+            <%= link_to client, method: :delete, data: { confirm: '¿Estás seguro?' },
+                        :remote => true, :class => 'delete_client' do %>
+              <button class="btn btn-sm btn-secondary"><i class="fas fa-trash-alt"></i></button>
+            <% end %>
+          </div>
+        </td>
+
+      </tr>
+    <% end %>
+  </tbody>
+
+</table>

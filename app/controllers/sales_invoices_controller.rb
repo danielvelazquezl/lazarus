@@ -69,6 +69,8 @@ class SalesInvoicesController < ApplicationController
 
     respond_to do |format|
       if @sales_invoice.save
+        order_ticket = OrderTicket.find_by(ticket_number: @sales_invoice.order_ticket.ticket_number)
+        order_ticket.update_attribute(:state, OrderTicket.state.invoiced)
         format.html {redirect_to sales_invoices_path, notice: 'Factura creada.'}
         format.json {render :index, status: :created, location: @sales_invoice}
       else

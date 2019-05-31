@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Provider:</strong>
+  <%= @budget_request.provider %>
+</p>
+
+<p>
+  <strong>Employee:</strong>
+  <%= @budget_request.employee %>
+</p>
+
+<p>
+  <strong>Date:</strong>
+  <%= @budget_request.date %>
+</p>
+
+<p>
+  <strong>State:</strong>
+  <%= @budget_request.state %>
+</p>
+
+<p>
+  <strong>Comment:</strong>
+  <%= @budget_request.comment %>
+</p>
+
+<%= link_to 'Edit', edit_budget_request_path(@budget_request) %> |
+<%= link_to 'Back', budget_requests_path %>

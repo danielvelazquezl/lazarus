@@ -10,15 +10,7 @@ class FormsController < ApplicationController
 
   def request_forms_index
     @forms = Form.keyboardmonitorrequest_form
-    if params[:filter].present? then
 
-      if params[:person_id].present?
-        @forms = @forms.where(person_id: params[:person_id])
-      end
-      if params[:date_from].present? and params[:date_until].present?
-        @forms = @forms.where("DATE(date) >= (?) and DATE(date) <= (?)", params[:date_from], params[:date_until])
-      end
-    end
   end
 
   # GET /forms/1
@@ -38,6 +30,12 @@ class FormsController < ApplicationController
     @form = Form.new
     @form.form_type = :cpuproduced
     @form.person_id = 1
+    lastAdd = @form.number = Form.find_by(form_type: :cpuproduced)
+    if lastAdd != nil
+      @form.number = Form.where(form_type: :cpuproduced).last.number + 1
+    else
+      @form.number = 1
+    end
     @form.origin_id = Setting.find_by!(key: 'id_production_deposit').id
     @form.destination_id = Setting.find_by!(key: 'id_products_deposit').id
     @form.date = Time.now
@@ -45,11 +43,16 @@ class FormsController < ApplicationController
     @form_items = @form.form_items.build
   end
 
-
   def new_request_proof
     @form = Form.new
     @form.form_type = :keyboardmonitorrequest
     @form.person_id = 1
+    lastAdd = @form.number = Form.find_by(form_type: :keyboardmonitorrequest)
+    if lastAdd != nil
+      @form.number = Form.where(form_type: :keyboardmonitorrequest).last.number + 1
+    else
+      @form.number = 1
+    end
     @form.origin_id = Setting.find_by!(key: 'id_components_deposit').value
     @form.destination_id = Setting.find_by!(key: 'id_products_deposit').value
     @form.date = Time.now
@@ -102,19 +105,6 @@ class FormsController < ApplicationController
     end
   end
 
-  def check_stock_quantity
-    
-    product_id = form_params[:form_items_attributes][:product_id]
-    user_input_cant = form_params[:form_items_attributes][:quantity]
-    stock_cant = Stock.find(product_id).quantity
-
-    if user_input_cant > stock_cant
-      render json: { valid: false }
-    else
-      render json: { valid: true }
-    end
-  end
-
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_form
@@ -123,6 +113,6 @@ class FormsController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def form_params
-    params.require(:form).permit(:person_id, :origin_id, :form_type, :destination_id, :date, :comments, form_items_attributes: [:id, :quantity, :form_id, :product_id])
+    params.require(:form).permit(:person_id, :origin_id, :form_type, :destination_id, :date, :number, :comments, form_items_attributes: [:id, :quantity, :form_id, :product_id])
   end
 end

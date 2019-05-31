@@ -1,0 +1,115 @@
+<%= form_with(model: open_close_cash, local: true) do |form| %>
+  <% if open_close_cash.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(open_close_cash.errors.count, "error") %> prohibited this open_close_cash from being saved:</h2>
+
+      <ul>
+      <% open_close_cash.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="card card-default">
+    <div class="card-body">
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Movimiento:</strong>
+        </div>
+        <div class="col-3">
+          <%= form.select :cash_id,
+                          options_from_collection_for_select(@open_close_cash.persisted? ? Cash.all_open : Cash.all_close,"id", "description", form.object.cash_id)%>
+        </div>
+        <div class="col-2">
+          <strong>Encargado:</strong>
+        </div>
+        <div class="col-5">
+          <%= form.select :employee_id,
+                          options_from_collection_for_select(Person.joins(:employee), "id", "name", form.object.employee)%>
+        </div>
+
+        <div class="col-2">
+          <strong>Cantidad de inicio:</strong>
+        </div>
+        <div class="col-3">
+          <%= form.number_field :start_ammount %>
+        </div>
+        <div class="col-2">
+          <strong>Fecha de inicio:</strong>
+        </div>
+        <div class="col-5">
+          <%= form.datetime_select :date_start , :disabled => true %>
+        </div>
+
+        <div class="col-2">
+          <strong>Cantidad final:</strong>
+        </div>
+        <div class="col-3">
+          <%= form.number_field :final_ammount, :readonly => true %>
+        </div>
+        <div class="col-2">
+          <strong>Fecha de finalización:</strong>
+        </div>
+        <div class="col-5">
+          <%= form.datetime_select :final_date, :disabled =>  true%>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-12 col-xl-auto actions">
+      <div class="field">
+        <%= form.check_box :state, :checked => true, :style => 'visibility: hidden' %>
+      </div>
+      <div class="actions">
+        <%= form.submit @open_close_cash.persisted? ? "CERRAR CAJA" : "ABRIR CAJA", class: "btn btn-success"  %>
+      </div>
+    </div>
+  </div>
+<% end %>
+
+
+<script>
+    <%if !@open_close_cash.new_record?%>
+      let open = true;
+    <%end %>
+    if (open === true) {
+        $("#open_close_cash_employee_id").prop("disabled", true);
+        $("#open_close_cash_cash_id").prop("disabled", true);
+        $("#open_close_cash_cash_id").val("<%=  @open_close_cash.cash_id%>")
+        $("#open_close_cash_start_ammount").prop("readonly", true);
+
+        let year = ("<%= DateTime.now.year %>");
+        let month = ("<%= DateTime.now.month %>");
+        let day = ("<%= DateTime.now.day %>");
+        let hour = ("<%= DateTime.now.hour %>");
+        let minute = ("<%= DateTime.now.minute %>");
+
+        $("#open_close_cash_final_date_3i").val(day);
+        $("#open_close_cash_final_date_2i").val(month);
+        $("#open_close_cash_final_date_1i").val(year);
+        $("#open_close_cash_final_date_4i").val(hour);
+        $("#open_close_cash_final_date_5i").val(minute);
+        $('#open_close_cash_state').prop('checked', false);
+    }else{
+        $("#open_close_cash_start_ammount").change(function(event){
+            $("#open_close_cash_final_ammount").val($("#open_close_cash_start_ammount").val());
+        });
+    }
+    $('form').submit(function () {
+        $("#open_close_cash_final_date_3i").prop("disabled", false);
+        $("#open_close_cash_final_date_2i").prop("disabled", false);
+        $("#open_close_cash_final_date_1i").prop("disabled", false);
+        $("#open_close_cash_final_date_4i").prop("disabled", false);
+        $("#open_close_cash_final_date_5i").prop("disabled", false);
+
+        $("#open_close_cash_date_start_3i").prop("disabled", false);
+        $("#open_close_cash_date_start_2i").prop("disabled", false);
+        $("#open_close_cash_date_start_1i").prop("disabled", false);
+        $("#open_close_cash_date_start_4i").prop("disabled", false);
+        $("#open_close_cash_date_start_5i").prop("disabled", false);
+    });
+
+</script>

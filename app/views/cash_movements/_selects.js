@@ -1,8 +1,7 @@
 $(document).ready(function () {
-    $('#cash_movement_client_id').selectize({
+    $('.pay_method_value').selectize({
         create: false,
         sortField: 'text'
     });
-
 
 });

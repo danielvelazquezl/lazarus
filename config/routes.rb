@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  resources :purchase_orders
+  resources :banks
+  resources :budget_requests
+  resources :purchase_requests
+  resources :open_close_cashes
+  resources :cashes
   resources :stampeds
   resources :permissions
   resources :sales_invoices
@@ -41,6 +47,7 @@ Rails.application.routes.draw do
   resources :products do
     collection do
       get :new_component
+      get :hidden
     end
   end
 
@@ -53,29 +60,18 @@ Rails.application.routes.draw do
   end
 
 
-resources :cash_movements do
-  collection do
-    put :pay_invoices
+  resources :cash_movements do
+    collection do
+      get :get_invoices
+    end
   end
-end
 
   #client routes
   #get '/clients/new', to: 'clients#new', as: 'new_client'
   resources :clients
 
-  #providers routes
-  #resources :employees
-
-  #employees routes
-  #resources :providers
-
   resources :users, only: [:index]
 
-  resources :people do
-    collection do
-      get :clients
-      get :new_client
-    end
-  end
+  get '/report/index', to: 'report#index', as: 'reports'
 
 end

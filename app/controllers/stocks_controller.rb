@@ -4,15 +4,7 @@ class StocksController < ApplicationController
   # GET /stocks
   # GET /stocks.json
   def index
-    if params[:stock] and params[:stock][:deposit_id]
-      @stocks = Stock.search(params[:stock][:deposit_id])
-    else
-      if params[:stock] and params[:stock][:product_id]
-        @stocks = Stock.search(params[:stock][:product_id])
-      else
-        @stocks = Stock.all
-      end
-    end
+    @stocks = Stock.all
   end
 
   # GET /stocks/1

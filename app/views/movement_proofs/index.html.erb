@@ -1,5 +1,5 @@
 <div class="content-heading">
-  <div> Formularios de Movimiento </div>
+  <div> Formularios de Movimiento</div>
 
   <div class="ml-auto">
     <%= link_to new_movement_proof_path do %>
@@ -14,20 +14,20 @@
   <thead>
   <tr>
   <tr>
-    <th>
-      <strong>Encargado</strong>
+    <th class="text-center">
+      <strong>ENCARGADO</strong>
     </th>
-    <th>
-      <strong>Depósito</strong>
+    <th class="text-center">
+      <strong>DEPOSITO</strong>
     </th>
-    <th>
-      <strong>Motivo</strong>
+    <th class="text-center">
+      <strong>MOTIVO</strong>
     </th>
-    <th>
-      <strong>Fecha</strong>
+    <th class="text-center">
+      <strong>FECHA</strong>
     </th>
-    <th>
-      <strong>Comentario</strong>
+    <th class="text-center">
+      <strong>COMENTARIO</strong>
     </th>
     <th>
       <strong></strong>
@@ -36,29 +36,29 @@
   </tr>
   </thead>
   <tbody>
-          <% @movement_proofs.each do |movement_proof| %>
-            <tr>
-              <td><%= movement_proof.person.name %></td>
-              <td><%= movement_proof.deposit.description %></td>
-              <td><%= movement_proof.movement_type.description %></td>
-              <td><%= movement_proof.date %></td>
-              <td><%= movement_proof.comment %></td>
+  <% @movement_proofs.each do |movement_proof| %>
+    <tr>
+      <td><%= Person.find_by(id: movement_proof.person_id).name %></td>
+      <td><%= movement_proof.deposit.description %></td>
+      <td><%= movement_proof.movement_type.description %></td>
+      <td><%= movement_proof.date %></td>
+      <td><%= movement_proof.comment %></td>
 
-              <td class="text-right">
-                <div class="btn-group" role="group">
-                  <%= link_to movement_proof do%>
-                    <button class="btn btn-sm btn-secondary"><i class="fas fa-search"></i></button>
-                  <%end%>
-                  <%= link_to edit_movement_proof_path(movement_proof) do%>
-                    <button class="btn btn-sm btn-secondary"><i class="fas fa-edit"></i></button>
-                  <%end %>
-                  <%= link_to movement_proof, method: :delete, data: { confirm: '¿Estás seguro?' },
-                              :remote => true, :class => 'delete_movement_proof' do%>
-                    <button class="btn btn-sm btn-secondary"><i class="fas fa-trash-alt"></i></button>
-                  <%end %>
-                </div>
-              </td>
-            </tr>
+      <td class="text-center">
+        <div class="btn-group" role="group">
+          <%= link_to movement_proof do %>
+            <button class="btn btn-sm btn-secondary"><i class="fas fa-search"></i></button>
           <% end %>
-          </tbody>
-        </table>
+          <%= link_to edit_movement_proof_path(movement_proof) do %>
+            <button class="btn btn-sm btn-secondary"><i class="fas fa-edit"></i></button>
+          <% end %>
+          <%= link_to movement_proof, method: :delete, data: {confirm: '¿Estás seguro?'},
+                      :remote => true, :class => 'delete_movement_proof' do %>
+            <button class="btn btn-sm btn-secondary"><i class="fas fa-trash-alt"></i></button>
+          <% end %>
+        </div>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

@@ -68,21 +68,19 @@
 
   <div class="card card-default">
     <div class="card-body">
-      <div class="table-responsive">
-        <table class="table table-hover">
-          <thead>
-          <tr>
-            <th>Producto</th>
-            <th>Cantidad</th>
-            <th></th>
-          </tr>
-          </thead>
+      <table class="table table-hover">
+        <thead>
+        <tr>
+          <th>Producto</th>
+          <th>Cantidad</th>
+          <th></th>
+        </tr>
+        </thead>
 
-        </table>
-        <%= form.fields_for :product_items, @product_items do |f| %>
-          <%= render 'product_item', f: f %>
-        <% end %>
-      </div>
+      </table>
+      <%= form.fields_for :product_items, @product_items do |f| %>
+        <%= render 'product_item', f: f %>
+      <% end %>
       <%= link_to_add_fields "Agregar Componente", form, :product_items %>
     </div>
   </div>
@@ -109,7 +107,23 @@
 
 <script type="text/javascript">
   <%= render "validate.js" %>
-  <%= render "selects.js" %>
+
+  $(document).ready(function () {
+      $('#product_product_category_id, #product_brand_id, .component-select').selectize({
+          create: true,
+          sortField: 'text'
+      });
+
+
+  });
+  $(document).on('click','.add_fields',function (e) {
+      //let fields = $('fieldset');
+      $('fieldset').last().children().children().last().children().first().children().first().children().first().selectize({
+          create: false,
+          sortField: 'text'
+      });
+  //console.log($('fieldset').last().children().children().last().children().first().children().first().children().first());
+  });
 </script>
 
 

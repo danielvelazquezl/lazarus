@@ -21,6 +21,10 @@ class ProductsController < ApplicationController
     end
   end
 
+  def hidden
+    @products = Product.only_deleted
+  end
+
   # GET /products/1
   # GET /products/1.json
   def show
@@ -74,11 +78,27 @@ class ProductsController < ApplicationController
   # DELETE /products/1
   # DELETE /products/1.json
   def destroy
-    @product.destroy
-    respond_to do |format|
-      format.html { redirect_to products_url, notice: 'Producto eliminado.' }
-      format.json { head :no_content }
-      format.js { render :layout => false }
+    if params[:type] == 'normal'
+      @product.destroy
+      respond_to do |format|
+        format.html { redirect_to products_url }
+        format.json { head :no_content }
+        format.js { render :layout => false }
+      end
+    elsif params[:type] == 'forever'
+      @product.really_destroy!
+      respond_to do |format|
+        format.html { redirect_to hidden_products_url }
+        format.json { head :no_content }
+        format.js { render :layout => false }
+      end
+    elsif params[:type] == 'undelete'
+      @product.restore
+      respond_to do |format|
+        format.html { redirect_to hidden_products_url }
+        format.json { head :no_content }
+        format.js { render :layout => false }
+      end
     end
   end
 
@@ -90,7 +110,7 @@ class ProductsController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_product
-      @product = Product.find(params[:id])
+      @product = Product.with_deleted.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

@@ -10,8 +10,8 @@
     <tr>
       <td class="col-7">
         <%= f.select :component_id,
-                     options_from_collection_for_select(Product.where(product_type: :component), "id", "description", f.object.component_id),
-                     prompt: "Seleccionar" %>
+                     options_from_collection_for_select(Product.where(product_type: :component), "id", "description", f.object.component_id),{},
+                     {class:'component-select',prompt: "Seleccionar"} %>
       </td>
       <td class="col-3">
         <%= f.text_field :quantity, class: "validate form-control-sm form-control" %>
@@ -24,6 +24,3 @@
     </tbody>
   </table>
 </fieldset>
-<script type="text/javascript">
-    <%= render "selects.js" %>
-</script>

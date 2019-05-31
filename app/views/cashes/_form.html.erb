@@ -1,0 +1,24 @@
+<%= form_with(model: cash, local: true) do |form| %>
+  <% if cash.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(cash.errors.count, "error") %> prohibited this cash from being saved:</h2>
+
+      <ul>
+      <% cash.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label :description %>
+    <%= form.text_field :description %>
+  </div>
+  <div class="field">
+    <%= form.check_box :state, :checked => false, :style => 'visibility: hidden' %>
+  </div>
+  <div class="actions">
+    <%= form.submit %>
+  </div>
+<% end %>

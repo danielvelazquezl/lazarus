@@ -15,7 +15,7 @@
   <thead>
   <tr>
     <th>
-      <strong>Nº DE TICKET</strong>
+      <strong>Nº</strong>
     </th>
     <th>
       <strong>CLIENTE</strong>
@@ -24,16 +24,10 @@
       <strong>EMPLEADO</strong>
     </th>
     <th>
-      <strong>MET. PAGO</strong>
-    </th>
-    <th>
       <strong>FECHA</strong>
     </th>
     <th>
       <strong>ESTADO</strong>
-    </th>
-    <th>
-      <strong>OBSERVACIÓN</strong>
     </th>
     <th>
       <strong>OPCIONES</strong>
@@ -47,22 +41,26 @@
       <td><%= order_ticket.ticket_number %></td>
       <td><%= order_ticket.client.person.name %></td>
       <td><%= order_ticket.employee.person.name %></td>
-      <td><%= order_ticket.pay_method.description %></td>
-      <td><%= order_ticket.date.strftime("%d-%m-%Y") %></td>
-      <td><%= order_ticket.state %></td>
-      <td><%= order_ticket.observation %></td>
+      <td><%= order_ticket.date.strftime("%d-%m-%Y %H:%M") %></td>
+      <td><%= order_ticket.state.text %></td>
       <td class="text-center">
         <div class="btn-group" role="group">
           <%= link_to order_ticket do%>
             <button class="btn btn-sm btn-secondary"><i class="fas fa-search"></i></button>
           <%end %>
-          <%= link_to edit_order_ticket_path(order_ticket) do%>
-            <button class="btn btn-sm btn-secondary"><i class="fas fa-edit"></i></button>
-          <%end %>
-          <%= link_to order_ticket, method: :delete, data: { confirm: '¿Estás seguro?' },
-                      :remote => true, :class => 'delete_form' do%>
-            <button class="btn btn-sm btn-secondary"><i class="fas fa-trash-alt"></i></button>
-          <%end %>
+          <% if order_ticket.state.invoiced? %>
+            <button class="btn btn-sm btn-secondary" disabled><i class="fas fa-edit"></i></button>
+            <button class="btn btn-sm btn-secondary" disabled><i class="fas fa-trash-alt"></i></button>
+          <% else %>
+            <%= link_to edit_order_ticket_path(order_ticket) do%>
+              <button class="btn btn-sm btn-secondary"><i class="fas fa-edit"></i></button>
+            <%end %>
+
+            <%= link_to order_ticket, method: :delete, data: { confirm: '¿Estás seguro?' },
+                        :remote => true, :class => 'delete_form' do%>
+              <button class="btn btn-sm btn-secondary"><i class="fas fa-trash-alt"></i></button>
+            <%end %>
+          <% end %>
         </div>
       </td>
     </tr>

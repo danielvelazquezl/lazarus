@@ -1,3 +1,4 @@
+
 <fieldset style="height: 5px; border:none;">
   <table width="auto" align="center">
     <thead style="display:none">
@@ -11,7 +12,7 @@
     <tr>
       <td><strong>Producto: </strong>
         <%= f.select :product_id,
-                     options_from_collection_for_select(@products, "id", "description", f.object.product_id)%>
+                     options_from_collection_for_select(@products, "id", "description")%>
       </td>
       <td><strong style="margin-left: 20px">Cantidad: </strong>
         <%= f.text_field :quantity, :size => 3, class: "validame" %>

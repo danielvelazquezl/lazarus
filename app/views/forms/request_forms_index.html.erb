@@ -15,6 +15,9 @@
   <thead>
   <tr>
     <th>
+      <strong>N°</strong>
+    </th>
+    <th>
       <strong>ENCARGADO</strong>
     </th>
     <th>
@@ -38,8 +41,9 @@
   <tbody>
   <% @forms.each do |form| %>
     <tr>
+      <td><%= form.number %></td>
       <td><%= form.person.name %></td>
-      <td><%= form.date.strftime("%d-%m-%Y")%></td>
+      <td><%= form.date.strftime("%d-%m-%Y %H:%M")%></td>
       <td><%= form.origin.description %></td>
       <td><%= form.destination.description %></td>
       <td><%= form.comments %></td>
@@ -48,9 +52,9 @@
           <%= link_to form do%>
             <button class="btn btn-sm btn-secondary"><i class="fas fa-search"></i></button>
           <%end %>
-          <%= link_to edit_form_path(form) do%>
+          <!--<%= link_to edit_form_path(form) do%>
             <button class="btn btn-sm btn-secondary"><i class="fas fa-edit"></i></button>
-          <%end %>
+          <%end %>-->
           <%= link_to form, method: :delete, data: { confirm: '¿Estás seguro?' },
                       :remote => true, :class => 'delete_form' do%>
             <button class="btn btn-sm btn-secondary"><i class="fas fa-trash-alt"></i></button>

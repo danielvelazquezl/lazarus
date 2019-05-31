@@ -16,6 +16,13 @@ class OrderTicketsController < ApplicationController
   def new
     @order_ticket = OrderTicket.new
     @order_ticket.date = Time.now
+    @order_ticket.state = :uninvoiced
+    orderLast = @order_ticket.ticket_number = OrderTicket.find_by(ticket_number: 1)
+    if orderLast != nil
+      @order_ticket.ticket_number = OrderTicket.order("updated_at").last().ticket_number + 1
+    else
+      @order_ticket.ticket_number = 1
+    end
     @products = Product.products_all
     @order_ticket_items = @order_ticket.order_ticket_items.build
   end
@@ -74,6 +81,6 @@ class OrderTicketsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def order_ticket_params
-      params.require(:order_ticket).permit(:client_id, :ticket_number, :employee_id, :pay_method_id, :date, :observation, :state, order_ticket_items_attributes: [:id, :request_quantity, :pending_quantity, :order_ticket_id, :product_id])
+      params.require(:order_ticket).permit(:client_id, :ticket_number, :employee_id, :date, :observation, :state, order_ticket_items_attributes: [:id, :request_quantity, :pending_quantity, :order_ticket_id, :product_id])
     end
 end

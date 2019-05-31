@@ -1,0 +1,15 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  budget_request: one
+  product: one
+  price: 1
+  requested_quantity: 1
+  pending_quantity: 1
+
+two:
+  budget_request: two
+  product: two
+  price: 1
+  requested_quantity: 1
+  pending_quantity: 1

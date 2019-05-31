@@ -15,6 +15,12 @@
     <div class="card-body">
         <div class="form-group row">
           <div class="col-2">
+            <strong>N° de Formulario:</strong>
+          </div>
+          <div class="col-4">
+            <input type="text" class="form-control valid" value="<%= @form.number %> " disabled>
+          </div>
+          <div class="col-2">
             <strong>Encargado:</strong>
           </div>
           <div class="col-4">
@@ -27,8 +33,14 @@
             <strong>Fecha de pedido:</strong>
           </div>
           <div class="col-4">
-            <%= fo.date_field :date, :class => 'form-control'%>
+            <%= fo.text_field :date , id: "datetimepicker1", :class => 'form-control'%>
           </div>
+          <script type="text/javascript">
+              $(function () {
+                  $('#datetimepicker1').datetimepicker();
+              });
+          </script>
+
         </div>
         <div class="form-group row">
           <div class="col-2">
@@ -58,6 +70,7 @@
   <%= fo.hidden_field :form_type %>
   <%= fo.hidden_field :origin_id %>
   <%= fo.hidden_field :destination_id %>
+  <%= fo.hidden_field :number %>
 
   <div class="card card-default">
     <div class="card-body">

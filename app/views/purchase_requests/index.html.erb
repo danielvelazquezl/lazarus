@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+<div class="content-heading">
+  <div> Pedido de Compra </div>
+</div>
+
+<table class="table table-striped table-hover w-100" id="datatable2">
+  <thead>
+  <tr>
+    <th>
+      <strong>FECHA</strong>
+    </th>
+    <th>
+      <strong>EMPLEADO</strong>
+    </th>
+    <th>
+      <strong>ESTADO</strong>
+    </th>
+    <th>
+      <strong>COMENTARIO</strong>
+    </th>
+    <th>
+      <strong>OPCIONES</strong>
+    </th>
+
+  </tr>
+  </thead>
+  <tbody>
+  <% @purchase_requests.each do |purchase_request| %>
+    <tr>
+      <td><%= purchase_request.date.strftime("%d-%m-%Y") %></td>
+      <td><%= purchase_request.employee.person.name %></td>
+      <td><%= purchase_request.state %></td>
+      <td><%= purchase_request.comment %></td>
+      <td class="text-center">
+        <div class="btn-group" role="group">
+          <%= link_to edit_purchase_request_path(purchase_request) do%>
+            <button class="btn btn-sm btn-secondary"><i class="fas fa-edit"></i></button>
+          <%end %>
+        </div>
+      </td>
+    </tr>
+  <%end%>
+  </tbody>
+</table>

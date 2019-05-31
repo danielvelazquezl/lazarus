@@ -9,28 +9,22 @@
               <%= image_tag wicked_pdf_asset_base64('company_logo.png') %>
             </td>
             <td>
-              <h5>Formulario N°: <%= @form.id %></h5>
+              <h5>Formulario N°: <%= @form.number%></h5>
             </td>
           </tr>
-        </table>
-      </td>
-    </tr>
-
-    <tr class="title">
-      <td colspan="4">
-        <table>
           <tr>
             <td>
               <%if @form.form_type == :cpuproduced then%>
-                <h1>Formulario CPU Producidas</h1>
+                <h2>Formulario de CPU Producida</h2>
               <%else %>
-                <h1>Formulario de Solicitud de Componentes</h1>
+                <h2>Formulario de Solicitud de Componente</h2>
               <%end %>
             </td>
           </tr>
         </table>
       </td>
     </tr>
+
 
     <tr class="information">
       <td colspan="4">

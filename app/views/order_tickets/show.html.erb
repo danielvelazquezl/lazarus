@@ -1,42 +1,4 @@
-<!--<p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Client:</strong>
-  <%= @order_ticket.client_id %>
-</p>
-
-<p>
-  <strong>Ticket number:</strong>
-  <%= @order_ticket.ticket_number %>
-</p>
-
-<p>
-  <strong>Employee:</strong>
-  <%= @order_ticket.employee_id %>
-</p>
-
-<p>
-  <strong>Pay method:</strong>
-  <%= @order_ticket.pay_method_id %>
-</p>
-
-<p>
-  <strong>Date:</strong>
-  <%= @order_ticket.date %>
-</p>
-
-<p>
-  <strong>Observation:</strong>
-  <%= @order_ticket.observation %>
-</p>
-
-<p>
-  <strong>State:</strong>
-  <%= @order_ticket.state %>
-</p>
-
-<%= link_to 'Edit', edit_order_ticket_path(@order_ticket) %> |
-<%= link_to 'Back', order_tickets_path %>-->
 
 <p id="notice"><%= notice %></p>
 
@@ -88,16 +50,10 @@
 
       <div class="form-group row">
         <div class="col-2">
-          <strong>Método de pago:</strong>
-        </div>
-        <div class="col-4">
-          <%= @order_ticket.pay_method.description %>
-        </div>
-        <div class="col-2">
           <strong>Estado:</strong>
         </div>
         <div class="col-4">
-          <%= @order_ticket.state %>
+          <%= @order_ticket.state.text %>
         </div>
       </div>
 
@@ -133,3 +89,9 @@
     </table>
   </div>
 </div>
+<% if @order_ticket.state.uninvoiced? %>
+  <%= form_tag(new_sales_invoice_path, method: :get) do %>
+    <%= hidden_field_tag :note_number, value = @order_ticket.ticket_number %>
+    <%= submit_tag "Facturar", name:'nil', class: "btn btn-sm btn-primary"%>
+  <% end %>
+<% end %>

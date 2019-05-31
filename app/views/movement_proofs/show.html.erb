@@ -19,7 +19,7 @@
             <label class="col-lg-2 col-form-label">Encargado:</label>
             <div class="col-lg-10">
               <label class="col-lg-2 col-form-label">
-                <%= @movement_proof.person.name %>
+                <%= Person.find_by(id: @movement_proof.person_id).name %>
               </label>
             </div>
           </div>

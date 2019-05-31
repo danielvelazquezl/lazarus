@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_17_151923) do
+ActiveRecord::Schema.define(version: 2019_05_26_011004) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -36,25 +36,69 @@ ActiveRecord::Schema.define(version: 2019_05_17_151923) do
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
 
+  create_table "banks", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "brands", force: :cascade do |t|
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "cash_movement_invoices", force: :cascade do |t|
-    t.integer "ammount"
+  create_table "budget_request_items", force: :cascade do |t|
+    t.bigint "budget_request_id"
+    t.bigint "product_id"
+    t.integer "price"
+    t.integer "requested_quantity"
+    t.integer "pending_quantity"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "cash_id"
+    t.index ["budget_request_id"], name: "index_budget_request_items_on_budget_request_id"
+    t.index ["product_id"], name: "index_budget_request_items_on_product_id"
+  end
+
+  create_table "budget_requests", force: :cascade do |t|
+    t.bigint "provider_id"
+    t.bigint "employee_id"
+    t.datetime "date"
+    t.string "state"
+    t.string "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "purchase_request_id"
+    t.index ["employee_id"], name: "index_budget_requests_on_employee_id"
+    t.index ["provider_id"], name: "index_budget_requests_on_provider_id"
+    t.index ["purchase_request_id"], name: "index_budget_requests_on_purchase_request_id"
+  end
+
+  create_table "cash_movement_invoices", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "sales_invoice_id"
+    t.bigint "cash_movement_id"
+    t.index ["cash_movement_id"], name: "index_cash_movement_invoices_on_cash_movement_id"
+    t.index ["sales_invoice_id"], name: "index_cash_movement_invoices_on_sales_invoice_id"
   end
 
   create_table "cash_movement_values", force: :cascade do |t|
     t.integer "ammount"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "cash_id"
-    t.integer "payment_id"
+    t.integer "card_number"
+    t.bigint "bank_id"
+    t.string "drawer"
+    t.string "account_number"
+    t.integer "check_number"
+    t.date "emission_date"
+    t.date "due_date"
+    t.bigint "pay_method_id"
+    t.bigint "cash_movement_id"
+    t.index ["bank_id"], name: "index_cash_movement_values_on_bank_id"
+    t.index ["cash_movement_id"], name: "index_cash_movement_values_on_cash_movement_id"
+    t.index ["pay_method_id"], name: "index_cash_movement_values_on_pay_method_id"
   end
 
   create_table "cash_movements", force: :cascade do |t|
@@ -63,7 +107,17 @@ ActiveRecord::Schema.define(version: 2019_05_17_151923) do
     t.integer "total"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "client_id"
+    t.bigint "cash_id"
+    t.bigint "client_id"
+    t.index ["cash_id"], name: "index_cash_movements_on_cash_id"
+    t.index ["client_id"], name: "index_cash_movements_on_client_id"
+  end
+
+  create_table "cashes", force: :cascade do |t|
+    t.string "description"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "state"
   end
 
   create_table "clients", force: :cascade do |t|
@@ -116,6 +170,7 @@ ActiveRecord::Schema.define(version: 2019_05_17_151923) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "form_type"
+    t.integer "number"
     t.index ["person_id"], name: "index_forms_on_person_id"
   end
 
@@ -153,6 +208,20 @@ ActiveRecord::Schema.define(version: 2019_05_17_151923) do
     t.datetime "updated_at", null: false
     t.datetime "deleted_at"
     t.index ["deleted_at"], name: "index_movement_types_on_deleted_at"
+  end
+
+  create_table "open_close_cashes", force: :cascade do |t|
+    t.bigint "employee_id"
+    t.integer "start_ammount"
+    t.datetime "date_start"
+    t.integer "final_ammount"
+    t.datetime "final_date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "cash_id"
+    t.boolean "state"
+    t.index ["cash_id"], name: "index_open_close_cashes_on_cash_id"
+    t.index ["employee_id"], name: "index_open_close_cashes_on_employee_id"
   end
 
   create_table "order_items", force: :cascade do |t|
@@ -213,14 +282,6 @@ ActiveRecord::Schema.define(version: 2019_05_17_151923) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "pay_methods_values", force: :cascade do |t|
-    t.string "description"
-    t.bigint "pay_method_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["pay_method_id"], name: "index_pay_methods_values_on_pay_method_id"
-  end
-
   create_table "people", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
@@ -259,6 +320,15 @@ ActiveRecord::Schema.define(version: 2019_05_17_151923) do
     t.index ["product_id"], name: "index_product_items_on_product_id"
   end
 
+  create_table "product_providers", force: :cascade do |t|
+    t.bigint "product_id"
+    t.bigint "provider_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_product_providers_on_product_id"
+    t.index ["provider_id"], name: "index_product_providers_on_provider_id"
+  end
+
   create_table "products", force: :cascade do |t|
     t.string "product_type"
     t.string "bar_code"
@@ -282,6 +352,52 @@ ActiveRecord::Schema.define(version: 2019_05_17_151923) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["person_id"], name: "index_providers_on_person_id"
+  end
+
+  create_table "purchase_order_items", force: :cascade do |t|
+    t.bigint "purchase_order_id"
+    t.bigint "product_id"
+    t.integer "price"
+    t.integer "requested_quantity"
+    t.integer "received_quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_purchase_order_items_on_product_id"
+    t.index ["purchase_order_id"], name: "index_purchase_order_items_on_purchase_order_id"
+  end
+
+  create_table "purchase_orders", force: :cascade do |t|
+    t.bigint "provider_id"
+    t.bigint "employee_id"
+    t.datetime "date"
+    t.string "state"
+    t.string "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "number"
+    t.index ["employee_id"], name: "index_purchase_orders_on_employee_id"
+    t.index ["provider_id"], name: "index_purchase_orders_on_provider_id"
+  end
+
+  create_table "purchase_request_items", force: :cascade do |t|
+    t.bigint "purchase_request_id"
+    t.bigint "product_id"
+    t.integer "quantity"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_purchase_request_items_on_product_id"
+    t.index ["purchase_request_id"], name: "index_purchase_request_items_on_purchase_request_id"
+  end
+
+  create_table "purchase_requests", force: :cascade do |t|
+    t.datetime "date"
+    t.bigint "employee_id"
+    t.string "state"
+    t.string "comment"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "number"
+    t.index ["employee_id"], name: "index_purchase_requests_on_employee_id"
   end
 
   create_table "resources", force: :cascade do |t|
@@ -396,6 +512,18 @@ ActiveRecord::Schema.define(version: 2019_05_17_151923) do
   end
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
+  add_foreign_key "budget_request_items", "budget_requests"
+  add_foreign_key "budget_request_items", "products"
+  add_foreign_key "budget_requests", "employees"
+  add_foreign_key "budget_requests", "providers"
+  add_foreign_key "budget_requests", "purchase_requests"
+  add_foreign_key "cash_movement_invoices", "cash_movements"
+  add_foreign_key "cash_movement_invoices", "sales_invoices"
+  add_foreign_key "cash_movement_values", "banks"
+  add_foreign_key "cash_movement_values", "cash_movements"
+  add_foreign_key "cash_movement_values", "pay_methods"
+  add_foreign_key "cash_movements", "cashes"
+  add_foreign_key "cash_movements", "clients"
   add_foreign_key "clients", "people"
   add_foreign_key "employees", "people"
   add_foreign_key "employees", "users"
@@ -406,6 +534,7 @@ ActiveRecord::Schema.define(version: 2019_05_17_151923) do
   add_foreign_key "movement_proof_details", "products"
   add_foreign_key "movement_proofs", "deposits"
   add_foreign_key "movement_proofs", "movement_types"
+  add_foreign_key "open_close_cashes", "cashes"
   add_foreign_key "order_items", "orders"
   add_foreign_key "order_items", "products"
   add_foreign_key "order_ticket_items", "order_tickets"
@@ -414,15 +543,23 @@ ActiveRecord::Schema.define(version: 2019_05_17_151923) do
   add_foreign_key "order_tickets", "employees"
   add_foreign_key "order_tickets", "pay_methods"
   add_foreign_key "orders", "people"
-  add_foreign_key "pay_methods_values", "pay_methods"
   add_foreign_key "permissions", "resources"
   add_foreign_key "permissions", "roles"
   add_foreign_key "permissions", "type_actions"
   add_foreign_key "product_items", "products"
   add_foreign_key "product_items", "products", column: "component_id"
+  add_foreign_key "product_providers", "products"
+  add_foreign_key "product_providers", "providers"
   add_foreign_key "products", "brands"
   add_foreign_key "products", "product_categories"
   add_foreign_key "providers", "people"
+  add_foreign_key "purchase_order_items", "products"
+  add_foreign_key "purchase_order_items", "purchase_orders"
+  add_foreign_key "purchase_orders", "employees"
+  add_foreign_key "purchase_orders", "providers"
+  add_foreign_key "purchase_request_items", "products"
+  add_foreign_key "purchase_request_items", "purchase_requests"
+  add_foreign_key "purchase_requests", "employees"
   add_foreign_key "sales_invoices", "clients"
   add_foreign_key "sales_invoices", "employees"
   add_foreign_key "sales_invoices", "order_tickets"

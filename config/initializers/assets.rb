@@ -63,6 +63,15 @@ Rails.application.config.assets.precompile += %w( roles.js )
 Rails.application.config.assets.precompile += %w( cash_movements.css )
 Rails.application.config.assets.precompile += %w( cash_movements.js )
 
+Rails.application.config.assets.precompile += %w( clients.css )
+Rails.application.config.assets.precompile += %w( clients.js )
+
+Rails.application.config.assets.precompile += %w( employees.css )
+Rails.application.config.assets.precompile += %w( employees.js )
+
+Rails.application.config.assets.precompile += %w( providers.css )
+Rails.application.config.assets.precompile += %w( providers.js )
+
 Rails.application.config.assets.precompile += %w( users.css )
 Rails.application.config.assets.precompile += %w( users.js )
 
@@ -72,5 +81,23 @@ Rails.application.config.assets.precompile += %w( permissions.js )
 Rails.application.config.assets.precompile += %w( stampeds.css )
 Rails.application.config.assets.precompile += %w( stampeds.js )
 
-Rails.application.config.assets.precompile += %w( clients.css )
-Rails.application.config.assets.precompile += %w( clients.js )
+Rails.application.config.assets.precompile += %w( budget_requests.css )
+Rails.application.config.assets.precompile += %w( budget_requests.js )
+
+Rails.application.config.assets.precompile += %w( cashes.css )
+Rails.application.config.assets.precompile += %w( cashes.js )
+
+Rails.application.config.assets.precompile += %w( open_close_cashes.js )
+Rails.application.config.assets.precompile += %w( open_close_cashes.css )
+
+Rails.application.config.assets.precompile += %w( purchase_requests.css )
+Rails.application.config.assets.precompile += %w( purchase_requests.js )
+
+Rails.application.config.assets.precompile += %w( purchase_orders.css )
+Rails.application.config.assets.precompile += %w( purchase_orders.js )
+
+Rails.application.config.assets.precompile += %w( banks.css )
+Rails.application.config.assets.precompile += %w( banks.js )
+
+Rails.application.config.assets.precompile += %w( report.css )
+Rails.application.config.assets.precompile += %w( report.js )

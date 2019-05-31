@@ -1,0 +1,106 @@
+<%= form_with(model: budget_request, local: true) do |form| %>
+  <% if budget_request.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(budget_request.errors.count, "error") %> prohibited this budget_request from being saved:</h2>
+
+      <ul>
+      <% budget_request.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <!--<div class="field">
+    <%= form.label :provider_id %>
+    <%= form.text_field :provider_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :employee_id %>
+    <%= form.text_field :employee_id %>
+  </div>
+
+  <div class="field">
+    <%= form.label :date %>
+    <%= form.datetime_select :date %>
+  </div>
+
+  <div class="field">
+    <%= form.label :state %>
+    <%= form.text_field :state %>
+  </div>
+
+  <div class="field">
+    <%= form.label :comment %>
+    <%= form.text_field :comment %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit %>
+  </div>-->
+  <div class="card card-default">
+    <div class="card-body">
+      <p class="d-flex">
+        <span><b>PC-
+          <%= @budget_request.purchase_request.number%></b></span>
+        <span class="ml-auto"><b><%=@budget_request.date.strftime("%d-%m-%Y")%></b></span>
+      </p>
+      <p class="d-flex">
+        <span><b>Proveedor: </b><%=@budget_request.provider.person.name%></span>
+      </p>
+      <p class="d-flex">
+        <span><b>Estado: </b>
+          <%= form.select :state, BudgetRequest.state.options %>
+        </span>
+      </p>
+
+      <%= form.hidden_field :purchase_request_id %>
+      <%= form.hidden_field :state %>
+
+      <div class="row">
+        <div class="col"></div>
+        <div class="col-6">
+          <table class="table  table-sm" >
+            <thead>
+            <tr>
+              <th scope="col">Productos</th>
+              <th scope="col">Cantidad</th>
+              <th scope="col">Precio</th>
+            </tr>
+            </thead>
+            <tbody id="invoices-items-table">
+
+            <%= form.fields_for :budget_request_items, @budget_request.budget_request_items do |f| %>
+              <tr>
+                <td><%= f.label :product_id, :value => Product.find(f.object.product_id).description %></td>
+                <td><%= f.label :requested_quantity, class: 'requested_quantity', :value => f.object.requested_quantity %></td>
+                <td><%= f.text_field :price, :size => 10, class: 'price' %></td>
+
+                <%= f.hidden_field :product_id %>
+                <%= f.hidden_field :requested_quantity %>
+                <%= f.hidden_field :price %>
+              </tr>
+
+            <% end %>
+
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+
+            </tbody>
+          </table>
+        </div>
+        <div class="col"></div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-12 col-xl-auto">
+      <%= form.submit 'Guardar', class: "btn btn-success" %>
+    </div>
+  </div>
+<% end %>

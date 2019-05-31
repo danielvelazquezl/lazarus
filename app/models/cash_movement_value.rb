@@ -1,4 +1,4 @@
 class CashMovementValue < ApplicationRecord
-  belongs_to :cash, :class_name => 'CashMovement'
-  belongs_to :payment, :class_name => 'PayMethod'
+  belongs_to :cash_movement
+  belongs_to :pay_method
 end

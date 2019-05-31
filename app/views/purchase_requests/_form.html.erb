@@ -1,0 +1,124 @@
+<%= form_with(model: purchase_request, local: true) do |form| %>
+  <% if purchase_request.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(purchase_request.errors.count, "error") %> prohibited this purchase_request from being saved:</h2>
+
+      <ul>
+      <% purchase_request.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="card card-default">
+    <div class="card-body">
+      <p class="lead bb">Pedido de compra</p>
+      <p class="d-flex">
+        <span><b>Pedido de Compra - <%=@purchase_request.number%></b></span>
+        <span class="ml-auto"><b><%=@purchase_request.date.strftime("%d-%m-%Y")%></b></span>
+      </p>
+      <p class="d-flex">
+        <span><b>Estado: </b><span class="badge badge-success"><%=@purchase_request.state%></span></span>
+      </p>
+
+      <div class="row">
+        <div class="col"></div>
+        <div class="col-6">
+          <table class="table  table-sm" >
+          <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col"></th>
+          </tr>
+          </thead>
+          <tbody id="invoices-items-table">
+            <tr>
+              <td><b>Productos</b></td>
+              <td><b>Cantidad</b></td>
+            </tr>
+          <%= form.fields_for :purchase_request_items, @purchase_request.purchase_request_items do |f| %>
+            <tr>
+              <td><%= f.label :product_id, :value => Product.find(f.object.product_id).description %></td>
+              <% if @budget != nil %>
+                <td><%= f.label :quantity, class: 'quantity', :value => f.object.quantity %></td>
+              <%else %>
+                <td><%= f.text_field :quantity, :size => 10, :value => f.object.quantity, class: 'quantity' %></td>
+              <%end %>
+
+              <%= f.hidden_field :product_id %>
+              <%= f.hidden_field :quantity %>
+            </tr>
+
+          <% end %>
+
+          <tr>
+            <td></td>
+            <td></td>
+          </tr>
+
+          </tbody>
+        </table>
+        </div>
+        <div class="col"></div>
+      </div>
+      <% if @budget != nil %>
+      <br>
+      <p class="lead bb">Pedidos de cotización</p>
+      <div class="row">
+        <div class="col"></div>
+        <div class="col-6">
+          <table class="table  table-sm" >
+            <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody id="invoices-items-table">
+              <tr>
+                <td><b>Proveedor</b></td>
+                <td><b>Estado</b></td>
+                <td><b>Fecha</b></td>
+                <td></td>
+              </tr>
+              <%= @budget_request.each do |budget_request| %>
+                <tr>
+                  <td><%= budget_request.provider.person.name %></td>
+                  <% if budget_request.state == :finished %>
+                    <td>
+                      <div class="badge badge-success">
+                        <%=budget_request.state.text%>
+                      </div>
+                    </td>
+                  <%else %>
+                    <td>
+                      <div class="badge badge-danger">
+                        <%=budget_request.state.text%>
+                      </div>
+                    </td>
+                  <%end %>
+                  <td><%= budget_request.date.strftime("%d-%m-%Y") %></td>
+                  <td>
+                    <%= link_to edit_budget_request_path(BudgetRequest.find_by(id: budget_request.id)) do %>
+                      <i class="fas fa-eye text-primary"></i>
+                    <% end %>
+                  </td>
+                </tr>
+                  <div style="display: none"><% end %></div>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+        <div class="col"></div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Employee:</strong>
+  <%= @open_close_cash.employee %>
+</p>
+
+<p>
+  <strong>Start ammount:</strong>
+  <%= @open_close_cash.start_ammount %>
+</p>
+
+<p>
+  <strong>Date start:</strong>
+  <%= @open_close_cash.date_start %>
+</p>
+
+<p>
+  <strong>Final ammount:</strong>
+  <%= @open_close_cash.final_ammount %>
+</p>
+
+<p>
+  <strong>Fina date:</strong>
+  <%= @open_close_cash.fina_date %>
+</p>
+
+<%= link_to 'Edit', edit_open_close_cash_path(@open_close_cash) %> |
+<%= link_to 'Back', open_close_cashes_path %>

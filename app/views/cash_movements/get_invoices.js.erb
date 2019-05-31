@@ -1,0 +1,8 @@
+$('#invoices-table').replaceWith('<%= j render 'invoice_row', locals: {invoices: @invoices} %>');
+$(function(){
+    let id = "";
+    id = $('#val').val();
+    //console.log(id);
+    $('#cash_movement_client_id').val(id);
+})
+

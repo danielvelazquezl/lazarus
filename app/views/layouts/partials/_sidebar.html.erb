@@ -127,14 +127,52 @@
                 <span>Facturas de Ventas</span>
               </a>
             </li>
-            <li class="<%= 'active' if controller?('elements') && action?('button') %>">
-              <a href="/cash_movements" title="Facturas de Ventas">
+            <li class="<%= 'active' if controller?('multilevel') && action?('level1') %>">
+              <a href="#form_level1" title="Caja" data-toggle="collapse">
                 <span>Caja</span>
               </a>
+              <ul id="form_level1" class="sidebar-nav sidebar-subnav collapse <%= 'show' if controller?('multilevel') && (action?('level1')||action?('level3')) %>">
+                <li class="<%= 'active' if controller?('multilevel') && action?('level1') %>">
+                  <a href="/cash_movements" title="Movimiento de Caja">
+                    <span>Movimientos de Caja</span>
+                  </a>
+                </li>
+                <li class="<%= 'active' if controller?('multilevel') && action?('level1') %>">
+                  <a href="/cash_movements/new" title="Solicitud de Componentes">
+                    <span>Cobro a Cliente</span>
+                  </a>
+                </li>
+                <li class="<%= 'active' if controller?('multilevel') && action?('level1') %>">
+                  <a href="/open_close_cashes" title="Apertura y cierre de caja">
+                    <span>Apertura y cierre de caja</span>
+                  </a>
+                </li>
+              </ul>
             </li>
             <li class="<%= 'active' if controller?('elements') && action?('button') %>">
               <a href="/order_tickets" title="Nota de Pedido">
                 <span>Nota de Pedido</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!--COMPRAS-->
+        <li class="<%= 'active' if controller?('elements') %>">
+          <a href="#elements4" title="Compras" data-toggle="collapse">
+            <em class="icon-bag"></em>
+            <span>Compras</span>
+          </a>
+          <ul id="elements4" class="sidebar-nav sidebar-subnav collapse <%= 'show' if controller?('elements') %>">
+            <li class="sidebar-subnav-header">Ventas</li>
+            <li class="<%= 'active' if controller?('elements') && action?('button') %>">
+              <a href="/purchase_requests" title="Pedido de compras">
+                <span>Pedido de Compras</span>
+              </a>
+            </li>
+            <li class="<%= 'active' if controller?('elements') && action?('button') %>">
+              <a href="/budget_requests" title="Pedido de cotización">
+                <span>Pedido de Cotización</span>
               </a>
             </li>
           </ul>

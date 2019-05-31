@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Date:</strong>
+  <%= @purchase_request.date %>
+</p>
+
+<p>
+  <strong>Employee:</strong>
+  <%= @purchase_request.employee %>
+</p>
+
+<p>
+  <strong>State:</strong>
+  <%= @purchase_request.state %>
+</p>
+
+<p>
+  <strong>Comment:</strong>
+  <%= @purchase_request.comment %>
+</p>
+
+<%= link_to 'Edit', edit_purchase_request_path(@purchase_request) %> |
+<%= link_to 'Back', purchase_requests_path %>

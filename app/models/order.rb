@@ -13,41 +13,81 @@ class Order < ApplicationRecord
     scope :components_order, ->{where(order_type: :component)}
     scope :products_order, ->{where(order_type: :production)}
 
+    # validate :update_stock
+
     after_update :update_stock
 
     private
-    def update_stock
-        if self.state == 'finished' && self.date_finished == nil
-            if self.order_type.component?
-                order_items.each do |oi|
-                    quantity = oi.quantity
-                    product_id = oi.product_id
 
-                    Stock.reduce_stock(product_id, self.origin, quantity)
-                    Stock.increase_stock(product_id, self.destination, quantity)
+    def update_stock
+        if self.date_finished.nil?
+            if is_component?
+                begin
+                    Order.transaction do
+
+                        order_items.each do |oi|
+                            quantity = oi.quantity
+                            product_id = oi.product_id
+
+                            @stock_origin = Stock.where(deposit_id: self.origin, product_id: product_id).first
+                            @stock_origin.reduce_stock!(product_id, quantity)
+
+                            @stock_destination = Stock.where(deposit_id: self.destination, product_id: product_id).first
+                            @stock_destination.increase_stock!(quantity)
+
+                        end
+                    end
+
+                rescue StandardError => e
+                    puts e.message
+                    self.errors.add(:quantity, "Cantidad insuficiente para realizar esta transaccion")
+                    raise ActiveRecord::RecordInvalid.new(self)
                 end
 
                 #  si es una orden de produccion, disminuyo la cantidad de componentes en
                 # el stock de produccion y aumento la cantidad de productos en el stock de
                 # productos
-            elsif self.order_type.production?
-                order_items.each do |oi|
-                    quantity = oi.quantity
-                    product_id = oi.product_id
+            elsif is_product?
+                begin
+                    Order.transaction do
+                        order_items.each do |oi|
+                            quantity = oi.quantity
+                            product_id = oi.product_id
 
-                    product = Product.where("id = ?", product_id).first
+                            @product = Product.where(id: product_id).first
+                            @product.product_items.each do |pi|
+                                component_id = pi.component_id
+                                component_quantity = pi.quantity
 
-                    product.product_items.each do |pi|
-                        component_id = pi.component_id
-                        component_quantity = pi.quantity
-
-                        Stock.reduce_stock(component_id, self.origin, component_quantity*quantity)
+                                @stock_c_origin = Stock.where(deposit_id: self.origin, product_id: component_id).first
+                                @stock_c_origin.reduce_stock!(product_id, component_quantity * quantity)
+                            end
+                            @stock_p_destination = Stock.where(deposit_id: self.destination, product_id: product_id).first
+                            @stock_p_destination.reduce_stock!(product_id, quantity)
+                        end
                     end
-                    Stock.increase_stock(product_id, self.destination, quantity)
+                rescue StandardError => e
+                    puts e.message
+                    self.errors.add(:quantity, "Cantidad insuficiente para realizar esta transaccion")
+                    raise ActiveRecord::RecordInvalid.new(self)
                 end
-
             end
         end
-
     end
-  end
+
+
+
+    def is_product?
+        self.order_type.production?
+    end
+
+    def is_component?
+        self.order_type.component?
+    end
+
+    def finished?
+        self.state == 'finished'
+    end
+
+
+end

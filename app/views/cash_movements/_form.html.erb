@@ -1,0 +1,108 @@
+<%= form_tag(get_invoices_cash_movements_path, remote: true, method: :get) do %>
+  <label>Cliente(ID):</label></br>
+  <%= text_field_tag :val %>
+  <%= submit_tag "Buscar", name:'nil' %>
+<% end %>
+
+<%= form_with(model: cash_movement, local: true, html: { id: "cash_movement_form" }) do |form| %>
+  <%= form.hidden_field :client_id %>
+  <div class="row">
+    <div class="col-5">
+      <label>Caja:</label>
+      <%= form.select(:cash_id, options_from_collection_for_select(Cash.all, "id", "description", :cash_id)) %></br>
+      <label>Fecha:</label>
+      <%= form.date_field :date , {value: Date.current, class: 'form-control', id: 'date'}%>
+      <label>Observacion:</label>
+      <%= form.text_area :comments ,{value:"" ,class: 'form-control', id: 'comments'}%>
+    </div>
+    <div class="col-5">
+      <label>TOTAL:</label>
+      <%= form.text_field :total , {value: "" ,class: 'form-control', id: 'total-field', readonly: true} %>
+
+      <label>A PAGAR:</label>
+      <input class="form-control" id="pay-field" type="text" disabled></input>
+
+      <label>SALDO:</label>
+      <input class="form-control" id="balance-field" type="text" disabled></input>
+    </div>
+  </div>
+  <table class="table mt-3 pd-10">
+    <thead class="thead-dark">
+    <tr>
+      <th scope="col">Tipo Documento</th>
+      <th scope="col">Nro. Factura</th>
+      <th scope="col">Valor Total</th>
+      <th scope="col">Moneda</th>
+      <th scope="col">Pagar</th>
+    </tr>
+    </thead>
+    <tbody id="invoices-table">
+
+    </tbody>
+  </table>
+
+  <%= form.fields_for :cash_movement_values, @cash_movement_values do |f1| %>
+    <%= render 'cash_movement_value', f: f1 %>
+  <% end %>
+  <div>
+    <%= link_to_add_fields "Agregar Forma Pago",form , :cash_movement_values %>
+  </div>
+
+  <%= form.submit 'Pagar', id: 'pay-btn', disabled: true %>
+<% end %>
+
+<script>
+  document.addEventListener('ajax:success', function(event){
+    var detail = event.detail;
+    var data = detail[0], status = detail[1], xhr = detail[2];
+
+    event.preventDefault();
+  })
+  $(".amount-value").change(function (event){
+      let valores = $(".amount-value") ;
+      let total = 0;
+      for (let i = 0; i < valores.length; ++i) {
+          total += valores[i];
+      }
+      $("#pay-field").val(total);
+  });
+//PARA RESTAR VALORES DEL TOTAL
+
+  function update_balance(amount,add){
+      const actualValue = parseInt($('#balance-field').val());
+      (add == false)? $('#balance-field').val(actualValue - amount) : $('#balance-field').val(actualValue + amount)
+  }
+
+  function update_to_pay(amount, add) {
+      let to_pay = parseInt($('#pay-field').val())
+      if (isNaN(to_pay)) to_pay = 0;
+      (add == true)? $('#pay-field').val(to_pay + amount) : $('#pay-field').val(to_pay - amount)
+  }
+
+  $(document).on('change', '.amount-value', function() {
+    const total = parseInt($('#total-field').val())
+    const balance = parseInt($('#balance-field').val())
+    const amount = parseInt($(this).val());
+
+    console.log(amount +' '+total+' '+balance)
+
+    if(isNaN(balance) && total >= amount) {
+      update_balance(amount,false)
+      update_to_pay(amount,true)
+    }
+    else if(balance >= amount){
+      update_balance(amount,false)
+      update_to_pay(amount,true)
+      if($('#balance-field').val() == 0) $('.add_fields').hide()
+    }
+
+    $(this).parent().parent().parent().children().last().click(function () {
+      update_balance(amount,true)
+      update_to_pay(amount,false)
+    })
+  });
+
+  //-------------------------------------------------------------
+
+
+</script>

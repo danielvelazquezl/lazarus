@@ -15,6 +15,14 @@ es:
       product_type:
         component: "Componente"
         product: "Terminado"
+    order_ticket:
+      state:
+        invoiced: "Facturado"
+        uninvoiced: "No facturado"
+    budget_request:
+      state:
+        created: "Pendiente"
+        finished: "Listo"
   activerecord:
     errors:
       messages:

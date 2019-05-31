@@ -1,3 +1,3 @@
 class CashMovementInvoice < ApplicationRecord
-  belongs_to :cash, :class_name => 'CashMovement'
+  belongs_to :cash_movement
 end

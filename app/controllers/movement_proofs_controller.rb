@@ -5,10 +5,11 @@ class MovementProofsController < ApplicationController
   # GET /movement_proofs.json
   def index
     @movement_proofs = MovementProof.all
-    if params[:filter].present? then
+    @people = Person.all
 
+    if params[:filter].present? then
       if params[:person_id].present?
-        @movement_proof= @movement_proofs.where(person_id: params[:person_id])
+        # @movement_proof= @movement_proofs.where(person_id: params[:person_id])
       end
     end
   end
@@ -35,7 +36,6 @@ class MovementProofsController < ApplicationController
   # POST /movement_proofs.json
   def create
     @movement_proof = MovementProof.new(movement_proof_params)
-
     respond_to do |format|
       if @movement_proof.save
         format.html {redirect_to @movement_proof, notice: 'Movement proof was successfully created.'}
@@ -66,8 +66,9 @@ class MovementProofsController < ApplicationController
   def destroy
     @movement_proof.destroy
     respond_to do |format|
-      format.html {redirect_to movement_proofs_url, notice: 'Movement proof was successfully destroyed.'}
+      format.html {redirect_to movement_proofs_url }
       format.json {head :no_content}
+      format.js { render :layout => false }
     end
   end
 
