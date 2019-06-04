@@ -10,55 +10,54 @@
   </div>
 </div>
 
-<table class="table table-striped table-hover w-100" id="datatable2">
-  <thead>
-  <tr>
-  <tr>
-    <th class="text-center">
-      <strong>ENCARGADO</strong>
-    </th>
-    <th class="text-center">
-      <strong>DEPOSITO</strong>
-    </th>
-    <th class="text-center">
-      <strong>MOTIVO</strong>
-    </th>
-    <th class="text-center">
-      <strong>FECHA</strong>
-    </th>
-    <th class="text-center">
-      <strong>COMENTARIO</strong>
-    </th>
-    <th>
-      <strong></strong>
-    </th>
+<div class="card card-body bg-light">
+  <%= puts @filterrific.inspect %>
+  <%= form_for_filterrific @filterrific do |f| %>
+    <div class="form-group row">
+      <div class="col-4">
+        <label class="font-weight-bold">Buscar</label>
+        <%= f.text_field :search_query,
+                         :class => 'filterrific-periodically-observed form-control' %>
+      </div>
 
-  </tr>
-  </thead>
-  <tbody>
-  <% @movement_proofs.each do |movement_proof| %>
-    <tr>
-      <td><%= Person.find_by(id: movement_proof.person_id).name %></td>
-      <td><%= movement_proof.deposit.description %></td>
-      <td><%= movement_proof.movement_type.description %></td>
-      <td><%= movement_proof.date %></td>
-      <td><%= movement_proof.comment %></td>
-
-      <td class="text-center">
-        <div class="btn-group" role="group">
-          <%= link_to movement_proof do %>
-            <button class="btn btn-sm btn-secondary"><i class="fas fa-search"></i></button>
-          <% end %>
-          <%= link_to edit_movement_proof_path(movement_proof) do %>
-            <button class="btn btn-sm btn-secondary"><i class="fas fa-edit"></i></button>
-          <% end %>
-          <%= link_to movement_proof, method: :delete, data: {confirm: '¿Estás seguro?'},
-                      :remote => true, :class => 'delete_movement_proof' do %>
-            <button class="btn btn-sm btn-secondary"><i class="fas fa-trash-alt"></i></button>
-          <% end %>
+      <div>
+        <div class="col-12">
+          <label class="font-weight-bold">Deposito</label>
+          <%= f.select :with_deposit_id,
+                       @filterrific.select_options[:with_deposit_id],
+                       {:include_blank => '- Todos -'},
+                       {:class => 'form-control'} %>
         </div>
-      </td>
-    </tr>
+      </div>
+
+      <div>
+        <div class="col-12">
+          <label class="font-weight-bold">Encargado</label>
+          <%= f.select :with_person_id,
+                       @filterrific.select_options[:with_person_id],
+                       {:include_blank => '- Todos -'},
+                       {:class => 'form-control'} %>
+        </div>
+      </div>
+
+      <div>
+        <div class="col-12">
+          <label class="font-weight-bold">Ordenar por</label>
+          <%= f.select :sorted_by,
+                       @filterrific.select_options[:sorted_by],
+                       {},
+                       {:class => 'form-control'}
+          %>
+        </div>
+      </div>
+
+    </div>
   <% end %>
-  </tbody>
-</table>
+</div>
+
+<div id="results">
+  <%= render(
+          partial: 'movement_proofs/list',
+          locals: {movement_proofs: @movement_proofs}
+      ) %>
+</div>

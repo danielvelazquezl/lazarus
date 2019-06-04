@@ -4,13 +4,20 @@ class MovementProofsController < ApplicationController
   # GET /movement_proofs
   # GET /movement_proofs.json
   def index
-    @movement_proofs = MovementProof.all
-    @people = Person.all
+    (@filterrific = initialize_filterrific(
+        MovementProof,
+        params[:filterrific],
+        select_options: {
+            sorted_by: MovementProof.options_for_sorted_by,
+            with_deposit_id: Deposit.options_for_select,
+            with_person_id: Person.options_for_select
+        },
+        )) || return
+    @movement_proofs = @filterrific.find.page(params[:page])
 
-    if params[:filter].present? then
-      if params[:person_id].present?
-        # @movement_proof= @movement_proofs.where(person_id: params[:person_id])
-      end
+    respond_to do |format|
+      format.html
+      format.js
     end
   end
 

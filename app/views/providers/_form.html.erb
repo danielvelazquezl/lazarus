@@ -1,0 +1,84 @@
+<%= form_with(model: provider, local: true, html: { id: "provider_form" }) do |form| %>
+
+  <% if provider.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(provider.errors.count, "error") %> prohibited this provider from being saved:</h2>
+      <ul>
+        <% provider.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="card card-default">
+    <div class="card-body">
+      <%= fields_for :person do |p| %>
+        <div class="form-group row">
+          <div class="col-2">
+            <strong>Nombre o Razón social</strong>
+          </div>
+          <div class="col-4">
+            <%= p.text_field :name, class: "form-control" %>
+          </div>
+          <div class="col-2">
+            <strong>E-mail</strong>
+          </div>
+          <div class="col-4">
+            <%= p.text_field :email, class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-2">
+            <strong>R.U.C.</strong>
+          </div>
+          <div class="col-4">
+            <%= form.text_field :ruc, class: "form-control" %>
+          </div>
+          <div class="col-2">
+            <strong>Teléfono</strong>
+          </div>
+          <div class="col-4">
+            <%= p.text_field :phone, class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-2">
+            <strong>Dirección</strong>
+          </div>
+          <div class="col-4">
+            <%= p.text_field :address, class: "form-control" %>
+          </div>
+        </div>
+
+      <% end %>
+
+      <% form.hidden_field :person_id %>
+
+    </div>
+  </div>
+
+  <div class="card card-default">
+    <div class="card-body">
+      <p class="lead bb">Categorias que provee</p>
+      <div class="table-responsive">
+        <%= form.fields_for :provider_categories, @provider_categories do |f| %>
+          <%= render 'provider_category', f: f %>
+        <% end %>
+      </div>
+      <%= link_to_add_fields "Agregar Categoria", form, :provider_categories %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-12 col-xl-auto">
+      <%= form.submit 'Guardar nuevo proveedor', class: "btn btn-success" %>
+    </div>
+  </div>
+<% end %>
+<script>
+    <%= render "validate.js" %>
+</script>

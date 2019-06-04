@@ -1,7 +1,5 @@
 // Place all the behaviors and hooks related to the matching controller here.
 
-
-
 //--- Filestyle
 //= require bootstrap-filestyle/src/bootstrap-filestyle
 //--- Tags input
@@ -34,7 +32,7 @@
 //= require select2/dist/js/select2
 
 
-//= require datatables.net/js/jquery.dataTables
+
 //= require datatables.net-bs4/js/dataTables.bootstrap4
 //= require datatables.net-buttons/js/dataTables.buttons
 //= require datatables.net-buttons-bs/js/buttons.bootstrap

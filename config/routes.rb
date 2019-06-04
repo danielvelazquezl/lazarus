@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resources :purchase_orders
+  resources :purchase_invoices
   resources :banks
   resources :budget_requests
   resources :purchase_requests
@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :stampeds
   resources :permissions
   resources :sales_invoices
+  resources :purchase_invoices
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   # defaults to dashboard
@@ -66,12 +67,20 @@ Rails.application.routes.draw do
     end
   end
 
-  #client routes
-  #get '/clients/new', to: 'clients#new', as: 'new_client'
+  resources :purchase_orders do
+    collection do
+      post :save_purchase_orders
+    end
+  end
+
   resources :clients
+  resources :employees
+  resources :providers
 
   resources :users, only: [:index]
 
-  get '/report/index', to: 'report#index', as: 'reports'
+  get '/reports/min_stock'
+  get '/reports/sold_products'
+  get '/reports/purchased_products'
 
 end

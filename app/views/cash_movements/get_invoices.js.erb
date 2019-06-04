@@ -1,8 +1,10 @@
+//se piden facturas con id de cliente en servidor
 $('#invoices-table').replaceWith('<%= j render 'invoice_row', locals: {invoices: @invoices} %>');
+//se setea id en campo oculto de form
+//para que pueda ser enviado al servidor
 $(function(){
-    let id = "";
-    id = $('#val').val();
-    //console.log(id);
+    const id = $('#ruc-select').selectize()[0].selectize.getValue();
+
     $('#cash_movement_client_id').val(id);
 })
 

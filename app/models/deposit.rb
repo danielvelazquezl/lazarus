@@ -8,4 +8,9 @@ class Deposit < ApplicationRecord
 
   scope :deposit_1, -> { where(description: "Deposito 1") }
 
+  def self.options_for_select
+    deposits = Deposit.arel_table
+    # order('LOWER(name)').map { |e| [e.name, e.id] }
+    order(deposits[:description].lower).pluck(:description, :id)
+  end
 end

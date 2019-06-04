@@ -1,0 +1,148 @@
+<%= form_with(model: purchase_invoice, local: true) do |form| %>
+  <% if purchase_invoice.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(purchase_invoice.errors.count, "error") %> prohibited this purchase_invoice from being saved:</h2>
+
+      <ul>
+      <% purchase_invoice.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="card card-default">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="form-horizontal">
+            <div class="form-group row">
+              <div class="col-4">
+                <strong>Orden de compra:</strong>
+              </div>
+              <div class="col-8">
+                <input type="text" class="form-control valid" value="<%= @purchase_invoice.purchase_order.number %>" disabled>
+                <%= form.hidden_field :purchase_order_id %>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-4">
+                <strong>Fecha de venta:</strong>
+              </div>
+              <div class="col-8">
+                <%= form.date_field :date, class: "form-control valid" %>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-4">
+                <strong>Proveedor:</strong>
+              </div>
+              <div class="col-8">
+                <%= form.select :provider_id,
+                                Provider.all.map { |e| [e.person.name, e.id] },
+                                class: "custom-select custom-select-sm" %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-horizontal">
+            <div class="form-group row">
+              <div class="col-4">
+                <strong>Timbrado</strong>
+              </div>
+              <div class="col-8">
+                <%= form.text_field :stamped%>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-4">
+                <strong>N° Factura</strong>
+              </div>
+              <div class="col-8">
+                <%= form.text_field :invoice_number%>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-4">
+                <strong>Deposito:</strong>
+              </div>
+              <div class="col-8">
+                <input type="text" class="form-control valid" value="<%= @purchase_invoice.deposit.description %>" disabled>
+                <%= form.hidden_field :deposit_id %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <table class="table mt-4">
+        <thead class="thead-dark">
+        <tr>
+          <th scope="col">Producto</th>
+          <th scope="col">Precio</th>
+          <th scope="col">Cantidad</th>
+          <th scope="col">Subtotal</th>
+        </tr>
+        </thead>
+        <tbody id="invoices-items-table">
+
+        <%= form.fields_for :purchase_invoice_items, @purchase_invoice.purchase_invoice_items do |f| %>
+          <tr>
+            <td><%= f.label :product_id, :value => Product.find(f.object.product_id).description %></td>
+            <td><%= f.label :price, class: 'price', :value => f.object.price %></td>
+            <td><%= f.text_field :quantity, :size => 3, class: 'quantity' %></td>
+            <td><%= f.label :sub_total, class: 'sub_total', :value => f.object.price * f.object.quantity %></td>
+
+            <%= f.hidden_field :product_id %>
+            <%= f.hidden_field :price %>
+            <%= f.hidden_field :sub_total %>
+            <%= f.hidden_field :iva %>
+            <%= f.hidden_field :purchase_invoice_id %>
+          </tr>
+
+        <% end %>
+
+        <tr>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td><%= form.label :total, id: 'total', :value => form.object.total %></td>
+        </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-12 col-xl-auto">
+      <%= form.submit 'Guardar', class: "btn btn-success" %>
+    </div>
+  </div>
+<% end %>
+
+<script>
+    $(document).ready(function () {
+
+        let total = 0;
+        $(".sub_total").each(function () {
+            total += parseInt($(this).text());
+        });
+        $("#total").text('Total: ' + total);
+
+        $(".quantity").change(function (event) {
+            let quantity = $(event.target).val();
+            let price = $(event.target).parent().siblings().children(".price").text();
+            $(event.target).parent().siblings().children(".sub_total").text(price * quantity);
+
+            let total = 0;
+            $(".sub_total").each(function () {
+                total += parseInt($(this).text());
+            });
+            $("#total").text('Total: ' + total);
+
+        });
+    })
+</script>

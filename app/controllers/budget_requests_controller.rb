@@ -43,9 +43,8 @@ class BudgetRequestsController < ApplicationController
   def update
     respond_to do |format|
       if @budget_request.update(budget_request_params)
-        purchase = @budget_request.purchase_request_id
-        format.html { redirect_to edit_purchase_request_path(PurchaseRequest.find_by(id: purchase)), notice: 'Pedido de cotización actualizado.' }
-        format.json { render :show, status: :ok, location: @budget_request }
+        format.html {redirect_to @budget_request, notice: 'Pedido de Cotización actualizada.'}
+        format.json {render :show, status: :ok, location: @order}
       else
         format.html { render :edit }
         format.json { render json: @budget_request.errors, status: :unprocessable_entity }

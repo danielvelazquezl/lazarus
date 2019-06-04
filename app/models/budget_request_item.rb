@@ -1,6 +1,7 @@
 class BudgetRequestItem < ApplicationRecord
   belongs_to :budget_request
   belongs_to :product
+
   #def get_cheapest_products
   #  budget_items = BudgetRequestItem.find_each
     #ordena el array con los budget_items en orden asc 
@@ -25,4 +26,5 @@ class BudgetRequestItem < ApplicationRecord
     #product_id repetidos
     return cheapest_products.uniq { |ch| ch.product_id }
   end
+
 end

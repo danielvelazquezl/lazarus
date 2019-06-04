@@ -1,0 +1,33 @@
+<fieldset style="height: 5px; border:none;">
+  <table class="table  table-sm">
+    <thead style="display:none">
+      <tr>
+        <th scope="col" style="width:350px"></th>
+        <th scope="col"></th>
+        <th scope="col"></th>
+      </tr>
+    
+    </thead>
+    <tbody>
+      <tr>
+        <td style="width:350px">
+          <%= f.select :product_id,
+                       options_from_collection_for_select(Product.components_all, "id", "description", f.object.product_id)%>
+        </td>
+        <td>
+          <%= f.text_field :quantity, :size => 10, class: "validame" %>
+        </td>
+        <td>
+          <%= link_to "Eliminar" do%>
+            <div class=" remove_fields btn btn-link text-danger">
+              <i class="fas fa-trash-alt"></i>
+            </div>
+          <%end %>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</fieldset>
+<script>
+
+</script>

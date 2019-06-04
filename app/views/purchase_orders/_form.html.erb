@@ -11,32 +11,37 @@
     </div>
   <% end %>
 
-  <div class="field">
-    <%= form.label :provider_id %>
-    <%= form.text_field :provider_id %>
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-6">
+      <table class="table  table-sm">
+        <thead class="thead-dark">
+        <tr>
+          <th scope="col">Producto</th>
+          <th scope="col">Cantidad</th>
+          <th scope="col">Precio</th>
+          <th scope="col">Proveedor</th>
+        </tr>
+        </thead>
+        <tbody>
+
+        <% @budget_items.each do |budget| %>
+          <tr>
+            <td><%= budget.product.description %></td>
+            <td><%= budget.requested_quantity %></td>
+            <td><%= budget.price %></td>
+            <td><%= budget.budget_request.provider.person.name %></td>
+          </tr>
+        <% end %>
+
+        </tbody>
+      </table>
+    </div>
+    <div class="col"></div>
   </div>
 
-  <div class="field">
-    <%= form.label :employee_id %>
-    <%= form.text_field :employee_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :date %>
-    <%= form.datetime_select :date %>
-  </div>
-
-  <div class="field">
-    <%= form.label :state %>
-    <%= form.text_field :state %>
-  </div>
-
-  <div class="field">
-    <%= form.label :comment %>
-    <%= form.text_field :comment %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
+<% end %>
+<%= form_tag(save_purchase_orders_purchase_orders_path, method: :post ) do %>
+  <%= hidden_field_tag(:request_number, @purchaseRqst.number) %>
+  <%= submit_tag "Guardar", name:'nil', class: "btn btn-sm btn-primary"%>
 <% end %>

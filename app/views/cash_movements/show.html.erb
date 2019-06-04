@@ -1,0 +1,110 @@
+<p id="notice"><%= notice %></p>
+
+<div class="content-heading">Movimiento de Caja</div>
+
+<div class="card card-default">
+  <div class="card-body">
+
+    <form class="form-horizontal">
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Cliente:</strong>
+        </div>
+        <div class="col-4">
+          <%= @cash_movement.client.person.name %>
+        </div>
+
+        <div class="col-2">
+          <strong>Descripción:</strong>
+        </div>
+        <div class="col-4">
+          <%= @cash_movement.comments %>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Total:</strong>
+        </div>
+        <div class="col-4">
+          <%= number_to_currency(@cash_movement.total, :unit => "Gs", :separator => ".", :precision => 0) %>
+        </div>
+        <div class="col-2">
+          <strong>Caja:</strong>
+        </div>
+        <div class="col-4">
+          <%= @cash_movement.cash.description %>
+        </div>
+      </div>
+    </form>
+
+
+  </div>
+</div>
+<% @cash_movement_values.each do |cash| %>
+
+<div id="accordion">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <button class="btn btn-link" data-toggle="collapse" aria-expanded="true" aria-controls="collapseOne" data-target=<%="#collapseOne#{cash.id}" -%>>
+          Ver detalles de pago
+        </button>
+        <!--label> Detalles pago </label-->
+      </h5>
+    </div>
+
+    <div class="collapse show" aria-labelledby="headingOne" data-parent="#accordion" id=<%="collapseOne#{cash.id}"-%>>
+      <div class="card-body">
+        <div class="row">
+         <div class="col">
+           <strong>Forma de pago: </strong><br>
+            <%= cash.pay_method.description %>
+          </div>
+          <div class="col">
+            <strong>Monto: </strong><br>
+            <%= number_to_currency(cash.ammount, :unit => "Gs", :separator => ".", :precision => 0) %>
+          </div>
+          <% if cash.pay_method.description == 'Cheque' %>
+            <div class="col">
+              <strong>Banco: </strong><br>
+              <%= cash.bank_id %>
+            </div>
+            <div class="col">
+              <strong>Nro. Cheque: </strong><br>
+              <%= cash.check_number %>
+            </div>
+            <div class="col">
+              <strong>Nro. Cuenta: </strong><br>
+              <%= cash.account_number %>
+            </div>
+            <div class="col">
+              <strong>Librador: </strong><br>
+              <%= cash.drawer %>
+            </div>
+            <div class="col">
+              <strong>Fecha Emisión: </strong><br>
+              <%= cash.emission_date.strftime("%d/%m/%Y") %>
+            </div>
+            <div class="col">
+              <strong>Fecha Venc.: </strong><br>
+              <%= cash.due_date.strftime("%d/%m/%Y") %>
+            </div>
+          <% elsif cash.pay_method.description == 'Tarjeta de credito' %>
+            <div class="col">
+              <strong>Nro. Tarjeta: </strong><br>
+              <%= cash.card_number %>
+            </div>
+          <%end %>
+        </div>
+      </div>
+    </div>
+</div>
+</div>
+
+<%end%>
+<div class="col col-xl-2">
+  <%= link_to cash_movements_path do %>
+    <button class="mb-1 btn btn-primary" type="button">Volver</button>
+  <% end %>
+</div>

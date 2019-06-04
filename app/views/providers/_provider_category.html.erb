@@ -1,0 +1,28 @@
+<fieldset style="height: 5px; border:none;">
+  <table width="auto" align="center">
+    <thead style="display:none">
+    <tr>
+      <th>Categorias que vende</th>
+      <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td><strong>Categoria: </strong>
+        <%= f.select :product_category_id,
+                     options_from_collection_for_select(ProductCategory.all, "id", "description", f.object.product_category_id)%>
+      </td>
+      <td>
+        <%= link_to "Eliminar" do%>
+          <div class=" remove_fields btn btn-link text-danger">
+            <i class="fas fa-trash-alt"></i>
+          </div>
+        <%end %>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</fieldset>
+<script>
+
+</script>

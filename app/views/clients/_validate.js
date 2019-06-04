@@ -4,12 +4,14 @@ $(document).ready(function() {
             error.insertAfter(element);
         },
         rules: {
-            "client[name]": { required: true },
+            "person[name]": { required: true },
+            "person[phone]": { required: true },
             "client[ruc]": { required: true }
         },
         messages: {
-            "client[name]": "Campo obligatorio.",
-            "client[ruc]": "Campo obligatorio."
+            "person[name]": "Campo obligatorio.",
+            "client[ruc]": "Campo obligatorio.",
+            "person[phone]": "Campo obligatorio."
         },
         submitHandler: function(form) {
             form.submit();

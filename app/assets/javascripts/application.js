@@ -6,6 +6,10 @@
 //= require jquery.validate
 //= require jquery.validate.additional-methods
 
+//= require turbolinks
+
+//= require filterrific/filterrific-jquery
+
 //--- Angle
 //= require angle/modules/common/wrapper.js
 //= require angle/app.init

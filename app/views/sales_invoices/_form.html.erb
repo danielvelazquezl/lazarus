@@ -38,17 +38,8 @@
               </div>
               <div class="col-8">
                 <%= form.select :employee_id,
-                                options_from_collection_for_select(Person.joins(:employee), "id", "name", form.object.employee),
-                                class: "custom-select custom-select-sm", prompt: "Seleccionar" %>
-              </div>
-            </div>
-            <div class="form-group row">
-              <div class="col-4">
-                <strong>Deposito:</strong>
-              </div>
-              <div class="col-8">
-                <input type="text" class="form-control valid" value="<%= @sales_invoice.deposit.description %>" disabled>
-                <%= form.hidden_field :deposit_id %>
+                                Employee.all.map { |e| [e.person.name, e.id] },
+                                class: "custom-select custom-select-sm" %>
               </div>
             </div>
           </div>
@@ -76,13 +67,11 @@
             </div>
             <div class="form-group row">
               <div class="col-4">
-
-                <strong>Forma de Pago</strong>
+                <strong>Deposito:</strong>
               </div>
               <div class="col-8">
-                <%= form.select :pay_method_id,
-                                options_from_collection_for_select(PayMethod.all, "id", "description", form.object.pay_method),
-                                class: 'form-control' %>
+                <input type="text" class="form-control valid" value="<%= @sales_invoice.deposit.description %>" disabled>
+                <%= form.hidden_field :deposit_id %>
               </div>
             </div>
           </div>

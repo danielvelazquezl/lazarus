@@ -1,8 +1,9 @@
 class Role < ApplicationRecord
 has_and_belongs_to_many :users, :join_table => :users_roles, dependent: :delete_all
+has_many :permissions, dependent: :delete_all
+accepts_nested_attributes_for :permissions, :allow_destroy => true
 
 
-has_many :permission, dependent: :delete_all
 
 belongs_to :resource,
            :polymorphic => true,

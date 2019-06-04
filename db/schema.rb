@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_26_011004) do
+ActiveRecord::Schema.define(version: 2019_06_03_211334) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -294,15 +294,16 @@ ActiveRecord::Schema.define(version: 2019_05_26_011004) do
   end
 
   create_table "permissions", force: :cascade do |t|
-    t.bigint "type_action_id"
     t.bigint "role_id"
     t.bigint "resource_id"
+    t.boolean "action_read"
+    t.boolean "action_create"
+    t.boolean "action_update"
+    t.boolean "action_destroy"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "able"
     t.index ["resource_id"], name: "index_permissions_on_resource_id"
     t.index ["role_id"], name: "index_permissions_on_role_id"
-    t.index ["type_action_id"], name: "index_permissions_on_type_action_id"
   end
 
   create_table "product_categories", force: :cascade do |t|
@@ -318,15 +319,6 @@ ActiveRecord::Schema.define(version: 2019_05_26_011004) do
     t.datetime "updated_at", null: false
     t.integer "component_id"
     t.index ["product_id"], name: "index_product_items_on_product_id"
-  end
-
-  create_table "product_providers", force: :cascade do |t|
-    t.bigint "product_id"
-    t.bigint "provider_id"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["product_id"], name: "index_product_providers_on_product_id"
-    t.index ["provider_id"], name: "index_product_providers_on_provider_id"
   end
 
   create_table "products", force: :cascade do |t|
@@ -345,6 +337,15 @@ ActiveRecord::Schema.define(version: 2019_05_26_011004) do
     t.index ["product_category_id"], name: "index_products_on_product_category_id"
   end
 
+  create_table "provider_categories", force: :cascade do |t|
+    t.bigint "provider_id"
+    t.bigint "product_category_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_category_id"], name: "index_provider_categories_on_product_category_id"
+    t.index ["provider_id"], name: "index_provider_categories_on_provider_id"
+  end
+
   create_table "providers", force: :cascade do |t|
     t.bigint "person_id"
     t.string "ruc"
@@ -352,6 +353,38 @@ ActiveRecord::Schema.define(version: 2019_05_26_011004) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["person_id"], name: "index_providers_on_person_id"
+  end
+
+  create_table "purchase_invoice_items", force: :cascade do |t|
+    t.bigint "purchase_invoice_id"
+    t.bigint "product_id"
+    t.integer "quantity"
+    t.integer "price"
+    t.integer "iva"
+    t.integer "sub_total"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["product_id"], name: "index_purchase_invoice_items_on_product_id"
+    t.index ["purchase_invoice_id"], name: "index_purchase_invoice_items_on_purchase_invoice_id"
+  end
+
+  create_table "purchase_invoices", force: :cascade do |t|
+    t.bigint "provider_id"
+    t.datetime "date"
+    t.integer "total"
+    t.integer "iva"
+    t.integer "balance"
+    t.string "invoice_number"
+    t.string "stamped"
+    t.bigint "deposit_id"
+    t.bigint "pay_method_id"
+    t.bigint "purchase_order_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["deposit_id"], name: "index_purchase_invoices_on_deposit_id"
+    t.index ["pay_method_id"], name: "index_purchase_invoices_on_pay_method_id"
+    t.index ["provider_id"], name: "index_purchase_invoices_on_provider_id"
+    t.index ["purchase_order_id"], name: "index_purchase_invoices_on_purchase_order_id"
   end
 
   create_table "purchase_order_items", force: :cascade do |t|
@@ -375,8 +408,10 @@ ActiveRecord::Schema.define(version: 2019_05_26_011004) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "number"
+    t.bigint "purchase_request_id"
     t.index ["employee_id"], name: "index_purchase_orders_on_employee_id"
     t.index ["provider_id"], name: "index_purchase_orders_on_provider_id"
+    t.index ["purchase_request_id"], name: "index_purchase_orders_on_purchase_request_id"
   end
 
   create_table "purchase_request_items", force: :cascade do |t|
@@ -484,12 +519,6 @@ ActiveRecord::Schema.define(version: 2019_05_26_011004) do
     t.index ["product_id"], name: "index_stocks_on_product_id"
   end
 
-  create_table "type_actions", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
-
   create_table "users", force: :cascade do |t|
     t.string "user_name"
     t.datetime "created_at", null: false
@@ -545,18 +574,24 @@ ActiveRecord::Schema.define(version: 2019_05_26_011004) do
   add_foreign_key "orders", "people"
   add_foreign_key "permissions", "resources"
   add_foreign_key "permissions", "roles"
-  add_foreign_key "permissions", "type_actions"
   add_foreign_key "product_items", "products"
   add_foreign_key "product_items", "products", column: "component_id"
-  add_foreign_key "product_providers", "products"
-  add_foreign_key "product_providers", "providers"
   add_foreign_key "products", "brands"
   add_foreign_key "products", "product_categories"
+  add_foreign_key "provider_categories", "product_categories"
+  add_foreign_key "provider_categories", "providers"
   add_foreign_key "providers", "people"
+  add_foreign_key "purchase_invoice_items", "products"
+  add_foreign_key "purchase_invoice_items", "purchase_invoices"
+  add_foreign_key "purchase_invoices", "deposits"
+  add_foreign_key "purchase_invoices", "pay_methods"
+  add_foreign_key "purchase_invoices", "providers"
+  add_foreign_key "purchase_invoices", "purchase_orders"
   add_foreign_key "purchase_order_items", "products"
   add_foreign_key "purchase_order_items", "purchase_orders"
   add_foreign_key "purchase_orders", "employees"
   add_foreign_key "purchase_orders", "providers"
+  add_foreign_key "purchase_orders", "purchase_requests"
   add_foreign_key "purchase_request_items", "products"
   add_foreign_key "purchase_request_items", "purchase_requests"
   add_foreign_key "purchase_requests", "employees"

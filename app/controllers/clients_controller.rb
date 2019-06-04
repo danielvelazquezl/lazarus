@@ -13,27 +13,33 @@ class ClientsController < ApplicationController
 
   def create
     @person = Person.new(person_params)
-    @person.save
-    @client = Client.new(client_params)
-    @client.person_id = @person.id
+    if @person.save
+      @client = Client.new(client_params)
+      @client.person_id = @person.id
 
-    respond_to do |format|
-      if @client.save
-        format.html { redirect_to @client, notice: 'Cliente guardado' }
-      else
-        format.html { render :new, notice: 'no guardado' }
+      respond_to do |format|
+        if @client.save
+          format.html { redirect_to @client, notice: 'Cliente guardado' }
+        else
+          @person.destroy
+          format.html { render :new, notice: 'No se pudo guardar el nuevo cliente' }
+        end
+      end
+
+    else
+      respond do |format|
+        format.html { render :new, notice: 'No se pudo guardar el nuevo cliente' }
       end
     end
-
   end
 
   def edit
-    @person = Person.all.map { |person| [person.name, person.address, person.phone, person.email]}
+    @person = Person.find_by(id: set_client.person_id)
   end
 
   def update
     respond_to do |format|
-      if @client.update(client_params)
+      if @client.update(client_params) and @person.update(person_params)
         format.html { redirect_to @client, notice: 'Datos del cliente actualizados'}
       else
         format.html { render :edit }

@@ -99,5 +99,10 @@ Rails.application.config.assets.precompile += %w( purchase_orders.js )
 Rails.application.config.assets.precompile += %w( banks.css )
 Rails.application.config.assets.precompile += %w( banks.js )
 
-Rails.application.config.assets.precompile += %w( report.css )
-Rails.application.config.assets.precompile += %w( report.js )
+Rails.application.config.assets.precompile += %w( reports.css )
+Rails.application.config.assets.precompile += %w( reports.js )
+
+Rails.application.config.assets.precompile += %w( purchase_invoices.css )
+Rails.application.config.assets.precompile += %w( purchase_invoices.js )
+
+Rails.application.config.assets.precompile += %w( filterrific/filterrific-spinner.gif )

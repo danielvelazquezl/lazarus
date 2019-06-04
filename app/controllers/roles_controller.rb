@@ -3,16 +3,28 @@ class RolesController < ApplicationController
 
   def index
      @roles = Role.all_role
+
   end
   def new
     @role = Role.new
+    @permission = @role.permissions.build
   end
 
   def create
     @role = Role.new(role_params)
-
     respond_to do |format|
       if @role.save
+        @resuocers = Resource.all
+        @type_action = TypeAction.all
+        @resuocers.each do |r|
+          @type_action.each do |t|
+            p = Permission.new
+            p.resource_id = r.id
+            p.role_id = @role.id
+            p.type_action_id = t.id
+            p.save
+          end
+        end
         format.html { redirect_to roles_path }
         format.json { render :show, status: :created, location: @role }
       else
@@ -22,16 +34,14 @@ class RolesController < ApplicationController
     end
   end
 
+  def edit
+  end
 
+  def update
+  end
+  
   def destroy
-    #@users_roles = UsersRoles.where(role_id: @role.id)
-    #@users_roles.each do |ur|
-     # ur.destroy
-    #end
-    @permission = Permission.where(role_id: @role.id)
-    @permission.each do |p|
-      p.destroy
-    end
+
     @role.destroy
     respond_to do |format|
       format.html { redirect_to roles_path}
@@ -56,6 +66,6 @@ class RolesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def role_params
-    params.require(:role).permit(:name)
+    params.require(:role).permit(:name, permissions_attributes: [:id, :resource_id, :new, :create, :update, :destroy])
   end
 end

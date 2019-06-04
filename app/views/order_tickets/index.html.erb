@@ -42,7 +42,19 @@
       <td><%= order_ticket.client.person.name %></td>
       <td><%= order_ticket.employee.person.name %></td>
       <td><%= order_ticket.date.strftime("%d-%m-%Y %H:%M") %></td>
-      <td><%= order_ticket.state.text %></td>
+      <% if order_ticket.state == :invoiced %>
+        <td>
+          <div class="badge badge-success">
+            <%=order_ticket.state.text%>
+          </div>
+        </td>
+      <%else %>
+        <td>
+          <div class="badge badge-danger">
+            <%=order_ticket.state.text%>
+          </div>
+        </td>
+      <%end %>
       <td class="text-center">
         <div class="btn-group" role="group">
           <%= link_to order_ticket do%>

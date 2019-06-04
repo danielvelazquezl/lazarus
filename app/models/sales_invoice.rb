@@ -2,13 +2,13 @@ class SalesInvoice < ApplicationRecord
   belongs_to :employee
   belongs_to :client
   belongs_to :deposit
-  belongs_to :pay_method
   belongs_to :order_ticket
   has_one :stamped
   has_many :sales_invoices_items
   accepts_nested_attributes_for :sales_invoices_items, :allow_destroy => true
 
   scope :find_by_client, ->(id) {where(client_id: id)}
+  scope :update_invoices_balance, ->(invoices_id, amount) {where(id: invoices_id).update_all(balance: amount)}
 
   after_save :update_stock
 
@@ -37,6 +37,8 @@ class SalesInvoice < ApplicationRecord
       self.errors.add(:quantity, "Cantidad insuficiente para realizar esta transaccion")
       raise ActiveRecord::RecordInvalid.new(self)
     end
+
+
   end
 
 end

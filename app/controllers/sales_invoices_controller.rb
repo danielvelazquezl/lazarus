@@ -56,6 +56,7 @@ class SalesInvoicesController < ApplicationController
   # POST /sales_invoices
   # POST /sales_invoices.json
   def create
+    @stampeds = Stamped.all
     @sales_invoice = SalesInvoice.new(sales_invoice_params)
     @sales_invoice.sales_invoices_items.each do |f|
       f.sub_total = f.price * f.quantity
@@ -113,6 +114,6 @@ class SalesInvoicesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def sales_invoice_params
-    params.require(:sales_invoice).permit(:employee_id, :date, :client_id, :total, :iva, :balance, :invoice_number, :stamped_id, :deposit_id, :pay_method_id, :order_ticket_id, sales_invoices_items_attributes: [:id, :product_id, :quantity, :price, :iva, :sub_total])
+    params.require(:sales_invoice).permit(:employee_id, :date, :client_id, :total, :iva, :balance, :invoice_number, :stamped_id, :deposit_id, :order_ticket_id, sales_invoices_items_attributes: [:id, :product_id, :quantity, :price, :iva, :sub_total])
   end
 end

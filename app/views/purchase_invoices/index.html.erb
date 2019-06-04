@@ -1,0 +1,49 @@
+<div class="content-heading">
+  <div> Facturas de Compras</div>
+  <div class="ml-auto">
+    <%= link_to new_purchase_invoice_path do %>
+      <button class="btn btn-secondary" title="Nueva Factura">
+        <i class="fas fa-plus text-primary fa-1x"></i>
+      </button>
+    <% end %>
+  </div>
+</div>
+
+<table class="table table-striped table-hover w-100" id="datatable2">
+  <thead>
+  <tr>
+    <th>
+      <strong>N° FACTURA</strong>
+    </th>
+    <th>
+      <strong>PROVEEDOR</strong>
+    </th>
+    <th>
+      <strong>FECHA</strong>
+    </th>
+    <th>
+      <strong>TOTAL</strong>
+    </th>
+    <th>
+      <strong>ACCION</strong>
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @purchase_invoices.each do |purchase_invoice| %>
+    <tr>
+      <td><%= purchase_invoice.invoice_number %></td>
+      <td><%= purchase_invoice.provider.person.name %></td>
+      <td><%= purchase_invoice.date.strftime("%d-%m-%Y")%></td>
+      <td><%= purchase_invoice.total %></td>
+      <td>
+        <div class="btn-group" role="group">
+          <%= link_to edit_purchase_invoice_path(purchase_invoice) do %>
+            <button class="btn btn-sm btn-secondary"><i class="fas fa-edit"></i></button>
+          <% end %>
+        </div>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>

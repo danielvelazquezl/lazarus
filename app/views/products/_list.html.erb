@@ -1,0 +1,51 @@
+<div class="card card-body bg-light d-block p-3 my-3">
+  <div class="row">
+    <div class="col-md-10">
+      <div>
+        <%= page_entries_info products, :model => 'product', :class => 'align-middle' %>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div>
+        <%= link_to "Limpiar filtros", reset_filterrific_url, :class => 'btn btn-secondary align-middle' %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<table class="table table-striped table-hover w-100" id="datatable2">
+  <tr>
+    <th class="text-center"> NOMBRE </th>
+    <th class="text-center"> MARCA</th>
+    <th class="text-center"> CODIGO DE BARRAS</th>
+    <th class="text-center"> PRECIO</th>
+    <th class="text-center"> CATEGORIA</th>
+    <th class="text-center"> OPCIONES</th>
+  </tr>
+  <% products.each do |product| %>
+    <tr>
+      <td class="text-center"><%= product.description %></td>
+      <td class="text-center"><%= Brand.find_by(id: product.brand_id).description %></td>
+      <td class="text-center"><%= product.bar_code %></td>
+      <td class="text-center"><%= product.unit_cost %></td>
+      <td class="text-center"><%= ProductCategory.find_by(id: product.product_category_id).description %></td>
+
+      <td class="text-center">
+        <div class="btn-group" role="group">
+          <%= link_to product do %>
+            <button class="btn btn-sm btn-secondary"><i class="fas fa-search"></i></button>
+          <% end %>
+          <%= link_to edit_product_path(product) do %>
+            <button class="btn btn-sm btn-secondary"><i class="fas fa-edit"></i></button>
+          <% end %>
+          <%= link_to product_path(product, type: :normal), method: :delete, data: {confirm: '¿Estás seguro?'},
+                      :remote => true, :class => 'delete_product' do %>
+            <button class="btn btn-sm btn-secondary"><i class="fas fa-trash-alt"></i></button>
+          <% end %>
+        </div>
+      </td>
+    </tr>
+  <% end %>
+</table>
+
+<%= will_paginate products, renderer: WillPaginate::ActionView::BootstrapLinkRenderer  %>

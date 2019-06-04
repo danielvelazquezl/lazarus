@@ -1,0 +1,69 @@
+<div class="card card-body bg-light d-block p-3 my-3">
+  <div class="row">
+    <div class="col-md-10">
+      <div>
+        <%= page_entries_info movement_proofs, :model => 'movement_proof', :class => 'align-middle' %>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div>
+        <%= link_to "Limpiar filtros", reset_filterrific_url, :class => 'btn btn-secondary align-middle' %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<table class="table table-striped table-hover w-100" id="datatable2">
+  <thead>
+  <tr>
+  <tr>
+    <th class="text-center">
+      <strong>ENCARGADO</strong>
+    </th>
+    <th class="text-center">
+      <strong>DEPOSITO</strong>
+    </th>
+    <th class="text-center">
+      <strong>MOTIVO</strong>
+    </th>
+    <th class="text-center">
+      <strong>FECHA</strong>
+    </th>
+    <th class="text-center">
+      <strong>COMENTARIO</strong>
+    </th>
+    <th>
+      <strong></strong>
+    </th>
+
+  </tr>
+  </thead>
+  <tbody>
+  <% movement_proofs.each do |movement_proof| %>
+    <tr>
+      <td class="text-center"><%= Person.find_by(id: movement_proof.person_id).name %></td>
+      <td class="text-center"><%= movement_proof.deposit.description %></td>
+      <td class="text-center"><%= movement_proof.movement_type.description %></td>
+      <td class="text-center"><%= movement_proof.date.to_datetime.to_s(:long) %></td>
+      <td class="text-center"><%= movement_proof.comment %></td>
+
+      <td class="text-center">
+        <div class="btn-group" role="group">
+          <%= link_to movement_proof do %>
+            <button class="btn btn-sm btn-secondary"><i class="fas fa-search"></i></button>
+          <% end %>
+          <%= link_to edit_movement_proof_path(movement_proof) do %>
+            <button class="btn btn-sm btn-secondary"><i class="fas fa-edit"></i></button>
+          <% end %>
+          <%= link_to movement_proof, method: :delete, data: {confirm: '¿Estás seguro?'},
+                      :remote => true, :class => 'delete_movement_proof' do %>
+            <button class="btn btn-sm btn-secondary"><i class="fas fa-trash-alt"></i></button>
+          <% end %>
+        </div>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<%= will_paginate movement_proofs, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>

@@ -29,7 +29,7 @@
     <tr>
       <td><%= purchase_request.date.strftime("%d-%m-%Y") %></td>
       <td><%= purchase_request.employee.person.name %></td>
-      <td><%= purchase_request.state %></td>
+      <td><%= purchase_request.state.text %></td>
       <td><%= purchase_request.comment %></td>
       <td class="text-center">
         <div class="btn-group" role="group">

@@ -15,6 +15,19 @@ class PurchaseOrdersController < ApplicationController
   # GET /purchase_orders/new
   def new
     @purchase_order = PurchaseOrder.new
+    if params[:request_number].present? then
+      @purchaseRqst = PurchaseRequest.find_by(number: params[:request_number])
+      if @purchaseRqst != nil
+        @purchase_order.state = :sent
+        @budget_items = BudgetRequest.get_cheapest_items(@purchaseRqst)
+      else
+        respond_to do |format|
+          format.html {redirect_to new_purchase_order_path, notice: 'Pedido de compra no encontrada.'}
+          format.json {render json: @purchase_order.errors, status: :unprocessable_entity}
+        end
+      end
+
+    end
   end
 
   # GET /purchase_orders/1/edit
@@ -25,7 +38,6 @@ class PurchaseOrdersController < ApplicationController
   # POST /purchase_orders.json
   def create
     @purchase_order = PurchaseOrder.new(purchase_order_params)
-
     respond_to do |format|
       if @purchase_order.save
         format.html { redirect_to @purchase_order, notice: 'Purchase order was successfully created.' }
@@ -34,6 +46,15 @@ class PurchaseOrdersController < ApplicationController
         format.html { render :new }
         format.json { render json: @purchase_order.errors, status: :unprocessable_entity }
       end
+    end
+  end
+
+  def save_purchase_orders
+    purchaseRqst = PurchaseRequest.find_by(number: params[:request_number])
+    budget_items = BudgetRequest.get_cheapest_items(purchaseRqst)
+    PurchaseOrder.create_purchase_order(budget_items)
+    respond_to do |format|
+      format.html {redirect_to purchase_orders_path, notice: 'Ordenes creadas.'}
     end
   end
 

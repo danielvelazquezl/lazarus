@@ -15,6 +15,7 @@ class PurchaseRequestsController < ApplicationController
   # GET /purchase_requests/new
   def new
     @purchase_request = PurchaseRequest.new
+    @purchase_request_items = @purchase_request.purchase_request_items.build
   end
 
   # GET /purchase_requests/1/edit
@@ -32,7 +33,7 @@ class PurchaseRequestsController < ApplicationController
 
     respond_to do |format|
       if @purchase_request.save
-        format.html { redirect_to @purchase_request, notice: 'Purchase request was successfully created.' }
+        format.html { redirect_to edit_purchase_request_path, notice: 'Purchase request was successfully created.' }
         format.json { render :show, status: :created, location: @purchase_request }
       else
         format.html { render :new }
@@ -46,7 +47,9 @@ class PurchaseRequestsController < ApplicationController
   def update
     respond_to do |format|
       if @purchase_request.update(purchase_request_params)
-        format.html { redirect_to @purchase_request, notice: 'Purchase request was successfully updated.' }
+        purchase_request = PurchaseRequest.find_by(id: @purchase_request.id)
+        purchase_request.update_attribute(:state, PurchaseRequest.state.generated)
+        format.html { redirect_to edit_purchase_request_path, notice: 'Purchase request was successfully updated.' }
         format.json { render :show, status: :ok, location: @purchase_request }
       else
         format.html { render :edit }

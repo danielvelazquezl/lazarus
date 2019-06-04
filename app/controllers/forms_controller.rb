@@ -4,13 +4,37 @@ class FormsController < ApplicationController
   # GET /forms
   # GET /forms.json
   def index
-    @forms = Form.cpuproduced_form
+    (@filterrific = initialize_filterrific(
+        Form.cpuproduced_form,
+        params[:filterrific],
+        select_options: {
+            sorted_by: Form.options_for_sorted_by,
+            with_person_id: Person.options_for_select,
+        },
+        )) || return
+    @forms = @filterrific.find.page(params[:page])
 
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def request_forms_index
-    @forms = Form.keyboardmonitorrequest_form
+    (@filterrific = initialize_filterrific(
+        Form.keyboardmonitorrequest_form,
+        params[:filterrific],
+        select_options: {
+            sorted_by: Form.options_for_sorted_by,
+            with_person_id: Person.options_for_select,
+        },
+        )) || return
+    @forms = @filterrific.find.page(params[:page])
 
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   # GET /forms/1
@@ -30,8 +54,8 @@ class FormsController < ApplicationController
     @form = Form.new
     @form.form_type = :cpuproduced
     @form.person_id = 1
-    lastAdd = @form.number = Form.find_by(form_type: :cpuproduced)
-    if lastAdd != nil
+    #lastAdd = @form.number = Form.find_by(form_type: :cpuproduced)
+    if Form.any?
       @form.number = Form.where(form_type: :cpuproduced).last.number + 1
     else
       @form.number = 1
@@ -71,6 +95,14 @@ class FormsController < ApplicationController
 
     respond_to do |format|
       if @form.save
+        @form_items = @form.form_items
+        @form_items.each do |item|
+          product = Product.find_by(id: item.product_id)
+          if product.product_type == :component
+            product.update_attribute(:product_type, Product.product_type.both)
+          end
+        end
+
         format.html { redirect_to @form, notice: 'Formulario creado.' }
         format.json { render :show, status: :created, location: @form }
       else

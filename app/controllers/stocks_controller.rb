@@ -4,7 +4,20 @@ class StocksController < ApplicationController
   # GET /stocks
   # GET /stocks.json
   def index
-    @stocks = Stock.all
+    (@filterrific = initialize_filterrific(
+        Stock,
+        params[:filterrific],
+        select_options: {
+            sorted_by: Stock.options_for_sorted_by,
+            with_deposit_id: Deposit.options_for_select
+        },
+        )) || return
+    @stocks = @filterrific.find.page(params[:page])
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   # GET /stocks/1

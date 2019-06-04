@@ -90,4 +90,87 @@ class Order < ApplicationRecord
     end
 
 
+    filterrific :default_filter_params => {:sorted_by => 'created_at_asc'},
+                :available_filters => %w[
+                  sorted_by
+                  search_query
+                  with_created_at_gte
+                  with_person_id
+                ]
+
+    # default for will_paginate
+    self.per_page = 10
+
+    scope :search_query, ->(query) {
+        return nil if query.blank?
+        # condition query, parse into individual keywords
+        terms = query.downcase.split(/\s+/)
+        # replace "*" with "%" for wildcard searches,
+        # append '%', remove duplicate '%'s
+        terms = terms.map {|e|
+            (e.gsub('*', '%') + '%').gsub(/%+/, '%')
+        }
+        # configure number of OR conditions for provision
+        # of interpolation arguments. Adjust this if you
+        # change the number of OR conditions.
+        num_or_conditions = 1
+        where(
+            terms.map {
+                or_clauses = [
+                    "LOWER(people.name) LIKE ?"
+                ].join(' OR ')
+                "(#{ or_clauses })"
+            }.join(' AND '),
+            *terms.map {|e| [e] * num_or_conditions}.flatten
+        ).joins(:person).references(:people)
+    }
+
+    scope :sorted_by, ->(sort_option) {
+        # extract the sort direction from the param value.
+        direction = (sort_option =~ /desc$/) ? 'desc' : 'asc'
+        orders = Order.arel_table
+        persons = Person.arel_table
+        case sort_option.to_s
+        when /^created_at_/
+            order(orders[:date_request].send(direction))
+        when /^finish_at_/
+            order(orders[:date_finished].send(direction))
+        when /^person_/
+            Order.joins(:person).order(persons[:name].lower.send(direction)).order(orders[:date_request].send(direction))
+        when /^state_/
+            order(orders[:state]).send(direction)
+        else
+            raise(ArgumentError, "Invalid sort option: #{sort_option.inspect}")
+        end
+    }
+
+    scope :with_deposit_id, ->(deposit_ids) {
+        where(:deposit_id => [*deposit_ids])
+    }
+
+    scope :with_person_id, ->(person_ids) {
+        where(:person_id => [*person_ids])
+    }
+
+    scope :with_created_at_gte, ->(ref_date) {
+        where('orders.date_request >= ?', ref_date)
+    }
+
+    scope :with_state, ->(ref_date) {
+        where('orders.date_requested >= ?', ref_date)
+    }
+
+    delegate :name, :to => :person, :prefix => true
+
+    def self.options_for_sorted_by
+        [
+            ['Fecha Pedido (Viejos primero)', 'created_at_asc'],
+            ['Fecha Pedido (Recientes primero)', 'created_at_desc'],
+            ['Fecha Finalizado (Viejos primero)', 'finished_at_asc'],
+            ['Fecha Finalizado (Recientes primero)', 'finished_at_desc'],
+            ['Encargado (a-z)', 'person_asc'],
+            ['Encargado (z-a)', 'person_desc']
+        ]
+    end
+
 end

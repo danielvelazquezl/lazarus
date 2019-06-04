@@ -1,0 +1,54 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Provider:</strong>
+  <%= @purchase_invoice.provider %>
+</p>
+
+<p>
+  <strong>Date:</strong>
+  <%= @purchase_invoice.date %>
+</p>
+
+<p>
+  <strong>Total:</strong>
+  <%= @purchase_invoice.total %>
+</p>
+
+<p>
+  <strong>Iva:</strong>
+  <%= @purchase_invoice.iva %>
+</p>
+
+<p>
+  <strong>Balance:</strong>
+  <%= @purchase_invoice.balance %>
+</p>
+
+<p>
+  <strong>Invoice number:</strong>
+  <%= @purchase_invoice.invoice_number %>
+</p>
+
+<p>
+  <strong>Stamped:</strong>
+  <%= @purchase_invoice.stamped %>
+</p>
+
+<p>
+  <strong>Deposit:</strong>
+  <%= @purchase_invoice.deposit %>
+</p>
+
+<p>
+  <strong>Pay method:</strong>
+  <%= @purchase_invoice.pay_method %>
+</p>
+
+<p>
+  <strong>Purchase order:</strong>
+  <%= @purchase_invoice.purchase_order %>
+</p>
+
+<%= link_to 'Edit', edit_purchase_invoice_path(@purchase_invoice) %> |
+<%= link_to 'Back', purchase_invoices_path %>

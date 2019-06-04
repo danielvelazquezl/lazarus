@@ -1,14 +1,13 @@
 $(function() {
 
-    $('#cash_movement_client_id').keypress(function (e) {
+    $('#ruc-select').keypress(function (e) {
         var key = e.which;
         if (key == 13)  // the enter key code
         {
-            let id = "";
-            id = $('#cash_movement_client_id').val();
+            const id = $('#ruc-select').selectize()[0].selectize.getValue();
             console.log(id);
 
-            $('#val').val(id);
+            $('#cash_movement_client_id').val(id);
 
             //alert($('#val').val())
 

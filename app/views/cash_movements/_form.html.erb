@@ -1,15 +1,24 @@
 <%= form_tag(get_invoices_cash_movements_path, remote: true, method: :get) do %>
-  <label>Cliente(ID):</label></br>
-  <%= text_field_tag :val %>
-  <%= submit_tag "Buscar", name:'nil' %>
+  <label>Cliente(RUC):</label><br>
+  <%#= text_field_tag :val %>
+  <div>
+    <p class="d-flex">
+      <span id="mydiv">
+        <%= select_tag :val, options_from_collection_for_select(Client.all, "id", "ruc"),{ :id => "ruc-select"} %>
+      </span>
+      <span style="margin-left: 10px">
+        <%= submit_tag "Buscar", id:'search-invoices', name:'nil', class: "btn btn-primary" %>
+      </span>
+    </p>
+  </div>
 <% end %>
 
 <%= form_with(model: cash_movement, local: true, html: { id: "cash_movement_form" }) do |form| %>
   <%= form.hidden_field :client_id %>
   <div class="row">
     <div class="col-5">
-      <label>Caja:</label>
-      <%= form.select(:cash_id, options_from_collection_for_select(Cash.all, "id", "description", :cash_id)) %></br>
+      <label>Caja:</label><br>
+      <%= form.select(:cash_id, options_from_collection_for_select(Cash.all_open, "id", "description", :cash_id)) %><br>
       <label>Fecha:</label>
       <%= form.date_field :date , {value: Date.current, class: 'form-control', id: 'date'}%>
       <label>Observacion:</label>
@@ -41,14 +50,14 @@
     </tbody>
   </table>
 
-  <%= form.fields_for :cash_movement_values, @cash_movement_values do |f1| %>
+  <div style="margin-top:80px"><%= form.fields_for :cash_movement_values, @cash_movement_values do |f1| %>
     <%= render 'cash_movement_value', f: f1 %>
   <% end %>
+  </div>
   <div>
     <%= link_to_add_fields "Agregar Forma Pago",form , :cash_movement_values %>
+    <%= form.submit 'Pagar', id: 'pay-btn', disabled: true, class: "btn btn-success" %>
   </div>
-
-  <%= form.submit 'Pagar', id: 'pay-btn', disabled: true %>
 <% end %>
 
 <script>
@@ -58,14 +67,14 @@
 
     event.preventDefault();
   })
-  $(".amount-value").change(function (event){
+  /*$(".amount-value").change(function (event){
       let valores = $(".amount-value") ;
       let total = 0;
       for (let i = 0; i < valores.length; ++i) {
-          total += valores[i];
+          total += valores[i].val();
       }
       $("#pay-field").val(total);
-  });
+  });*/
 //PARA RESTAR VALORES DEL TOTAL
 
   function update_balance(amount,add){
@@ -74,35 +83,44 @@
   }
 
   function update_to_pay(amount, add) {
-      let to_pay = parseInt($('#pay-field').val())
+      let to_pay = parseInt($('#pay-field').val());
       if (isNaN(to_pay)) to_pay = 0;
       (add == true)? $('#pay-field').val(to_pay + amount) : $('#pay-field').val(to_pay - amount)
   }
 
   $(document).on('change', '.amount-value', function() {
-    const total = parseInt($('#total-field').val())
-    const balance = parseInt($('#balance-field').val())
+    const total = parseInt($('#total-field').val());
+    const balance = parseInt($('#balance-field').val());
     const amount = parseInt($(this).val());
 
-    console.log(amount +' '+total+' '+balance)
+    //console.log(amount +' '+total+' '+balance);
 
     if(isNaN(balance) && total >= amount) {
-      update_balance(amount,false)
+      update_balance(amount,false);
       update_to_pay(amount,true)
     }
     else if(balance >= amount){
-      update_balance(amount,false)
-      update_to_pay(amount,true)
-      if($('#balance-field').val() == 0) $('.add_fields').hide()
+      update_balance(amount,false);
+      update_to_pay(amount,true);
+      if($('#balance-field').val() === 0) $('.add_fields').hide()
     }
 
     $(this).parent().parent().parent().children().last().click(function () {
-      update_balance(amount,true)
+      update_balance(amount,true);
       update_to_pay(amount,false)
     })
   });
 
   //-------------------------------------------------------------
+  $('#ruc-select').selectize({
+      create: false,
+      sortField: 'text'
+  });
+
+  $(document).ready(function () {
+      var w = $('#mydiv').width()+20+'px';
+      $('#mydiv').css('width',w);
+  })
 
 
 </script>

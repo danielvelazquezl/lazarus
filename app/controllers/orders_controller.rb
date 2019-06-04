@@ -4,12 +4,38 @@ class OrdersController < ApplicationController
   # GET /orders
   # GET /orders.json
   def index
-    @orders = Order.products_order
+    (@filterrific = initialize_filterrific(
+        Order.products_order,
+        params[:filterrific],
+        select_options: {
+            sorted_by: Order.options_for_sorted_by,
+            with_person_id: Person.options_for_select,
+        },
+        )) || return
+    @orders = @filterrific.find.page(params[:page])
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
 
   end
 
   def component_orders_index
-    @orders = Order.components_order
+    (@filterrific = initialize_filterrific(
+        Order.components_order,
+        params[:filterrific],
+        select_options: {
+            sorted_by: Order.options_for_sorted_by,
+            with_person_id: Person.options_for_select,
+        },
+        )) || return
+    @orders = @filterrific.find.page(params[:page])
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
 
   end
 
@@ -33,8 +59,8 @@ class OrdersController < ApplicationController
     @order.origin_id = Setting.find_by!(key: 'id_production_deposit').value
     @order.destination_id = Setting.find_by!(key: 'id_production_deposit').value
     @order.date_request = Time.now
-    orderLast = @order.number = Order.find_by(order_type: :production)
-    if orderLast != nil
+    #orderLast = @order.number = Order.find_by(order_type: :production)
+    if Order.any?
       @order.number = Order.where(order_type: :production).last.number + 1
     else
       @order.number = 1

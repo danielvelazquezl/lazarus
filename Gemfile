@@ -92,3 +92,13 @@ gem 'selectize-rails'
 gem 'ransack'
 
 gem 'paranoia'
+
+gem 'will_paginate'
+
+gem 'will_paginate-bootstrap4'
+
+gem 'filterrific' #, path: '../filterrific'
+
+gem 'bootstrap'
+
+gem 'listen'

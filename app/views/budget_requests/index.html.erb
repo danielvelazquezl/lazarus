@@ -33,7 +33,19 @@
       <td><%= budget_request.date.strftime("%d-%m-%Y") %></td>
       <td><%= budget_request.provider.person.name%></td>
       <td><%= budget_request.employee.person.name %></td>
-      <td><%= budget_request.state %></td>
+      <% if budget_request.state == :finished %>
+        <td>
+          <div class="badge badge-success">
+            <%=budget_request.state.text%>
+          </div>
+        </td>
+      <%else %>
+        <td>
+          <div class="badge badge-danger">
+            <%=budget_request.state.text%>
+          </div>
+        </td>
+      <%end %>
       <td><%= budget_request.comment %></td>
       <td class="text-center">
         <div class="btn-group" role="group">

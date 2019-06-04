@@ -18,7 +18,18 @@
         <span class="ml-auto"><b><%=@purchase_request.date.strftime("%d-%m-%Y")%></b></span>
       </p>
       <p class="d-flex">
-        <span><b>Estado: </b><span class="badge badge-success"><%=@purchase_request.state%></span></span>
+        <span><b>Estado: </b><span class="badge badge-success"><%=@purchase_request.state.text%></span></span>
+      </p>
+
+      <p>
+        <span> <b>Encarcado:</b>
+          <span>
+            <%= form.select :employee_id,
+                            options_from_collection_for_select(Person.joins(:employee) ,"id", "name", form.object.employee.person_id ),
+                            class: "custom-select custom-select-sm" %>
+          </span>
+
+        </span>
       </p>
 
       <div class="row">
@@ -33,34 +44,44 @@
           </thead>
           <tbody id="invoices-items-table">
             <tr>
-              <td><b>Productos</b></td>
+              <td style="width:293px"><b>Productos</b></td>
               <td><b>Cantidad</b></td>
             </tr>
           <%= form.fields_for :purchase_request_items, @purchase_request.purchase_request_items do |f| %>
             <tr>
-              <td><%= f.label :product_id, :value => Product.find(f.object.product_id).description %></td>
+              <td style="width:293px"><%= f.label :product_id, :value => Product.find(f.object.product_id).description %></td>
               <% if @budget != nil %>
                 <td><%= f.label :quantity, class: 'quantity', :value => f.object.quantity %></td>
+                <%= f.hidden_field :quantity%>
+                <%= f.hidden_field :product_id%>
               <%else %>
                 <td><%= f.text_field :quantity, :size => 10, :value => f.object.quantity, class: 'quantity' %></td>
               <%end %>
 
-              <%= f.hidden_field :product_id %>
-              <%= f.hidden_field :quantity %>
+
             </tr>
-
           <% end %>
-
-          <tr>
-            <td></td>
-            <td></td>
-          </tr>
 
           </tbody>
         </table>
+
+          <% if @budget == nil %>
+            <%=link_to_add_fields "Agregar Producto", form, :purchase_request_items%>
+          <% end %>
+
         </div>
         <div class="col"></div>
+
       </div>
+      <% if @budget == nil %>
+        <div class="row">
+          <div class="col"></div>
+          <div class="col-12 col-xl-auto">
+            <%= form.submit 'Generar Pedido de Cotizacion', class: "btn btn-success" %>
+          </div>
+        </div>
+      <% end %>
+
       <% if @budget != nil %>
       <br>
       <p class="lead bb">Pedidos de cotización</p>

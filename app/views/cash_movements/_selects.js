@@ -3,5 +3,4 @@ $(document).ready(function () {
         create: false,
         sortField: 'text'
     });
-
 });

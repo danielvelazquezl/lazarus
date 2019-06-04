@@ -107,22 +107,15 @@
 
 <script type="text/javascript">
   <%= render "validate.js" %>
-
-  $(document).ready(function () {
-      $('#product_product_category_id, #product_brand_id, .component-select').selectize({
-          create: true,
-          sortField: 'text'
-      });
+  <%= render "selects.js" %>
 
 
-  });
+  //para agregar selectize a detalles de producto terminado
   $(document).on('click','.add_fields',function (e) {
-      //let fields = $('fieldset');
       $('fieldset').last().children().children().last().children().first().children().first().children().first().selectize({
           create: false,
           sortField: 'text'
       });
-  //console.log($('fieldset').last().children().children().last().children().first().children().first().children().first());
   });
 </script>
 

@@ -1,4 +1,4 @@
-<fieldset>
+<fieldset style="margin-top:-70px;">
   <div class="row mt-5">
     <div class="col-3">
       <label>Forma de pago:</label>
@@ -7,7 +7,7 @@
                    options_from_collection_for_select(PayMethod.all, "id", "description", f.object.pay_method_id),{}, class:'pay_method_value' %>
     </div>
 
-    <div class="col-3 bg-gray rounded">
+    <div class="col-3 bg-gray rounded" id="amount_div">
       <label>Monto:</label></br>
       <%= f.text_field :ammount, class: 'amount-value' %>
       <div class="credit-card d-none">
