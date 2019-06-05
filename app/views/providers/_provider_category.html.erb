@@ -1,18 +1,20 @@
-<fieldset style="height: 5px; border:none;">
-  <table width="auto" align="center">
+<fieldset style="height: 5px">
+  <table>
     <thead style="display:none">
     <tr>
-      <th>Categorias que vende</th>
+      <th class="col-6">Categorias que vende</th>
       <th></th>
     </tr>
     </thead>
     <tbody>
     <tr>
-      <td><strong>Categoria: </strong>
+      <td class="col-5">
         <%= f.select :product_category_id,
-                     options_from_collection_for_select(ProductCategory.all, "id", "description", f.object.product_category_id)%>
+          options_from_collection_for_select(ProductCategory.all, "id", "description", f.object.product_category_id), {},
+          {class:'provider-category-select', prompt: "Seleccionar"} %>
       </td>
-      <td>
+      <td></td>
+      <td class="col">
         <%= link_to "Eliminar" do%>
           <div class=" remove_fields btn btn-link text-danger">
             <i class="fas fa-trash-alt"></i>
@@ -23,6 +25,3 @@
     </tbody>
   </table>
 </fieldset>
-<script>
-
-</script>

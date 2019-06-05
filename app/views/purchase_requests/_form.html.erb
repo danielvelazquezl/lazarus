@@ -1,7 +1,14 @@
 <%= form_with(model: purchase_request, local: true) do |form| %>
   <% if purchase_request.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(purchase_request.errors.count, "error") %> prohibited this purchase_request from being saved:</h2>
+      <h2>
+      <%= pluralize(purchase_request.errors.count, "error") %> 
+      <% if purchase_request.errors.count > 1 %>
+        impidieron que este pedido de compra sea guardado:
+      <% else %>
+        impidió que este pedido de compra sea guardado:
+      <% end %>
+      </h2>
 
       <ul>
       <% purchase_request.errors.full_messages.each do |message| %>
@@ -18,17 +25,36 @@
         <span class="ml-auto"><b><%=@purchase_request.date.strftime("%d-%m-%Y")%></b></span>
       </p>
       <p class="d-flex">
-        <span><b>Estado: </b><span class="badge badge-success"><%=@purchase_request.state.text%></span></span>
+        <span><b>Estado: </b>
+          <% if @purchase_request.state == :generated %>
+            <span class="badge badge-success"><%=@purchase_request.state.text%></span>
+          <%else %>
+            <span class="badge badge-danger"><%=@purchase_request.state.text%></span>
+          <%end %>
+        </span>
       </p>
 
       <p>
         <span> <b>Encarcado:</b>
           <span>
-            <%= form.select :employee_id,
-                            options_from_collection_for_select(Person.joins(:employee) ,"id", "name", form.object.employee.person_id ),
-                            class: "custom-select custom-select-sm" %>
+            <% if @budget == nil %>
+              <%= form.select :employee_id,
+                           Employee.all.map { |e| [e.person.name, e.id] },
+                           class: "custom-select custom-select-sm" %>
+            <%else %>
+              <%= @purchase_request.employee.person.name %>
+            <%end %>
           </span>
 
+        </span>
+      </p>
+      <p class="d-flex">
+        <span><b>Observación: </b>
+          <% if @budget == nil %>
+            <%= form.text_field :comment, :size => 100, class:'comment' %>
+          <%else %>
+              <%= @purchase_request.comment %>
+          <%end %>
         </span>
       </p>
 

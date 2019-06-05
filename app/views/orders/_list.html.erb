@@ -38,7 +38,7 @@
       <strong >ESTADO</strong>
     </th>
     <th class="text-center">
-      <strong >ACCION</strong>
+      <strong >ACCIONES</strong>
     </th>
   </tr>
   </thead>
@@ -49,13 +49,13 @@
       <td class="text-center"><%= order.person.name %></td>
       <td class="text-center"><%= order.origin.description %></td>
       <td class="text-center"><%= order.destination.description %></td>
-      <td class="text-center"><%= order.date_request.to_date.to_s(:long) %></td>
+      <td class="text-center"><%= l(order.date_request.to_date, format: :long) %></td>
       <% if order.date_finished == nil then %>
         <td></td>
       <% else %>
-        <td><%= order.date_finished.to_datetime.to_s(:long) %></td>
+        <td class="text-center"><%= l(order.date_finished.to_date, format: :long) %></td>
       <% end %>
-      <td>
+      <td class="text-center">
         <%= form_for order do |f| %>
           <% if order.state.finished? || order.state.canceled? %>
             <%= f.select :state, Order.state.options, {}, {disabled: true, value: order.state, onchange: 'this.form.submit ();'} %>
@@ -65,7 +65,7 @@
 
         <% end %>
       </td>
-      <td>
+      <td class="text-center">
         <div class="btn-group" role="group">
           <%= link_to order do %>
             <button class="btn btn-sm btn-secondary"><i class="fas fa-eye"></i></button>

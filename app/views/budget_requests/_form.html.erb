@@ -1,8 +1,14 @@
 <%= form_with(model: budget_request, local: true) do |form| %>
   <% if budget_request.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(budget_request.errors.count, "error") %> prohibited this budget_request from being saved:</h2>
-
+      <h2>
+      <%= pluralize(budget_request.errors.count, "error") %> 
+      <% if budget_request.errors.count > 1 %>
+        impidieron que esta orden de cotización sea guardada:
+      <% else %>
+        impidió que esta orden de cotización sea guardada:
+      <% end %>
+      </h2>
       <ul>
       <% budget_request.errors.full_messages.each do |message| %>
         <li><%= message %></li>
@@ -21,13 +27,24 @@
         <span><b>Proveedor: </b><%=@budget_request.provider.person.name%></span>
       </p>
       <p class="d-flex">
+        <span><b>Encargado: </b><%=@budget_request.employee.person.name%></span>
+      </p>
+      <p class="d-flex">
         <span><b>Estado: </b>
-          <%= form.select :state, BudgetRequest.state.options %>
+          <% if @budget_request.state == :finished %>
+            <span class="badge badge-success"><%=@budget_request.state.text%></span>
+          <%else %>
+            <span class="badge badge-danger"><%=@budget_request.state.text%></span>
+          <%end %>
         </span>
       </p>
       <p class="d-flex">
         <span><b>Observación: </b>
-          <%= form.text_field :comment, :size => 100, class:'comment' %>
+          <% if @budget_request.state == :created %>
+            <%= form.text_field :comment, :size => 100, class:'comment' %>
+          <%else %>
+              <%= @budget_request.comment %>
+          <%end %>
         </span>
       </p>
 
@@ -50,7 +67,12 @@
               <tr>
                 <td><%= f.label :product_id, :value => Product.find(f.object.product_id).description %></td>
                 <td><%= f.label :requested_quantity, class: 'requested_quantity', :value => f.object.requested_quantity %></td>
-                <td><%= f.text_field :price, :size => 10, class: 'price' %></td>
+                <% if @budget_request.state == :created %>
+                  <td><%= f.text_field :price, :size => 10, class: 'price' %></td>
+                <%else %>
+                  <td><%= f.label :price, :size => 10, class: 'price', :value => f.object.price %></td>
+                  <%= f.hidden_field :price %>
+                <%end %>
 
                 <%= f.hidden_field :product_id %>
                 <%= f.hidden_field :requested_quantity %>
@@ -73,10 +95,12 @@
         <%end %>
     </div>
   </div>
-  <div class="row">
-    <div class="col"></div>
-    <div class="col-12 col-xl-auto">
-      <%= form.submit 'Guardar', class: "btn btn-success" %>
+  <% if @budget_request.state == :created %>
+    <div class="row">
+      <div class="col"></div>
+      <div class="col-12 col-xl-auto">
+        <%= form.submit 'Guardar', class: "btn btn-success" %>
+      </div>
     </div>
-  </div>
+  <%end %>
 <% end %>

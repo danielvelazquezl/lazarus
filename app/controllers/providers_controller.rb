@@ -1,7 +1,19 @@
 class ProvidersController < ApplicationController
   before_action :set_provider, only: [:show, :edit, :update ,:destroy]
   def index
-    @provider = Provider.all
+    (@filterrific = initialize_filterrific(
+        Provider,
+        params[:filterrific],
+        select_options: {
+            sorted_by: Provider.options_for_sorted_by
+        },
+        )) || return
+    @provider = @filterrific.find.page(params[:page])
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def show

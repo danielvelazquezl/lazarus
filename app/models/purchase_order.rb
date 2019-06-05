@@ -4,7 +4,7 @@ class PurchaseOrder < ApplicationRecord
   has_many :purchase_order_items, dependent: :delete_all
   accepts_nested_attributes_for :purchase_order_items, :allow_destroy => true
   extend Enumerize
-  enumerize :state, in: [:sent, :received]
+  enumerize :state, in: [:created, :received, :invoiced]
 
   def self.create_purchase_order(budget_items)
     budget_items.each do |item|
@@ -13,7 +13,7 @@ class PurchaseOrder < ApplicationRecord
         order.provider_id = item.budget_request.provider_id
         order.employee_id = 1
         order.date = Time.now
-        order.state = :sent
+        order.state = :created
         order.purchase_request_id = request_id
         if PurchaseOrder.any?
           order.number = PurchaseOrder.last.number + 1

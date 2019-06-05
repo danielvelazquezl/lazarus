@@ -4,7 +4,7 @@
 
 <div class="card card-default">
   <div class="card-body">
-
+     <p class="lead bb">Datos de Movimiento</p>
     <form class="form-horizontal">
       <div class="form-group row">
         <div class="col-2">
@@ -40,6 +40,37 @@
 
 
   </div>
+  <div class="card-body">
+   <p class="lead bb">Datos de Factura/s Pagadas</p>
+    <div class="form-group row">
+      <div class="col-2">
+        <strong>Nro Factura:</strong>
+      </div>
+      <div class="col-2">
+        <strong>Fecha Emisión:</strong>
+      </div>
+      <div class="col-2">
+        <strong>Total:</strong>
+      </div>
+      <div class="col-2">
+        <strong>Opción:</strong>
+      </div>
+    </div>
+    <div class="row">
+      <% @cash_movement_invoices.each do |invoice|%>
+
+        <div class="col-2"><%=invoice.sales_invoice.invoice_number %></div>
+        <div class="col-2"><%=invoice.sales_invoice.date.strftime("%d/%m/%Y") %></div>
+        <div class="col-2"><%=invoice.sales_invoice.total %></div>
+        <div class="col-2"><%= link_to edit_sales_invoice_path(invoice.sales_invoice) do%>
+            <i class="fas fa-search"></i>
+          <%end %>
+        </div>
+      <% end %>
+
+
+    </div>
+  </div>
 </div>
 <% @cash_movement_values.each do |cash| %>
 
@@ -68,7 +99,7 @@
           <% if cash.pay_method.description == 'Cheque' %>
             <div class="col">
               <strong>Banco: </strong><br>
-              <%= cash.bank_id %>
+              <%= cash.bank.name %>
             </div>
             <div class="col">
               <strong>Nro. Cheque: </strong><br>
@@ -79,7 +110,7 @@
               <%= cash.account_number %>
             </div>
             <div class="col">
-              <strong>Librador: </strong><br>
+              <strong>Titular: </strong><br>
               <%= cash.drawer %>
             </div>
             <div class="col">
@@ -103,8 +134,11 @@
 </div>
 
 <%end%>
-<div class="col col-xl-2">
+<div class="row">
   <%= link_to cash_movements_path do %>
-    <button class="mb-1 btn btn-primary" type="button">Volver</button>
+    <button class="mb-1 btn btn-primary" type="button">Ir a lista</button>
+  <% end %>
+  <%= link_to new_cash_movement_path do %>
+    <button class="mb-1 btn btn-secondary" type="button">Ir a Caja</button>
   <% end %>
 </div>

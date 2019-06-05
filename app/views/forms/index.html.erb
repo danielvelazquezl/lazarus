@@ -1,4 +1,5 @@
 <p id="notice"><%= notice %></p>
+
 <div class="content-heading">
   <div> Formulario CPU producidas </div>
 
@@ -20,16 +21,6 @@
         <label class="font-weight-bold">Buscar</label>
         <%= f.text_field :search_query,
                          :class => 'filterrific-periodically-observed form-control' %>
-      </div>
-
-      <div>
-        <div class="col-12">
-          <label class="font-weight-bold">Encargado</label>
-          <%= f.select :with_person_id,
-                       @filterrific.select_options[:with_person_id],
-                       {:include_blank => '- Todos -'},
-                       {:class => 'form-control'} %>
-        </div>
       </div>
 
       <div>

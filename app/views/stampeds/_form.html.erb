@@ -1,7 +1,14 @@
 <%= form_with(model: stamped, local: true) do |form| %>
   <% if stamped.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(stamped.errors.count, "error") %> prohibited this stamped from being saved:</h2>
+      <h2>
+      <%= pluralize(stamped.errors.count, "error") %> 
+      <% if stamped.errors.count > 1 %>
+        impidieron que este sellado sea guardado:
+      <% else %>
+        impidió que este sellado sea guardado:
+      <% end %>
+      </h2>
 
       <ul>
       <% stamped.errors.full_messages.each do |message| %>

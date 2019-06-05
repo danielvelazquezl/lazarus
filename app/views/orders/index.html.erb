@@ -25,16 +25,6 @@
 
       <div>
         <div class="col-12">
-          <label class="font-weight-bold">Encargado</label>
-          <%= f.select :with_person_id,
-                       @filterrific.select_options[:with_person_id],
-                       {:include_blank => '- Todos -'},
-                       {:class => 'form-control'} %>
-        </div>
-      </div>
-
-      <div>
-        <div class="col-12">
           <label class="font-weight-bold">Ordenar por</label>
           <%= f.select :sorted_by,
                        @filterrific.select_options[:sorted_by],

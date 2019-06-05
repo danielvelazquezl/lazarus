@@ -49,16 +49,9 @@
       <td><%= budget_request.comment %></td>
       <td class="text-center">
         <div class="btn-group" role="group">
-          <!--<%= link_to budget_request do%>
-            <button class="btn btn-sm btn-secondary"><i class="fas fa-search"></i></button>
-          <%end %>-->
           <%= link_to edit_budget_request_path(budget_request) do%>
-            <button class="btn btn-sm btn-secondary"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-sm btn-secondary"><i class="fas fa-search"></i></button>
           <%end %>
-          <!--<%= link_to budget_request, method: :delete, data: { confirm: '¿Estás seguro?' },
-                      :remote => true, :class => 'delete_form' do%>
-            <button class="btn btn-sm btn-secondary"><i class="fas fa-trash-alt"></i></button>
-          <%end %>-->
         </div>
       </td>
     </tr>

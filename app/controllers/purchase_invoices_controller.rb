@@ -17,7 +17,7 @@ class PurchaseInvoicesController < ApplicationController
     @purchase_invoice = PurchaseInvoice.new
     if params[:note_number].present? then
       purchaseOrder = PurchaseOrder.find_by(number: params[:note_number])
-      if purchaseOrder != nil
+      if purchaseOrder != nil && purchaseOrder.state == :received
         @purchaseOrder_items = PurchaseOrderItem.where(purchase_order_id: purchaseOrder.id)
         @purchase_invoice.provider_id = purchaseOrder.provider_id
         @purchase_invoice.deposit_id = Setting.find_by!(key: 'id_components_deposit').value
@@ -34,7 +34,7 @@ class PurchaseInvoicesController < ApplicationController
 
       else
         respond_to do |format|
-          format.html {redirect_to new_purchase_invoice_path, notice: 'Orden de compra no encontrada.'}
+          format.html {redirect_to new_purchase_invoice_path, alert: 'Orden de compra no encontrada.'}
           format.json {render json: @purchase_invoice.errors, status: :unprocessable_entity}
         end
       end
@@ -59,6 +59,8 @@ class PurchaseInvoicesController < ApplicationController
 
     respond_to do |format|
       if @purchase_invoice.save
+        purchase_order = PurchaseOrder.find_by(number: @purchase_invoice.purchase_order.number)
+        purchase_order.update_attribute(:state, PurchaseOrder.state.invoiced)
         format.html { redirect_to purchase_invoices_path, notice: 'Factura creada.' }
         format.json { render :show, status: :created, location: @purchase_invoice }
       else

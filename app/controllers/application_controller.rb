@@ -8,11 +8,18 @@ class ApplicationController < ActionController::Base
   rescue_from CanCan::AccessDenied do |exception|
     respond_to do |format|
       format.json { head :forbidden, content_type: 'text/html' }
-      format.html { redirect_to main_app.root_url, notice: "No tiene permisos de acceso" }
+      format.html { redirect_to main_app.root_url, alert: "No tiene permisos de acceso" }
       format.js   { head :forbidden, content_type: 'text/html' }
     end
   end
 
+  rescue_from ActiveRecord::RecordNotFound do |exception| 
+    respond_to do |format|
+      format.html { render :file => "#{Rails.root}/public/404", :layout => false, :status => :not_found }
+      format.xml  { head :not_found }
+      format.any  { head :not_found }
+    end
+  end
 
   protected
   def configure_permitted_parameters

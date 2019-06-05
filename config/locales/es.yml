@@ -23,6 +23,11 @@ es:
       state:
         created: "Pendiente"
         finished: "Listo"
+    purchase_order:
+      state:
+        created: "Pendiente"
+        received: "Listo"
+        invoiced: "Facturado"
     employee:
       sex:
         male: "Hombre"

@@ -1,7 +1,14 @@
 <%= form_with(model: stock, local: true) do |form| %>
   <% if stock.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(stock.errors.count, "error") %> prohibited this stock from being saved:</h2>
+      <h2>
+      <%= pluralize(stock.errors.count, "error") %> 
+      <% if stock.errors.count > 1 %>
+        impidieron que este stock sea guardado:
+      <% else %>
+        impidió que este stock sea guardado:
+      <% end %>
+      </h2>
 
       <ul>
       <% stock.errors.full_messages.each do |message| %>

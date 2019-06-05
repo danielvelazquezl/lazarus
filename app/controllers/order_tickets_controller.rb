@@ -4,7 +4,19 @@ class OrderTicketsController < ApplicationController
   # GET /order_tickets
   # GET /order_tickets.json
   def index
-    @order_tickets = OrderTicket.all
+    (@filterrific = initialize_filterrific(
+      OrderTicket,
+      params[:filterrific],
+      select_options: {
+          sorted_by: OrderTicket.options_for_sorted_by
+      },
+      )) || return
+    @order_tickets = @filterrific.find.page(params[:page])
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   # GET /order_tickets/1

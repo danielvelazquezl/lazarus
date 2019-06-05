@@ -1,22 +1,21 @@
-<fieldset style="height: 5px; border:none;">
-  <table width="auto" align="center">
+<fieldset style="margin: 0; border: 0; padding: 0;">
+  <table class="table table-bordered">
     <thead style="display:none">
     <tr>
-      <th>Producto</th>
+      <th class="col-6">Producto</th>
       <th>Cantidad</th>
-      <th></th>
     </tr>
     </thead>
     <tbody>
     <tr>
-      <td><strong>Producto: </strong>
+      <td class="col-6">
         <%= f.select :product_id,
                      options_from_collection_for_select(@products, "id", "description", f.object.product_id)%>
       </td>
-      <td><strong style="margin-left: 20px">Cantidad: </strong>
+      <td class="col-4">
         <%= f.text_field :request_quantity, :size => 3, class: "validame" %>
       </td>
-      <td>
+      <td class="col-1">
         <%= link_to "Eliminar" do%>
           <div class=" remove_fields btn btn-link text-danger">
             <i class="fas fa-trash-alt"></i>
@@ -27,6 +26,3 @@
     </tbody>
   </table>
 </fieldset>
-<script>
-
-</script>

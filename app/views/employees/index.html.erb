@@ -11,6 +11,7 @@
   </div>
 </div>
 
+<<<<<<< .mine
 <table class="table table-striped table-hover w-100" id="datatable2">
   <thead>
   <tr>
@@ -35,7 +36,36 @@
     </th>
   </tr>
   </thead>
+||||||| .r691
+<table class="table table-striped table-hover w-100">
+  <thead>
+  <tr>
+  <tr>
+    <th class="text-center">
+      <strong>NOMBRE Y APELLIDO</strong>
+    </th>
+    <th class="text-center">
+      <strong>C.I.</strong>
+    </th>
+    <th class="text-center">
+      <strong>E-MAIL</strong>
+    </th>
+    <th class="text-center">
+      <strong>TELÉFONO</strong>
+    </th>
+    <th>
+      <strong></strong>
+    </th>
+  </tr>
+  </thead>
+=======
+<div class="card card-body bg-light">
+  <%= puts @filterrific.inspect %>
+  <%= form_for_filterrific @filterrific do |f| %>
+    <div class="form-group row">
+>>>>>>> .r703
 
+<<<<<<< .mine
   <tbody>
   <% @employee.each do |employee| %>
     <tr>
@@ -45,24 +75,41 @@
       <td><%= Person.find_by(id: employee.person_id).email %></td>
       <td><%= Person.find_by(id: employee.person_id).phone %></td>
       <!--td><%#= Person.find_by(id: client.person_id).address %></td-->
+||||||| .r691
+  <tbody>
+  <% @employee.each do |employee| %>
+    <tr>
+      <td><%= Person.find_by(id: employee.person_id).name %></td>
+      <td><%= employee.ci %></td>
+      <td><%= Person.find_by(id: employee.person_id).email %></td>
+      <td><%= Person.find_by(id: employee.person_id).phone %></td>
+      <!--td><%#= Person.find_by(id: client.person_id).address %></td-->
+=======
+      <div class="col-4">
+        <label class="font-weight-bold">Buscar</label>
+        <%= f.text_field :search_query,
+                         :class => 'filterrific-periodically-observed form-control' %>
+      </div>
+>>>>>>> .r703
 
-      <td class="text-center">
-        <div class="btn-group" role="group">
-          <%= link_to employee do %>
-            <button class="btn btn-sm btn-secondary"><i class="fas fa-search"></i></button>
-          <% end %>
-          <%= link_to edit_employee_path(employee) do %>
-            <button class="btn btn-sm btn-secondary"><i class="fas fa-edit"></i></button>
-          <% end %>
-          <%= link_to employee, method: :delete, data: { confirm: '¿Estás seguro?' },
-                      :remote => true, :class => 'delete_employee' do %>
-            <button class="btn btn-sm btn-secondary"><i class="fas fa-trash-alt"></i></button>
-          <% end %>
+      <div>
+        <div class="col-12">
+          <label class="font-weight-bold">Ordenar por</label>
+          <%= f.select :sorted_by,
+                       @filterrific.select_options[:sorted_by],
+                       {},
+                       {:class => 'form-control'}
+          %>
         </div>
-      </td>
+      </div>
 
-    </tr>
+    </div>
   <% end %>
-  </tbody>
+</div>
 
-</table>
+<div id="results">
+  <%= render(
+          partial: 'employees/list',
+          locals: {employee: @employee}
+      ) %>
+</div>

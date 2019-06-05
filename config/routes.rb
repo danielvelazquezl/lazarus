@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  get 'errors/internal_server_error'
+  get 'errors/not_found'
+  get 'errors/unprocessable_entity'
+
   resources :purchase_invoices
   resources :banks
   resources :budget_requests

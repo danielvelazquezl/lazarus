@@ -133,17 +133,13 @@ class MovementProof < ApplicationRecord
 
   def self.options_for_sorted_by
     [
-        ['Deposito (a-z)', 'deposit_asc'],
-        ['Deposito (z-a)', 'deposit_desc'],
-        ['Encargado (a-z)', 'person_asc'],
-        ['Encargado (z-a)', 'person_desc'],
-        ['Fecha (newest first)', 'created_at_desc'],
-        ['Fecha (oldest first)', 'created_at_asc']
+        ['Deposito (ascendente)', 'deposit_asc'],
+        ['Deposito (descendente)', 'deposit_desc'],
+        ['Encargado (ascendente)', 'person_asc'],
+        ['Encargado (descendente)', 'person_desc'],
+        ['Fecha (recientes primero)', 'created_at_desc'],
+        ['Fecha (viejos primero)', 'created_at_asc']
     ]
-  end
-
-  def decorated_created_at
-    created_at.to_date.to_s(:long)
   end
 
 end

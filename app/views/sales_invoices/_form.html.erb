@@ -1,7 +1,14 @@
 <%= form_with(model: sales_invoice, local: true) do |form| %>
   <% if sales_invoice.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(sales_invoice.errors.count, "error") %> prohibited this sales_invoice from being saved:</h2>
+      <h2>
+      <%= pluralize(sales_invoice.errors.count, "error") %>
+      <% if sales_invoice.errors.count > 1 %>
+        impidieron que esta factura de venta sea guardada:
+      <% else %> 
+        impidió que esta factura de venta sea guardada:
+      <% end %>
+      </h2>
       <ul>
         <% sales_invoice.errors.full_messages.each do |message| %>
           <li><%= message %></li>

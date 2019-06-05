@@ -1,26 +1,30 @@
 <fieldset style="height: 5px">
   <table>
     <thead style="display:none">
-    <tr>
-      <th class="col-6">Producto</th>
-      <th>Cantidad</th>
-    </tr>
+      <tr>
+        <th class="col-6">Producto</th>
+        <th>Cantidad</th>
+      </tr>
     </thead>
     <tbody>
-    <tr>
-      <td class="col-7">
-        <%= f.select :component_id,
-                     options_from_collection_for_select(Product.where(product_type: :component), "id", "description", f.object.component_id),{},
-                     {class:'component-select',prompt: "Seleccionar"} %>
-      </td>
-      <td class="col-3">
-        <%= f.text_field :quantity, class: "validate form-control-sm form-control" %>
-      </td>
-      <td class="col">
-        <%= link_to "Eliminar",'#',class: "remove_fields" %>
-      </td>
-
-    </tr>
+      <tr>
+        <td class="col-5">
+          <%= f.select :component_id,
+            options_from_collection_for_select(Product.where(product_type: :component), "id", "description", f.object.component_id),{},
+            {class:'component-select',prompt: "Seleccionar"} %>
+        </td>
+        <td class="col-3">
+          <%= f.text_field :quantity, class: "validame form-control-sm form-control" %>
+        </td>
+        <td></td>
+        <td class="col">
+          <%= link_to "Eliminar" do%>
+            <div class=" remove_fields btn btn-link text-danger">
+              <i class="fas fa-trash-alt"></i>
+            </div>
+          <%end %>
+        </td>
+      </tr>
     </tbody>
   </table>
 </fieldset>

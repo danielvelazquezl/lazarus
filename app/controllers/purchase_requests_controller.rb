@@ -49,7 +49,7 @@ class PurchaseRequestsController < ApplicationController
       if @purchase_request.update(purchase_request_params)
         purchase_request = PurchaseRequest.find_by(id: @purchase_request.id)
         purchase_request.update_attribute(:state, PurchaseRequest.state.generated)
-        format.html { redirect_to edit_purchase_request_path, notice: 'Purchase request was successfully updated.' }
+        format.html { redirect_to edit_purchase_request_path, notice: 'Cotizaciones generadas.' }
         format.json { render :show, status: :ok, location: @purchase_request }
       else
         format.html { render :edit }

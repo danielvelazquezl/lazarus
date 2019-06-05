@@ -1,7 +1,14 @@
 <%= form_with(model: product, local: true, html: { id: "product_form" }) do |form| %>
   <% if product.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(product.errors.count, "error") %> prohibited this product from being saved:</h2>
+      <h2>
+      <%= pluralize(product.errors.count, "error") %> 
+      <% if product.errors.count > 1 %>
+        impidieron que este producto sea guardado:
+      <% else %>
+        impidió que este producto sea guardado:
+      <% end %>
+      </h2>
 
       <ul>
         <% product.errors.full_messages.each do |message| %>
@@ -76,7 +83,6 @@
           <th></th>
         </tr>
         </thead>
-
       </table>
       <%= form.fields_for :product_items, @product_items do |f| %>
         <%= render 'product_item', f: f %>
@@ -101,21 +107,18 @@
         <%end %>
     </div>
   </div>
-
-
 <% end %>
 
 <script type="text/javascript">
   <%= render "validate.js" %>
   <%= render "selects.js" %>
 
-
   //para agregar selectize a detalles de producto terminado
   $(document).on('click','.add_fields',function (e) {
-      $('fieldset').last().children().children().last().children().first().children().first().children().first().selectize({
-          create: false,
-          sortField: 'text'
-      });
+    $('fieldset').last().children().children().last().children().first().children().first().children().first().selectize({
+      create: false,
+      sortField: 'text'
+    });
   });
 </script>
 

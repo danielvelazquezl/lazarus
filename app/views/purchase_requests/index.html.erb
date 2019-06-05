@@ -29,12 +29,24 @@
     <tr>
       <td><%= purchase_request.date.strftime("%d-%m-%Y") %></td>
       <td><%= purchase_request.employee.person.name %></td>
-      <td><%= purchase_request.state.text %></td>
+      <% if purchase_request.state == :generated %>
+        <td>
+          <div class="badge badge-success">
+            <%=purchase_request.state.text%>
+          </div>
+        </td>
+      <%else %>
+        <td>
+          <div class="badge badge-danger">
+            <%=purchase_request.state.text%>
+          </div>
+        </td>
+      <%end %>
       <td><%= purchase_request.comment %></td>
       <td class="text-center">
         <div class="btn-group" role="group">
           <%= link_to edit_purchase_request_path(purchase_request) do%>
-            <button class="btn btn-sm btn-secondary"><i class="fas fa-edit"></i></button>
+            <button class="btn btn-sm btn-secondary"><i class="fas fa-search"></i></button>
           <%end %>
         </div>
       </td>

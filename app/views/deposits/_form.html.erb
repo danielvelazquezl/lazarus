@@ -1,8 +1,14 @@
 <%= form_with model: @deposit, local: true, html: { id: "deposit_form" } do |form| %>
   <% if @deposit.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@deposit.errors.count, "error") %> prohibited this deposit from being saved:</h2>
-
+      <h2>
+      <%= pluralize(@deposit.errors.count, "error") %> 
+      <% if @deposit.errors.count > 1 %>
+        impidieron que este depósito sea guardado:
+      <% else %>
+        impidió que este depósito sea guardado:
+      <% end %>
+      </h2>
       <ul>
       <% @deposit.errors.full_messages.each do |message| %>
         <li><%= message %></li>

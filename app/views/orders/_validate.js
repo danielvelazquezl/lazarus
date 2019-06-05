@@ -12,7 +12,7 @@ $(document).ready(function () {
     });
     $("#orders_form").validate({
         errorPlacement: function(error, element) {
-            error.insertAfter(element);
+            error.appendTo(element.parent("td").next("td"));
         },
         submitHandler: function(form) {
             form.submit();

@@ -16,14 +16,10 @@
   <%= form_for_filterrific @filterrific do |f| %>
     <div class="form-group row">
 
-      <div>
-        <div class="col-12">
-          <label class="font-weight-bold">Encargado</label>
-          <%= f.select :with_person_id,
-                       @filterrific.select_options[:with_person_id],
-                       {:include_blank => '- Todos -'},
-                       {:class => 'form-control'} %>
-        </div>
+      <div class="col-4">
+        <label class="font-weight-bold">Buscar</label>
+        <%= f.text_field :search_query,
+                         :class => 'filterrific-periodically-observed form-control' %>
       </div>
 
       <div>

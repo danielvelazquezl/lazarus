@@ -6,22 +6,14 @@ $.validator.addMethod("minQuantity", $.validator.methods.min,
     $.validator.format("Cantidad debe ser mayor a 0."));
 
 $(document).ready(function () {
-    jQuery.validator.addClassRules("validate", {
+    jQuery.validator.addClassRules("validame", {
         quantityRequired: true,
         quantityPositive: true,
         minQuantity: 1
     });
     $("#product_form").validate({
         errorPlacement: function(error, element) {
-            error.insertAfter(element);
-        },
-        rules : {
-            "product[description]": {
-                required: true
-            }
-        },
-        messages: {
-            "product[description]": "Campo obligatorio."
+            error.appendTo(element.parent("td").next("td"));
         },
         submitHandler: function() {
             $("#product_form").get(0).submit(1);

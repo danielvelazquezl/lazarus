@@ -32,8 +32,8 @@
     <th class="text-center">
       <strong>COMENTARIO</strong>
     </th>
-    <th>
-      <strong></strong>
+    <th class="text-center">
+      <strong>ACCIONES</strong>
     </th>
 
   </tr>
@@ -44,13 +44,13 @@
       <td class="text-center"><%= Person.find_by(id: movement_proof.person_id).name %></td>
       <td class="text-center"><%= movement_proof.deposit.description %></td>
       <td class="text-center"><%= movement_proof.movement_type.description %></td>
-      <td class="text-center"><%= movement_proof.date.to_datetime.to_s(:long) %></td>
+      <td class="text-center"><%= l(movement_proof.date.to_datetime, format: :long) %></td>
       <td class="text-center"><%= movement_proof.comment %></td>
 
       <td class="text-center">
         <div class="btn-group" role="group">
           <%= link_to movement_proof do %>
-            <button class="btn btn-sm btn-secondary"><i class="fas fa-search"></i></button>
+            <button class="btn btn-sm btn-secondary"><i class="fas fa-eye"></i></button>
           <% end %>
           <%= link_to edit_movement_proof_path(movement_proof) do %>
             <button class="btn btn-sm btn-secondary"><i class="fas fa-edit"></i></button>

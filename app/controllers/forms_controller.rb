@@ -8,8 +8,7 @@ class FormsController < ApplicationController
         Form.cpuproduced_form,
         params[:filterrific],
         select_options: {
-            sorted_by: Form.options_for_sorted_by,
-            with_person_id: Person.options_for_select,
+            sorted_by: Form.options_for_sorted_by
         },
         )) || return
     @forms = @filterrific.find.page(params[:page])

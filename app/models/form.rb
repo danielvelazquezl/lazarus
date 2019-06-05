@@ -105,18 +105,14 @@ class Form < ApplicationRecord
     where('forms.date >= ?', ref_date)
   }
 
-  scope :with_state, ->(ref_date) {
-    where('forms.date >= ?', ref_date)
-  }
-
   delegate :name, :to => :person, :prefix => true
 
   def self.options_for_sorted_by
     [
-        ['Fecha (Viejos primero)', 'created_at_asc'],
-        ['Fecha (Recientes primero)', 'created_at_desc'],
-        ['Encargado (a-z)', 'person_asc'],
-        ['Encargado (z-a)', 'person_desc']
+        ['Fecha (viejos primero)', 'created_at_asc'],
+        ['Fecha (recientes primero)', 'created_at_desc'],
+        ['Encargado (ascendente)', 'person_asc'],
+        ['Encargado (descendente)', 'person_desc']
     ]
   end
 end

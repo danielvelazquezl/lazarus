@@ -1,10 +1,23 @@
 class SalesInvoicesController < ApplicationController
   before_action :set_sales_invoice, only: [:show, :edit, :update, :destroy]
+  load_and_authorize_resource
 
   # GET /sales_invoices
   # GET /sales_invoices.json
   def index
-    @sales_invoices = SalesInvoice.all
+    (@filterrific = initialize_filterrific(
+      SalesInvoice,
+      params[:filterrific],
+      select_options: {
+          sorted_by: SalesInvoice.options_for_sorted_by
+      },
+      )) || return
+    @sales_invoices = @filterrific.find.page(params[:page])
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   # GET /sales_invoices/1
@@ -39,7 +52,7 @@ class SalesInvoicesController < ApplicationController
 
       else
         respond_to do |format|
-          format.html {redirect_to new_sales_invoice_path, notice: 'Nota de pedido no encontrada.'}
+          format.html {redirect_to new_sales_invoice_path, alert: 'Nota de pedido no encontrada.'}
           format.json {render json: @sales_invoice.errors, status: :unprocessable_entity}
         end
       end

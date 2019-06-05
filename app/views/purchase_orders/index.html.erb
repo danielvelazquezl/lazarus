@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <div class="content-heading">
   <div> Ordenes de Compras</div>
   <div class="ml-auto">
@@ -41,10 +39,30 @@
       <td><%= order.provider.person.name %></td>
       <td><%= order.employee.person.name %></td>
       <td><%= order.date.strftime("%d-%m-%Y")%></td>
-      <td><%= order.state %></td>
+      <% if order.state == :invoiced %>
+        <td>
+          <div class="badge badge-success">
+            <%=order.state.text%>
+          </div>
+        </td>
+      <%else %>
+          <% if  order.state == :received%>
+            <td>
+              <div class="badge badge-warning">
+                <%=order.state.text%>
+              </div>
+            </td>
+          <%else %>
+            <td>
+              <div class="badge badge-danger">
+                <%=order.state.text%>
+              </div>
+            </td>
+          <%end %>
+      <%end %>
       <td>
         <div class="btn-group" role="group">
-          <%= link_to new_purchase_order_path(order) do %>
+          <%= link_to edit_purchase_order_path(order) do %>
             <button class="btn btn-sm btn-secondary"><i class="fas fa-edit"></i></button>
           <% end %>
         </div>

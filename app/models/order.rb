@@ -95,7 +95,6 @@ class Order < ApplicationRecord
                   sorted_by
                   search_query
                   with_created_at_gte
-                  with_person_id
                 ]
 
     # default for will_paginate
@@ -164,12 +163,12 @@ class Order < ApplicationRecord
 
     def self.options_for_sorted_by
         [
-            ['Fecha Pedido (Viejos primero)', 'created_at_asc'],
-            ['Fecha Pedido (Recientes primero)', 'created_at_desc'],
-            ['Fecha Finalizado (Viejos primero)', 'finished_at_asc'],
-            ['Fecha Finalizado (Recientes primero)', 'finished_at_desc'],
-            ['Encargado (a-z)', 'person_asc'],
-            ['Encargado (z-a)', 'person_desc']
+            ['Fecha Pedido (viejos primero)', 'created_at_asc'],
+            ['Fecha Pedido (recientes primero)', 'created_at_desc'],
+            ['Fecha Finalizado (viejos primero)', 'finished_at_asc'],
+            ['Fecha Finalizado (recientes primero)', 'finished_at_desc'],
+            ['Encargado (ascendente)', 'person_asc'],
+            ['Encargado (descendente)', 'person_desc']
         ]
     end
 

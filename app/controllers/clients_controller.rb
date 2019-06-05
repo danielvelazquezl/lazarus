@@ -1,10 +1,25 @@
 class ClientsController < ApplicationController
   before_action :set_client, only: [:show, :edit, :update, :destroy]
+  rescue_from ActiveRecord::RecordNotFound, with: :handle_record_not_found
+  
   def index
-    @client = Client.all
+    (@filterrific = initialize_filterrific(
+        Client,
+        params[:filterrific],
+        select_options: {
+            sorted_by: Client.options_for_sorted_by
+        },
+        )) || return
+    @client = @filterrific.find.page(params[:page])
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def show
+    @client = Client.find(params[:id])
   end
 
   def new
@@ -22,7 +37,7 @@ class ClientsController < ApplicationController
           format.html { redirect_to @client, notice: 'Cliente guardado' }
         else
           @person.destroy
-          format.html { render :new, notice: 'No se pudo guardar el nuevo cliente' }
+          format.html { render :new, alert: 'No se pudo guardar el nuevo cliente' }
         end
       end
 
@@ -54,7 +69,6 @@ class ClientsController < ApplicationController
       format.js { render :layout => false }
     end
   end
-
 
   private
     def set_client

@@ -1,7 +1,14 @@
 <%= form_with model: @role, local: true do |form| %>
   <% if @role.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@role.errors.count, "error") %> prohibited this role from being saved:</h2>
+      <h2>
+      <%= pluralize(@role.errors.count, "error") %> 
+      <% if @role.errors.count > 1 %>
+        impidieron que este rol sea guardado:
+      <% else %>
+        impidió que este rol sea guardado:
+      <% end %>
+      </h2>
 
       <ul>
         <% @role.errors.full_messages.each do |message| %>
@@ -16,8 +23,13 @@
     <%= form.text_field :name%>
   </div>
 
-  <div class="actions">
-    <%= form.submit%>
+  <div class="row">
+
+    <div class="col-2">
+      <%= form.submit 'Guardar', class: "btn btn-success" %>
+    </div>
+    <div class="col"></div>
   </div>
+
 <% end %>
 

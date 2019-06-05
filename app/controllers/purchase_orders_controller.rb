@@ -18,11 +18,11 @@ class PurchaseOrdersController < ApplicationController
     if params[:request_number].present? then
       @purchaseRqst = PurchaseRequest.find_by(number: params[:request_number])
       if @purchaseRqst != nil
-        @purchase_order.state = :sent
+        @purchase_order.state = :created
         @budget_items = BudgetRequest.get_cheapest_items(@purchaseRqst)
       else
         respond_to do |format|
-          format.html {redirect_to new_purchase_order_path, notice: 'Pedido de compra no encontrada.'}
+          format.html {redirect_to new_purchase_order_path, alert: 'Pedido de compra no encontrada.'}
           format.json {render json: @purchase_order.errors, status: :unprocessable_entity}
         end
       end
@@ -63,7 +63,7 @@ class PurchaseOrdersController < ApplicationController
   def update
     respond_to do |format|
       if @purchase_order.update(purchase_order_params)
-        format.html { redirect_to @purchase_order, notice: 'Purchase order was successfully updated.' }
+        format.html { redirect_to edit_purchase_order_path, notice: 'Orden de compra actualizada' }
         format.json { render :show, status: :ok, location: @purchase_order }
       else
         format.html { render :edit }

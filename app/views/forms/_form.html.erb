@@ -1,8 +1,14 @@
 <%= form_with model: @form, local: true, html: { id: "form_movimiento" } do |fo| %>
   <% if @form.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(@form.errors.count, "error") %> prohibited this form from being saved:</h2>
-
+      <h2>
+      <%= pluralize(@form.errors.count, "error") %> 
+      <% if @form.errors.count > 1 %>
+        impidieron que este formulario sea guardado:
+      <% else %>
+        impidió que este formulario sea guardado:
+      <% end %>
+      </h2>
       <ul>
         <% @form.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -74,11 +80,18 @@
 
   <div class="card card-default">
     <div class="card-body">
-      <div class="table-responsive">
-        <%= fo.fields_for :form_items, @form_items do |f| %>
-          <%= render 'form_item', f: f %>
-        <% end %>
-      </div>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th></th>
+          </tr>
+        </thead>
+      </table>
+      <%= fo.fields_for :form_items, @form_items do |f| %>
+        <%= render 'form_item', f: f %>
+      <% end %>
       <%= link_to_add_fields "Agregar Producto", fo, :form_items %>
     </div>
   </div>
@@ -91,7 +104,15 @@
   </div>
 <% end %>
 
-<script type="text/javascript" >
+<script type="text/javascript">
   <%= render "validate.js" %>
   <%= render "selects.js" %>
+
+  //para agregar selectize a detalles de producto terminado
+  $(document).on('click','.add_fields',function (e) {
+      $('fieldset').last().children().children().last().children().first().children().first().children().first().selectize({
+          create: false,
+          sortField: 'text'
+      });
+  });
 </script>

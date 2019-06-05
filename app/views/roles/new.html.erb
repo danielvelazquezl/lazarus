@@ -1,5 +1,16 @@
-<h1>Cargar Role</h1>
+<p></p>
+<div class="content-heading">
+  <div class="text-align-right">
+    <%= link_to  roles_path do%>
+      <button class="btn btn-secondary">
+        <i class="fas fa-arrow-left text-primary fa-1x"></i>
+      </button>
+    <%end %>
+  </div>
+  <div>Crear Nuevo Role
+  </div>
+</div>
+
 
 <%= render 'form', role: @role%>
 
-<%= link_to 'Volver', roles_path %>

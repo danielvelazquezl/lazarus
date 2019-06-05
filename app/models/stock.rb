@@ -106,10 +106,10 @@ class Stock < ApplicationRecord
 
   def self.options_for_sorted_by
     [
-        ['Deposito (a-z)', 'deposit_asc'],
-        ['Deposito (z-a)', 'deposit_desc'],
-        ['Producto (a-z)', 'product_asc'],
-        ['Producto (z-a)', 'product_desc']
+        ['Deposito (ascendente)', 'deposit_asc'],
+        ['Deposito (descendente)', 'deposit_desc'],
+        ['Producto (ascendente)', 'product_asc'],
+        ['Producto (descendente)', 'product_desc']
     ]
   end
 end

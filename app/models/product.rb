@@ -96,10 +96,12 @@ class Product < ApplicationRecord
 
   def self.options_for_sorted_by
     [
-        ['Nombre (a-z)', 'description_asc'],
-        ['Nombre (z-a)', 'description_desc'],
-        ['Marca (a-z)', 'brand_asc'],
-        ['Marca (z-a)', 'brand_desc']
+        ['Nombre (ascendente)', 'description_asc'],
+        ['Nombre (descendente)', 'description_desc'],
+        ['Marca (ascendente)', 'brand_asc'],
+        ['Marca (descendente)', 'brand_desc'],
+        ['Categoria (ascendente)', 'product_category_asc'],
+        ['Categoria (descendente)', 'product_category_desc']        
     ]
   end
 

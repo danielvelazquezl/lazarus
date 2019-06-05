@@ -2,7 +2,14 @@
 
   <% if provider.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(provider.errors.count, "error") %> prohibited this provider from being saved:</h2>
+      <h2>
+      <%= pluralize(provider.errors.count, "error") %> 
+      <% if provider.errors.count > 1 %>
+        impidieron que este proveedor sea guardado:
+      <% else %>
+        impidió que este proveedor sea guardado:
+      <% end %>
+      </h2>
       <ul>
         <% provider.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -62,12 +69,18 @@
 
   <div class="card card-default">
     <div class="card-body">
-      <p class="lead bb">Categorias que provee</p>
-      <div class="table-responsive">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Categorias que provee</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+      </table>
         <%= form.fields_for :provider_categories, @provider_categories do |f| %>
           <%= render 'provider_category', f: f %>
         <% end %>
-      </div>
       <%= link_to_add_fields "Agregar Categoria", form, :provider_categories %>
     </div>
   </div>
@@ -81,4 +94,5 @@
 <% end %>
 <script>
     <%= render "validate.js" %>
+    <%= render "select.js" %>
 </script>

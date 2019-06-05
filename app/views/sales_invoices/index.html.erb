@@ -9,41 +9,29 @@
   </div>
 </div>
 
-<table class="table table-striped table-hover w-100" id="datatable2">
-  <thead>
-  <tr>
-    <th>
-      <strong>N° FACTURA</strong>
-    </th>
-    <th>
-      <strong>CLIENTE</strong>
-    </th>
-    <th>
-      <strong>FECHA</strong>
-    </th>
-    <th>
-      <strong>TOTAL</strong>
-    </th>
-    <th>
-      <strong>ACCION</strong>
-    </th>
-  </tr>
-  </thead>
-  <tbody>
-  <% @sales_invoices.each do |sales| %>
-    <tr>
-      <td><%= sales.invoice_number %></td>
-      <td><%= sales.client.person.name %></td>
-      <td><%= sales.date.strftime("%d-%m-%Y")%></td>
-      <td><%= sales.total %></td>
-      <td>
-        <div class="btn-group" role="group">
-          <%= link_to edit_sales_invoice_path(sales) do %>
-            <button class="btn btn-sm btn-secondary"><i class="fas fa-edit"></i></button>
-          <% end %>
+<div class="card card-body bg-light">
+  <%= puts @filterrific.inspect %>
+  <%= form_for_filterrific @filterrific do |f| %>
+    <div class="form-group row">
+
+      <div>
+        <div class="col-12">
+          <label class="font-weight-bold">Ordenar por</label>
+          <%= f.select :sorted_by,
+                       @filterrific.select_options[:sorted_by],
+                       {},
+                       {:class => 'form-control'}
+          %>
         </div>
-      </td>
-    </tr>
+      </div>
+
+    </div>
   <% end %>
-  </tbody>
-</table>
+</div>
+
+<div id="results">
+  <%= render(
+          partial: 'sales_invoices/list',
+          locals: {sales_invoices: @sales_invoices}
+      ) %>
+</div>

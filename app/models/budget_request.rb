@@ -11,7 +11,7 @@ class BudgetRequest < ApplicationRecord
 
 
   def self.get_cheapest_items(purchase_request)
-    budget_requests = BudgetRequest.where(purchase_request_id: purchase_request.id)
+    budget_requests = BudgetRequest.where("purchase_request_id = ? and state = ?", purchase_request.id, :finished)
     budget_items = []
     budget_requests.each do |item|
       budget_items.concat( BudgetRequestItem.joins(:budget_request).where("budget_request_id = ?", item.id))

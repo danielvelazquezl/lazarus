@@ -1,8 +1,14 @@
-<%= form_with(model: movement_proof, local: true, html: { id: "movement_form" }) do |form| %>
+rail<%= form_with(model: movement_proof, local: true, html: { id: "movement_form" }) do |form| %>
   <% if movement_proof.errors.any? %>
     <div id="error_explanation">
-      <h2><%= pluralize(movement_proof.errors.count, "error") %> Prohibio este movimiento de ser guardado:</h2>
-
+      <h2>
+      <%= pluralize(movement_proof.errors.count, "error") %> 
+      <% if movement_proof.errors.count > 1 %>
+        impidieron que este movimiento sea guardado:
+      <% else %>
+        impidió que este movimiento sea guardado:
+      <% end %>
+      </h2>
       <ul>
         <% movement_proof.errors.full_messages.each do |message| %>
           <li><%= message %></li>
@@ -16,55 +22,61 @@
   </div>
 
   <div class="card card-default">
-    <div role="tabpanel" class="ie-fix-flex">
-      <div class="tab-content">
-
-        <div class="tab-pane active" id="edit" role="tabpanel">
-
-          <div class="form-group row">
-            <label class="col-lg-2 col-form-label">Encargado:</label>
-            <div class="col-lg-10">
-              <%#= <input class="form-control" type="text" placeholder="Product name.." />%>
-              <%= form.select :person_id, options_from_collection_for_select(Person.all, "id", "name", form.object.person_id), prompt: "Seleccionar" %>
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label class="col-lg-2 col-form-label">Ubicación:</label>
-            <div class="col-lg-10">
-              <%#=<textarea class="form-control" cols="5" placeholder="Short description.."></textarea> %>
-              <%= form.select :deposit_id, options_from_collection_for_select(Deposit.all, "id", "description", form.object.deposit_id), prompt: "Seleccionar" %>
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label class="col-lg-2 col-form-label">Motivo:</label>
-            <div class="col-lg-10">
-              <%#= <input class="form-control" type="text" placeholder="$ 123.20" />%>
-              <%= form.select :movement_type_id, options_from_collection_for_select(MovementType.all, "id", "description", form.object.movement_type_id), prompt: "Seleccionar" %>
-            </div>
-          </div>
-
-          <div class="form-group row">
-            <label class="col-lg-2 col-form-label">Descripcion:</label>
-            <div class="col-lg-10">
-              <%#= <input class="form-control" type="text" placeholder="Product name.." />%>
-              <%= form.text_field :comment, class: 'form-control' %>
-            </div>
-          </div>
-
+    <div class="card-body">
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Encargado:</strong>
+        </div>
+        <div class="col-4">
+          <%= form.select :person_id,
+            options_from_collection_for_select(Person.all, "id", "name", form.object.person_id), 
+            class: "custom-select custom-select-sm" %>
+        </div>
+        <div class="col-2">
+          <strong>Ubicación:</strong>
+        </div>
+        <div class="col-4">
+          <%= form.select :deposit_id,
+            options_from_collection_for_select(Deposit.all, "id", "description", form.object.deposit_id),
+            class: "custom-select custom-select-sm"%>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Motivo:</strong>
+        </div>
+        <div class="col-4">
+          <%= form.select :movement_type_id, 
+          options_from_collection_for_select(MovementType.all, "id", "description", form.object.movement_type_id), 
+          class: "custom-select custom-select-sm", prompt: "Seleccionar" %>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Descripción:</strong>
+        </div>
+        <div class="col">
+          <%= form.text_field :description, class: 'form-control form-control-sm' %>
         </div>
       </div>
     </div>
   </div>
+
   <div class="card card-default">
-    <div class="row">
-      <div class="col">
-        <%= form.fields_for :movement_proof_details, @fmovement_proof_details do |f| %>
-          <%= render 'movement_proof_detail', f: f %>
-        <% end %>
-        <%= link_to_add_fields "Agregar Producto", form, :movement_proof_details %>
-      </div>
+    <div class="card-body">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Producto</th>
+            <th>Cantidad</th>
+            <th></th>
+          </tr>
+        </thead>
+      </table>
+      <%= form.fields_for :movement_proof_details, @movement_proof_details do |f| %>
+        <%= render 'movement_proof_detail', f: f %>
+      <% end %>
+      <%= link_to_add_fields "Agregar Producto", form, :movement_proof_details %>
     </div>
   </div>
 
@@ -75,6 +87,16 @@
     </div>
   </div>
 <% end %>
-<script>
+
+<script type="text/javascript">
   <%= render "validate.js" %>
+  <%= render "select.js" %>
+
+  //para agregar selectize a detalles de producto terminado
+  $(document).on('click','.add_fields',function (e) {
+    $('fieldset').last().children().children().last().children().first().children().first().children().first().selectize({
+      create: false,
+      sortField: 'text'
+    });
+  });
 </script>

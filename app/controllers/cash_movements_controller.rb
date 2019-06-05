@@ -1,5 +1,7 @@
 class CashMovementsController < ApplicationController
   before_action :set_cash_movement, only: [:show]
+  #load_and_authorize_resource
+
   def index
     @cash_movements = CashMovement.all
   end
@@ -25,6 +27,25 @@ class CashMovementsController < ApplicationController
     CashMovement.transaction do
       @cash_movement = CashMovement.new(cash_movement_params)
       @cash_movement.save
+      #Suponiendo que 1 es efectivo, 2 cheque, 3 tarjeta credito
+
+      total_bill = OpenCloseCash.amount_open_cashes_bill(@cash_movement.cash_id)
+      total_check = OpenCloseCash.amount_open_cashes_check(@cash_movement.cash_id)
+      total_card = OpenCloseCash.amount_open_cashes_card(@cash_movement.cash_id)
+
+
+
+      total_bill += CashMovementValue.find_cash_mov_total_by_pay_method(@cash_movement.id,1)
+      total_check += CashMovementValue.find_cash_mov_total_by_pay_method(@cash_movement.id,2)
+      total_card += CashMovementValue.find_cash_mov_total_by_pay_method(@cash_movement.id,3)
+
+
+
+      OpenCloseCash.update_open_cashes_bill(@cash_movement.cash_id,total_bill)
+      OpenCloseCash.update_open_cashes_check(@cash_movement.cash_id,total_check)
+      OpenCloseCash.update_open_cashes_card(@cash_movement.cash_id,total_card)
+
+
       #actualizar saldos de facturas a 0 (solo pago al contado)
       #SalesInvoice.where(id: params[:invoices_ids]).update_all(balance: 0)
       SalesInvoice.update_invoices_balance(params[:invoices_ids],0)
@@ -53,6 +74,6 @@ class CashMovementsController < ApplicationController
   def set_cash_movement
     @cash_movement = CashMovement.find(params[:id])
     @cash_movement_values = CashMovementValue.find_by_cash_mov(params[:id])
-
+    @cash_movement_invoices =  CashMovementInvoice.find_by_cash_mov(params[:id])
   end
 end

@@ -26,8 +26,7 @@ class OrdersController < ApplicationController
         Order.components_order,
         params[:filterrific],
         select_options: {
-            sorted_by: Order.options_for_sorted_by,
-            with_person_id: Person.options_for_select,
+            sorted_by: Order.options_for_sorted_by
         },
         )) || return
     @orders = @filterrific.find.page(params[:page])

@@ -1,7 +1,19 @@
 class EmployeesController < ApplicationController
   before_action :set_employee, only: [:show, :destroy]
   def index
-    @employee = Employee.all
+    (@filterrific = initialize_filterrific(
+        Employee,
+        params[:filterrific],
+        select_options: {
+            sorted_by: Employee.options_for_sorted_by
+        },
+        )) || return
+    @employee = @filterrific.find.page(params[:page])
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def show
