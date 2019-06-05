@@ -23,7 +23,7 @@ class Product < ApplicationRecord
   #productos con stock minimo
   scope :products_min_stock, -> { joins(:stocks).where('quantity <= min_stock') }
   #productos vendidos
-  scope :sold_products, -> { joins(:sales_invoices_item) }
+  scope :sold_products, -> { joins(:sales_invoices_item) }#uniq
 
   resourcify
 

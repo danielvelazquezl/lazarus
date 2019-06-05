@@ -1,0 +1,64 @@
+<p id="notice"><%= notice %></p>
+
+<div class="content-heading">
+  <div>Funcionarios</div>
+  <div class="ml-auto">
+    <%= link_to new_employee_path do %>
+      <button class="btn btn-secondary">
+        <i class="fas fa-plus text-primary fa-1x"></i>
+      </button>
+    <% end %>
+  </div>
+</div>
+
+<table class="table table-striped table-hover w-100">
+  <thead>
+  <tr>
+  <tr>
+    <th class="text-center">
+      <strong>NOMBRE Y APELLIDO</strong>
+    </th>
+    <th class="text-center">
+      <strong>C.I.</strong>
+    </th>
+    <th class="text-center">
+      <strong>E-MAIL</strong>
+    </th>
+    <th class="text-center">
+      <strong>TELÉFONO</strong>
+    </th>
+    <th>
+      <strong></strong>
+    </th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @employee.each do |employee| %>
+    <tr>
+      <td><%= Person.find_by(id: employee.person_id).name %></td>
+      <td><%= employee.ci %></td>
+      <td><%= Person.find_by(id: employee.person_id).email %></td>
+      <td><%= Person.find_by(id: employee.person_id).phone %></td>
+      <!--td><%#= Person.find_by(id: client.person_id).address %></td-->
+
+      <td class="text-center">
+        <div class="btn-group" role="group">
+          <%= link_to employee do %>
+            <button class="btn btn-sm btn-secondary"><i class="fas fa-search"></i></button>
+          <% end %>
+          <%= link_to edit_employee_path(employee) do %>
+            <button class="btn btn-sm btn-secondary"><i class="fas fa-edit"></i></button>
+          <% end %>
+          <%= link_to employee, method: :delete, data: { confirm: '¿Estás seguro?' },
+                      :remote => true, :class => 'delete_employee' do %>
+            <button class="btn btn-sm btn-secondary"><i class="fas fa-trash-alt"></i></button>
+          <% end %>
+        </div>
+      </td>
+
+    </tr>
+  <% end %>
+  </tbody>
+
+</table>
