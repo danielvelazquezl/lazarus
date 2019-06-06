@@ -1,18 +1,3 @@
-<div class="card card-body bg-light d-block p-3 my-3">
-  <div class="row">
-    <div class="col-md-10">
-      <div>
-        <%= page_entries_info provider, :model => 'provider', :class => 'align-middle' %>
-      </div>
-    </div>
-    <div class="col-md-2">
-      <div>
-        <%= link_to "Limpiar filtros", reset_filterrific_url, :class => 'btn btn-secondary align-middle' %>
-      </div>
-    </div>
-  </div>
-</div>
-
 <table class="table table-striped table-hover w-100" id="datatable2">
   <thead>
   <tr>
@@ -55,7 +40,7 @@
           <%= link_to edit_provider_path(provider) do %>
             <button class="btn btn-sm btn-secondary"><i class="fas fa-edit"></i></button>
           <% end %>
-          <%= link_to provider, method: :delete, data: { confirm: '¿Estás seguro?' },
+          <%= link_to provider, method: :delete, data: {confirm: '¿Estás seguro?'},
                       :remote => true, :class => 'delete_client' do %>
             <button class="btn btn-sm btn-secondary"><i class="fas fa-trash-alt"></i></button>
           <% end %>
@@ -66,4 +51,10 @@
   </tbody>
 </table>
 
-<%= will_paginate provider, renderer: WillPaginate::ActionView::BootstrapLinkRenderer  %>
+<div class="card card-body bg-gray-lighter">
+  <div>
+    <%= page_entries_info provider, :model => 'provider', :class => 'align-middle' %>
+  </div>
+</div>
+
+<%= will_paginate provider, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>

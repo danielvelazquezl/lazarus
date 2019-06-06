@@ -1,5 +1,6 @@
 class CashesController < ApplicationController
   before_action :set_cash, only: [:show, :edit, :update, :destroy]
+  load_and_authorize_resource
 
   # GET /cashes
   # GET /cashes.json
@@ -15,6 +16,7 @@ class CashesController < ApplicationController
   # GET /cashes/new
   def new
     @cash = Cash.new
+    @cash.state = false
   end
 
   # GET /cashes/1/edit
@@ -28,7 +30,7 @@ class CashesController < ApplicationController
 
     respond_to do |format|
       if @cash.save
-        format.html { redirect_to @cash, notice: 'Cash was successfully created.' }
+        format.html { redirect_to @cash, notice: 'Caja creada exitosamente.' }
         format.json { render :show, status: :created, location: @cash }
       else
         format.html { render :new }
@@ -42,7 +44,7 @@ class CashesController < ApplicationController
   def update
     respond_to do |format|
       if @cash.update(cash_params)
-        format.html { redirect_to @cash, notice: 'Cash was successfully updated.' }
+        format.html { redirect_to @cash, notice: 'Caja actualizada exitosamente.' }
         format.json { render :show, status: :ok, location: @cash }
       else
         format.html { render :edit }
@@ -56,7 +58,7 @@ class CashesController < ApplicationController
   def destroy
     @cash.destroy
     respond_to do |format|
-      format.html { redirect_to cashes_url, notice: 'Cash was successfully destroyed.' }
+      format.html { redirect_to cashes_url, notice: 'Caja fue eliminada exitosamente.' }
       format.json { head :no_content }
     end
   end

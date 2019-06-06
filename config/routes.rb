@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  get 'errors/internal_server_error'
+  get 'errors/internal_server'
   get 'errors/not_found'
   get 'errors/unprocessable_entity'
 
@@ -77,8 +77,8 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :clients
-  resources :employees
+  resources :clients, except: [:edit, :update]
+  resources :employees, except: [:edit, :update]
   resources :providers
 
   resources :users, only: [:index]

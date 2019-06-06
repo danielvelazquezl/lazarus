@@ -10,7 +10,7 @@
           </tr>
           <tr>
             <td>
-              <b><h4>Reporte</h4></b>
+              <b><strong><h4>Reporte</h4></strong></b>
               <b>Productos con Stock Mínimo</b>
             </td>
             <td>
@@ -37,19 +37,21 @@
       <table>
         <thead>
         <tr class="heading">
-          <td>Código</td>
-          <td>Producto</td>
-          <td>Cantidad mínima</td>
-          <td>Cantidad existente</td>
+          <td class="text-center">Código</td>
+          <td class="text-left">Producto</td>
+          <td class="text-center">Marca</td>
+          <td class="text-center">Cantidad mínima</td>
+          <td class="text-center">Cantidad existente</td>
         </tr>
         </thead>
         <tbody>
         <% @products.each do |product| %>
           <tr class="center">
-            <td><%= product.bar_code %></td>
-            <td><%= product.description %></td>
-            <td><%= Stock.find_by(product_id: product.id).min_stock %></td>
-            <td><%= Stock.find_by(product_id: product.id).quantity %></td>
+            <td class="text-center"><%= product.bar_code %></td>
+            <td class="text-left"><%= product.description %></td>
+            <td class="text-center"><%= Brand.find_by(id: product.brand_id).description %></td>
+            <td class="text-center"><%= Stock.find_by(product_id: product.id).min_stock %></td>
+            <td class="text-center"><%= Stock.find_by(product_id: product.id).quantity %></td>
           </tr>
         <% end %>
         </tbody>

@@ -1,0 +1,51 @@
+<table class="table table-striped table-hover " id="datatable2">
+  <thead>
+  <tr>
+  <tr class="align-content-start">
+    <th class="text-center">
+      <strong>CÓDIGO DE BARRAS</strong>
+    </th>
+    <th class="text-left">
+      <strong>PRODUCTO</strong>
+    </th>
+    <th class="text-center">
+      <strong>MARCA</strong>
+    </th>
+    <th class="text-center">
+      <strong>CANTIDAD MÍNIMA</strong>
+    </th>
+    <th class="text-center">
+      <strong>EXISTENTE</strong>
+    </th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @products.each do |product| %>
+    <tr>
+      <td class="text-center"><%= product.bar_code %></td>
+      <td class="text-left"><%= product.description %></td>
+      <td class="text-center"><%= Brand.find_by(id: product.brand_id).description %></td>
+      <td class="text-center"><%= Stock.find_by(product_id: product.id).min_stock %></td>
+      <td class="text-center"><%= Stock.find_by(product_id: product.id).quantity %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<div class="card card-body bg-light d-block p-3 my-3">
+  <div class="row">
+    <div class="col-md-10">
+      <div>
+        <%= page_entries_info products, :model => 'product', :class => 'align-middle' %>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div>
+        <%#= link_to "Limpiar filtros", reset_filterrific_url, :class => 'btn btn-secondary align-middle' %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= will_paginate products, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>

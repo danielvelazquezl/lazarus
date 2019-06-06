@@ -97,11 +97,12 @@
           <tr>
             <td><%= f.label :product_id, :value => Product.find(f.object.product_id).description %></td>
             <td><%= f.label :price, class: 'price', :value => f.object.price %></td>
-            <td><%= f.text_field :quantity, :size => 3, class: 'quantity' %></td>
+            <td><%= f.label :quantity, class: 'quantity', :value => f.object.quantity %></td>
             <td><%= f.label :sub_total, class: 'sub_total', :value => f.object.price * f.object.quantity %></td>
 
             <%= f.hidden_field :product_id %>
             <%= f.hidden_field :price %>
+            <%= f.hidden_field :quantity %>
             <%= f.hidden_field :sub_total %>
             <%= f.hidden_field :iva %>
             <%= f.hidden_field :purchase_invoice_id %>
@@ -137,18 +138,6 @@
             total += parseInt($(this).text());
         });
         $("#total").text('Total: ' + total);
-
-        $(".quantity").change(function (event) {
-            let quantity = $(event.target).val();
-            let price = $(event.target).parent().siblings().children(".price").text();
-            $(event.target).parent().siblings().children(".sub_total").text(price * quantity);
-
-            let total = 0;
-            $(".sub_total").each(function () {
-                total += parseInt($(this).text());
-            });
-            $("#total").text('Total: ' + total);
-
-        });
+        
     })
 </script>

@@ -1,7 +1,6 @@
-<p></p>
 <div class="content-heading">
   <div class="col-8">Productos vendidos</div>
-  <div class="text-align-right">
+  <div class="ml-auto">
     <%= link_to reports_sold_products_url(@products, :format => :pdf) do %>
       <button class="btn btn-secondary">
         <i class="fas fa-print text-primary fa-1x"></i> Imprimir PDF
@@ -33,7 +32,7 @@
 </div>
 <div id="results">
   <%= render(
-          partial: 'reports/list',
+          partial: 'reports/sold',
           locals: {products: @products}
       ) %>
 </div>

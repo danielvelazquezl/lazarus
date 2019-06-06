@@ -6,6 +6,7 @@ class Product < ApplicationRecord
   belongs_to :brand
   belongs_to :product_category
   has_many :sales_invoices_item
+  has_many :purchase_invoice_items
   has_one_attached :image
 
   accepts_nested_attributes_for :product_items, :allow_destroy => true
@@ -23,7 +24,9 @@ class Product < ApplicationRecord
   #productos con stock minimo
   scope :products_min_stock, -> { joins(:stocks).where('quantity <= min_stock') }
   #productos vendidos
-  scope :sold_products, -> { joins(:sales_invoices_item) }#uniq
+  scope :sold_products, -> { joins(:sales_invoices_item) }
+  #productos comprados
+  scope :purchased_products, -> { joins(:purchase_invoice_items) }
 
   resourcify
 
@@ -41,7 +44,7 @@ class Product < ApplicationRecord
   scope :search_query, ->(query) {
     return nil if query.blank?
     # condition query, parse into individual keywords
-    terms = query.downcase.split(/\s+/)
+    terms = query.to_s.downcase.split(/\s+/)
     # replace "*" with "%" for wildcard searches,
     # append '%', remove duplicate '%'s
     terms = terms.map {|e|
@@ -50,7 +53,7 @@ class Product < ApplicationRecord
     # configure number of OR conditions for provision
     # of interpolation arguments. Adjust this if you
     # change the number of OR conditions.
-    num_or_conditions = 5
+    num_or_conditions = 4
     where(
         terms.map {
           or_clauses = [

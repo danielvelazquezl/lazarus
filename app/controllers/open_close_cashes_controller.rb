@@ -1,10 +1,11 @@
 class OpenCloseCashesController < ApplicationController
   before_action :set_open_close_cash, only: [:show, :edit, :update, :destroy]
+  load_and_authorize_resource
 
   # GET /open_close_cashes
   # GET /open_close_cashes.json
   def index
-    @open_close_cashes = OpenCloseCash.all_open
+    @open_close_cashes = OpenCloseCash.all
   end
 
   # GET /open_close_cashes/1
@@ -15,10 +16,14 @@ class OpenCloseCashesController < ApplicationController
   # GET /open_close_cashes/new
   def new
     @open_close_cash = OpenCloseCash.new
+    @open_cashes = Cash.all_open
+    @closed_cashes = Cash.all_close
   end
 
   # GET /open_close_cashes/1/edit
   def edit
+    @open_cashes = Cash.all_open
+    @closed_cashes = Cash.all_close
   end
 
   # POST /open_close_cashes
@@ -29,6 +34,7 @@ class OpenCloseCashesController < ApplicationController
     respond_to do |format|
       if @open_close_cash.save
         @open_close_cash.cash.state = true
+        @open_close_cash.final_ammount = @open_close_cash.start_ammount
         @open_close_cash.cash.save
         format.html { redirect_to open_close_cashes_path, notice: 'Apertura de caja concretada' }
         format.json { render :show, status: :created, location: @open_close_cash }
@@ -44,8 +50,12 @@ class OpenCloseCashesController < ApplicationController
   def update
     respond_to do |format|
       if @open_close_cash.update(open_close_cash_params)
+        #se cierra caja
         @open_close_cash.cash.state = false
+        #cierre de caja
+        @open_close_cash.state = false
         @open_close_cash.cash.save
+        @open_close_cash.save
         format.html { redirect_to open_close_cashes_path, notice: 'Cierre de caja concretada' }
         format.json { render :show, status: :ok, location: @open_close_cash }
       else
@@ -73,6 +83,6 @@ class OpenCloseCashesController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def open_close_cash_params
-      params.require(:open_close_cash).permit(:employee_id, :start_ammount, :date_start, :final_ammount, :final_date,:cash_id, :state)
+      params.require(:open_close_cash).permit(:employee_id, :start_ammount, :date_start, :final_ammount, :final_date,:cash_id, :state, :balance)
     end
 end

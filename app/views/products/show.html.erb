@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <div class="content-heading">
   <div class="text-align-right">
     <%= link_to products_path do%>
@@ -29,12 +27,6 @@
           <div class="col-4">
             <%= @product.bar_code %>
           </div>
-          <div class="col-2">
-            <strong>Costo unitario:</strong>
-          </div>
-          <div class="col-4">
-            <%= @product.unit_cost %>
-          </div>
         </div>
 
         <div class="form-group row">
@@ -51,29 +43,34 @@
 
 <% if @product.product_type.product? %>
   <div class="card">
-    <!--<div class="card-header">Productos</div>-->
-    <div class="table-responsive">
-      <table class="table table-hover table-bordered table-striped">
-        <thead>
-          <tr>
-            <th>Componente</th>
-            <th>Cantidad</th>
-          </tr>
-        </thead>
-        <tbody>
-          <% @product.product_items.each do |m| %>
+    <div class="card-body">
+      <p class="lead bb">DETALLES</p>
+      <div class="row">
+        <div class="col"></div>
+        <div class="col-6">
+          <table class="table table-striped table-bordered table-hover">
+            <thead class="thead-dark">
             <tr>
-              <td><%= Product.find_by(id: m.component_id).description %></td>
-              <td><%= m.quantity %></td>
+              <th class="col-5">Producto</th>
+              <th class="col-1">Cantidad</th>
             </tr>
-          <%end %>
-        </tbody>
-      </table>
+            </thead>
+            <tbody id="invoices-items-table">
+              <% @product.product_items.each do |m| %>
+                <tr>
+                  <td><%= Product.find_by(id: m.component_id).description %></td>
+                  <td><%= m.quantity %></td>
+                </tr>
+              <%end %>
+            </tbody>
+          </table>
+        </div>
+        <div class="col"></div>
+      </div>
     </div>
   </div>
 <%end %>
 
-<div class="card">
   <div class="row">
     <div class="col"></div>
     <div class="col-12 col-xl-auto">
@@ -87,4 +84,3 @@
       <% end %>
     </div>
   </div>
-</div>

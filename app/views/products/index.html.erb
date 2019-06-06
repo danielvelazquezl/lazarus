@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <div class="content-heading">
 
   <div>
@@ -7,17 +5,17 @@
   </div>
 
   <div class="btn-group text-align-right col-2">
-      <%= link_to new_product_path do %>
-        <button class="btn btn-secondary" title="Crear Producto Terminado">
-          <i class="fas fa-laptop"></i>
-        </button>
-      <% end %>
+    <%= link_to new_product_path do %>
+      <button class="btn btn-secondary" title="Crear Producto Terminado">
+        <i class="fas fa-laptop"></i>
+      </button>
+    <% end %>
 
-      <%= link_to new_component_products_path do %>
-        <button class="btn btn-secondary" title="Crear Componente">
-          <i class="fas fa-memory"></i>
-        </button>
-      <% end %>
+    <%= link_to new_component_products_path do %>
+      <button class="btn btn-secondary" title="Crear Componente">
+        <i class="fas fa-memory"></i>
+      </button>
+    <% end %>
   </div>
 
   <div class="ml-auto">
@@ -70,6 +68,12 @@
         </div>
       </div>
 
+    </div>
+
+    <div class="ml-auto">
+      <div>
+        <%= link_to "Limpiar filtros", reset_filterrific_url, :class => 'btn btn-secondary align-middle' %>
+      </div>
     </div>
   <% end %>
 </div>

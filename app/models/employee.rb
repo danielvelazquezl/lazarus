@@ -20,7 +20,7 @@ class Employee < ApplicationRecord
   scope :search_query, ->(query) {
     return nil if query.blank?
     # condition query, parse into individual keywords
-    terms = query.downcase.split(/\s+/)
+    terms = query.to_s.downcase.split(/\s+/)
     # replace "*" with "%" for wildcard searches,
     # append '%', remove duplicate '%'s
     terms = terms.map {|e|
@@ -83,4 +83,14 @@ class Employee < ApplicationRecord
       ['C.I (descendente)', 'ci_desc']
     ]
   end
+
+  def self.options_for_select
+    persons = Person.arel_table
+    employees = Employee.arel_table
+    # order('LOWER(name)').map { |e| [e.name, e.id] }
+    Employee.joins(:person).order(persons[:name].lower).pluck(:name, :id)
+  end
+
+  scope :products_from_d1, -> {joins(:stocks).merge(Stock.stock_from_d1)}
+
 end

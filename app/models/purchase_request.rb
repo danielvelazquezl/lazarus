@@ -8,7 +8,8 @@ class PurchaseRequest < ApplicationRecord
 
   extend Enumerize
 
-  enumerize :state, in: [:generated, :pending]
+  enumerize :state, in: [:generated, :pending, :finished, :invoiced, :uninvoiced]
+
 
   private
 
@@ -29,7 +30,7 @@ class PurchaseRequest < ApplicationRecord
         provider_id = pc.provider_id
 
         if provider_category_id == category_id
-          @budget_request = BudgetRequest.find_or_create_by(provider_id: provider_id) do |budget_request|
+          @budget_request = BudgetRequest.find_or_create_by(provider_id: provider_id, purchase_request_id: purchase_request_id) do |budget_request|
             budget_request.employee_id = employee_id
             budget_request.date = Time.now
             budget_request.state = :created
@@ -54,8 +55,12 @@ class PurchaseRequest < ApplicationRecord
       @purchase_request = PurchaseRequest.find_or_create_by(date: Time.now.midnight.to_formatted_s(:db)) do |purchase_request|
         purchase_request.employee_id = 1
         purchase_request.state = :pending
-        purchase_request.comment = "Test"
-        purchase_request.number = 123
+
+        if PurchaseRequest.any?
+          purchase_request.number = PurchaseRequest.last.number + 1
+        else
+          purchase_request.number = 1
+        end
       end
 
       if @purchase_request
@@ -63,6 +68,57 @@ class PurchaseRequest < ApplicationRecord
       end
 
     end
+  end
+
+  filterrific :default_filter_params => {:sorted_by => 'date_asc'},
+              :available_filters => %w[
+      sorted_by
+      search_query
+    ]
+  # default for will_paginate
+  self.per_page = 10
+
+  scope :search_query, ->(query) {
+    return nil if query.blank?
+  # condition query, parse into individual keywords
+    terms = query.downcase.split(/\s+/)
+  # replace "*" with "%" for wildcard searches,
+  # append '%', remove duplicate '%'s
+    terms = terms.map {|e|
+      (e.gsub('*', '%') + '%').gsub(/%+/, '%')
+    }
+  # configure number of OR conditions for provision
+  # of interpolation arguments. Adjust this if you
+  # change the number of OR conditions.
+    num_or_conditions = 1
+    where(
+        terms.map {
+          or_clauses = [
+              "LOWER(people.name) LIKE ?"
+          ].join(' OR ')
+          "(#{ or_clauses })"
+        }.join(' AND '),
+        *terms.map {|e| [e] * num_or_conditions}.flatten
+    ).joins(:person).references(:people)
+  }
+
+  scope :sorted_by, ->(sort_option) {
+  # extract the sort direction from the param value.
+    direction = (sort_option =~ /desc$/) ? 'desc' : 'asc'
+    purchase_requests = PurchaseRequest.arel_table
+    case sort_option.to_s
+    when /^date_/
+      order(purchase_requests[:date].send(direction))
+    else
+      raise(ArgumentError, "Invalid sort option: #{sort_option.inspect}")
+    end
+  }
+
+  def self.options_for_sorted_by
+    [
+        ['Fecha (viejos primero)', 'date_asc'],
+        ['Fecha (recientes primero)', 'date_desc']
+    ]
   end
 end
 

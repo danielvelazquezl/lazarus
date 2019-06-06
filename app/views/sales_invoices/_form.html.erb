@@ -66,10 +66,18 @@
                 <strong>N° Factura</strong>
               </div>
               <div class="col-8">
-                <%= form.select :stamped_id,
-                                options_from_collection_for_select(Stamped.all, "id", "name", form.object.stamped_id),
-                                class: 'form-control' %>
-                <%= form.text_field :invoice_number %>
+                <p class="d-flex">
+                  <span id="mydiv">
+                    <%= form.select :stamped_id,
+                                                   options_from_collection_for_select(Stamped.all, "id", "name", form.object.stamped_id),
+                                                   class: 'form-control' %>
+                  </span>
+                  <span style="margin-left: 10px">
+                     <%= form.text_field :invoice_number %>
+                  </span>
+                </p>
+
+
               </div>
             </div>
             <div class="form-group row">
@@ -225,6 +233,18 @@
 
 
         });
+
+
+
+            //para agregar selectize
+
+                $('#sales_invoice_stamped_id').selectize({
+                    create: false,
+                    sortField: 'text'
+                });
+               let w = $('#mydiv').width()+20+'px';
+            $('#mydiv').css('width',w);
+
 
     })
 </script>

@@ -9,6 +9,8 @@ class Person < ApplicationRecord
   has_one :employee
   has_one :provider
 
+  scope :person_employees, -> { joins(employee: :person) }
+
   resourcify
 
   def self.options_for_select

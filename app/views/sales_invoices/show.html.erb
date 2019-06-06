@@ -1,0 +1,139 @@
+<div class="card card-default">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="form-horizontal">
+          <div class="form-group row">
+            <div class="col-4">
+              <strong>Nota de Pedido:</strong>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control valid" value="<%= @sales_invoice.order_ticket.ticket_number %>" disabled>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-4">
+              <strong>Fecha de venta:</strong>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control valid" value="<%= @sales_invoice.date %>" disabled>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-4">
+              <strong>Vendedor:</strong>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control valid" value="<%= @sales_invoice.employee.person.name %>" disabled>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-horizontal">
+          <div class="form-group row">
+            <div class="col-4">
+              <strong>Timbrado</strong>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control valid" value="<%= @sales_invoice.stamped.number %>" disabled>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-4">
+              <strong>N° Factura</strong>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control valid" value="<%=@sales_invoice.stamped.name %><%=@sales_invoice.invoice_number %>" disabled>
+
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-4">
+              <strong>Deposito:</strong>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control valid" value="<%= @sales_invoice.deposit.description %>" disabled>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <p class="lead bb">Datos del Cliente</p>
+    <div class="row">
+
+      <div class="col-lg-6">
+        <div class="form-horizontal">
+          <div class="form-group row">
+            <div class="col-4">
+              <strong>Nombre:</strong>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control valid" value="<%= @sales_invoice.client.person.name %>" disabled>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-4">
+              <strong>Telefono:</strong>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control valid" value="<%= @sales_invoice.client.person.phone %>" disabled>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-horizontal">
+          <div class="form-group row">
+            <div class="col-4">
+              <strong>RUC:</strong>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control valid" value="<%= @sales_invoice.client.ruc %>" disabled>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-4">
+              <strong>Direccion:</strong>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control valid" value="<%= @sales_invoice.client.person.address %>" disabled>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <table class="table mt-4">
+      <thead class="thead-dark">
+      <tr>
+        <th scope="col">Producto</th>
+        <th scope="col">Precio</th>
+        <th scope="col">Cantidad</th>
+        <th scope="col">Subtotal</th>
+      </tr>
+      </thead>
+      <tbody id="invoices-items-table">
+
+      <% @sales_invoice.sales_invoices_items.each do |f| %>
+        <tr>
+          <td><%= Product.find(f.product_id).description %></td>
+          <td><%= f.price %></td>
+          <td><%= f.quantity %></td>
+          <td><%= f.sub_total %></td>
+        </tr>
+
+      <% end %>
+
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td><%= @sales_invoice.total %></td>
+      </tr>
+
+      </tbody>
+    </table>
+  </div>
+</div>

@@ -1,7 +1,5 @@
-<p id="notice"><%= notice %></p>
-
 <div class="content-heading">
-  <div> Formulario CPU producidas </div>
+  <div> Formulario CPU producidas</div>
 
   <div class="ml-auto">
     <%= link_to new_form_path do %>
@@ -34,6 +32,12 @@
         </div>
       </div>
 
+    </div>
+
+    <div class="ml-auto">
+      <div>
+        <%= link_to "Limpiar filtros", reset_filterrific_url, :class => 'btn btn-secondary align-middle' %>
+      </div>
     </div>
   <% end %>
 </div>

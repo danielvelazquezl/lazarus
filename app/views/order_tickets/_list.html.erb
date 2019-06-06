@@ -1,19 +1,4 @@
-<div class="card card-body bg-light d-block p-3 my-3">
-  <div class="row">
-    <div class="col-md-10">
-      <div>
-        <%= page_entries_info order_tickets, :model => 'order_ticket', :class => 'align-middle' %>
-      </div>
-    </div>
-    <div class="col-md-2">
-      <div>
-        <%= link_to "Limpiar filtros", reset_filterrific_url, :class => 'btn btn-secondary align-middle' %>
-      </div>
-    </div>
-  </div>
-</div>
-
-<table class="table table-striped table-hover w-100" id="datatable2">
+<table class="table table-striped table-hover w-100">
   <thead>
   <tr>
     <th class="text-center">
@@ -47,39 +32,45 @@
       <% if order_ticket.state == :invoiced %>
         <td class="text-center">
           <div class="badge badge-success">
-            <%=order_ticket.state.text%>
+            <%= order_ticket.state.text %>
           </div>
         </td>
-      <%else %>
+      <% else %>
         <td class="text-center">
           <div class="badge badge-danger">
-            <%=order_ticket.state.text%>
+            <%= order_ticket.state.text %>
           </div>
         </td>
-      <%end %>
+      <% end %>
       <td class="text-center">
         <div class="btn-group" role="group">
-          <%= link_to order_ticket do%>
+          <%= link_to order_ticket do %>
             <button class="btn btn-sm btn-secondary"><i class="fas fa-search"></i></button>
-          <%end %>
+          <% end %>
           <% if order_ticket.state.invoiced? %>
             <button class="btn btn-sm btn-secondary" disabled><i class="fas fa-edit"></i></button>
             <button class="btn btn-sm btn-secondary" disabled><i class="fas fa-trash-alt"></i></button>
           <% else %>
-            <%= link_to edit_order_ticket_path(order_ticket) do%>
+            <%= link_to edit_order_ticket_path(order_ticket) do %>
               <button class="btn btn-sm btn-secondary"><i class="fas fa-edit"></i></button>
-            <%end %>
+            <% end %>
 
-            <%= link_to order_ticket, method: :delete, data: { confirm: '¿Estás seguro?' },
-                        :remote => true, :class => 'delete_form' do%>
+            <%= link_to order_ticket, method: :delete, data: {confirm: '¿Estás seguro?'},
+                        :remote => true, :class => 'delete_form' do %>
               <button class="btn btn-sm btn-secondary"><i class="fas fa-trash-alt"></i></button>
-            <%end %>
+            <% end %>
           <% end %>
         </div>
       </td>
     </tr>
-  <%end%>
+  <% end %>
   </tbody>
 </table>
+
+<div class="card card-body bg-gray-lighter">
+  <div>
+    <%= page_entries_info order_tickets, :model => 'order_ticket', :class => 'align-middle' %>
+  </div>
+</div>
 
 <%= will_paginate order_tickets, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>

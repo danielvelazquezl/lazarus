@@ -9,14 +9,16 @@
             </td>
           </tr>
           <tr>
-            <td class="row">
-              <b><h4>Reporte</h4></b>
-              <td class="col">
-                <b>Productos vendidos</b>
-              </td>
-              <td class="col">
-                <b>Fecha: <%= Time.now.strftime('%d-%m-%Y') %></b>
-              </td>
+            <td>
+              <b><strong><h4>Reporte</h4></strong></b>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <b>Productos vendidos</b>
+            </td>
+            <td>
+              <b>Fecha: <%= Time.now.strftime('%d-%m-%Y') %></b>
             </td>
           </tr>
         </table>
@@ -29,6 +31,7 @@
         <tr class="heading">
           <td>Código</td>
           <td>Producto</td>
+          <td>Marca</td>
           <td>Precio</td>
           <td>Fecha de venta</td>
         </tr>
@@ -38,7 +41,7 @@
           <tr class="center">
             <td class="text-center"><%= product.bar_code %></td>
             <td class="text-left"><%= product.description %></td>
-            <!--td class="text-center"><%#= Brand.find_by(id: product.brand_id).description %></td-->
+            <td class="text-center"><%= Brand.find_by(id: product.brand_id).description %></td>
             <td class="text-center"><%= product.unit_cost %></td>
             <% sales_invoices_item_id = SalesInvoicesItem.find_by(product_id: product.id).sales_invoice_id %>
             <% sales_invoice_client_id = SalesInvoice.find_by(id: sales_invoices_item_id).client_id %>

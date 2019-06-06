@@ -27,10 +27,12 @@
       <p class="d-flex">
         <span><b>Estado: </b>
           <% if @purchase_request.state == :generated %>
-            <span class="badge badge-success"><%=@purchase_request.state.text%></span>
-          <%else %>
+            <span class="badge badge-warning"><%=@purchase_request.state.text%></span>
+          <% elsif @purchase_request.state == :pending%>
             <span class="badge badge-danger"><%=@purchase_request.state.text%></span>
-          <%end %>
+          <% else %>
+            <span class="badge badge-success"><%=@purchase_request.state.text%></span>
+          <% end %>
         </span>
       </p>
 
@@ -168,4 +170,10 @@
       <% end %>
     </div>
   </div>
+<% end %>
+<% if @purchase_request.state.generated? %>
+  <%= form_tag(new_purchase_order_path, method: :get) do %>
+    <%= hidden_field_tag :request_number, value = @purchase_request.number %>
+    <%= submit_tag "Generar Orden", name:'nil', class: "btn btn-sm btn-primary"%>
+  <% end %>
 <% end %>

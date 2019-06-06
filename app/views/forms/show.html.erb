@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <div class="content-heading">
   <%if @form.form_type == :cpuproduced then%>
     <div class="text-align-right" title="Volver atras">
@@ -41,19 +39,12 @@
 
 <div class="card card-default">
   <div class="card-body">
-    <!--<p class="lead bb">Encargado: </p>-->
-
+    <p class="d-flex lead bb">
+      <span>FORMULARIO Nº <%= @form.number %></span>
+      <!--span class="ml-auto"><%= @form.date.strftime("%d-%m-%Y") %></span-->
+    </p>
     <form class="form-horizontal">
       <div class="form-group row">
-        <div class="col-2">
-          <strong>N° de Formulario:</strong>
-        </div>
-        <div class="col-4">
-          <%= @form.number %>
-        </div>
-      </div>
-      <div class="form-group row">
-
         <div class="col-2">
           <strong>Encargado:</strong>
         </div>
@@ -96,24 +87,30 @@
 </div>
 
   <div class="card">
-    <div class="table-responsive">
-      <table class="table table-hover table-bordered">
-        <thead>
-        <tr>
-          <th>Producto Terminado</th>
-          <th>Cantidad</th>
-        </tr>
-        </thead>
-        <tbody>
-        <% @form.form_items.each do |m| %>
-          <tr>
-            <td><%= Product.find_by(id: m.product_id).description%></td>
-            <td><%= m.quantity %></td>
-          </tr>
-        <%end %>
-        </tbody>
-      </table>
+    <div class="card-body">
+      <p class="lead bb">DETALLES</p>
+      <div class="row">
+        <div class="col"></div>
+        <div class="col-6">
+          <table class="table table-striped table-bordered table-hover">
+            <thead class="thead-dark">
+            <tr>
+              <th class="col-5">Producto Terminado</th>
+              <th class="col-1">Cantidad</th>
+            </tr>
+            </thead>
+            <tbody id="invoices-items-table">
+              <% @form.form_items.each do |m| %>
+                <tr>
+                  <td><%= Product.find_by(id: m.product_id).description%></td>
+                  <td><%= m.quantity %></td>
+                </tr>
+              <%end %>
+            </tbody>
+          </table>
+        </div>
+        <div class="col"></div>
+      </div>
     </div>
-
   </div>
 

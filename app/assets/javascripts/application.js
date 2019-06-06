@@ -5,7 +5,7 @@
 //= require rails-ujs
 //= require jquery.validate
 //= require jquery.validate.additional-methods
-
+//= require components/datepicker
 //= require turbolinks
 
 //= require filterrific/filterrific-jquery

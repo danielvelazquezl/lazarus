@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_03_211334) do
+ActiveRecord::Schema.define(version: 2019_06_06_010411) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -220,6 +220,10 @@ ActiveRecord::Schema.define(version: 2019_06_03_211334) do
     t.datetime "updated_at", null: false
     t.bigint "cash_id"
     t.boolean "state"
+    t.integer "check_amount"
+    t.integer "card_amount"
+    t.integer "bill_amount"
+    t.integer "balance"
     t.index ["cash_id"], name: "index_open_close_cashes_on_cash_id"
     t.index ["employee_id"], name: "index_open_close_cashes_on_employee_id"
   end

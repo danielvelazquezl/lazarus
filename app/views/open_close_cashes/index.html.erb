@@ -1,4 +1,4 @@
-<p id="notice"><%= notice %></p>
+
 <div class="content-heading">
   <div> Apertura y Cierre de Caja </div>
 
@@ -7,12 +7,13 @@
   </div>
 </div>
 
-<table class="table table-striped table-hover w-100" id="datatable2">
+<table class="table table-striped table-hover w-100" >
   <thead>
     <tr>
       <th><strong>CAJERO</strong></th>
       <th><strong>FECHA DE INICIO</strong></th>
-      <th><strong>MONTO DE CIERRE</strong></th>
+      <th><strong>ESTADO</strong></th>
+      <th><strong>OPCION</strong></th>
       <th colspan="1"></th>
     </tr>
   </thead>
@@ -21,9 +22,25 @@
     <% @open_close_cashes.each do |open_close_cash| %>
       <tr>
         <td><%= open_close_cash.employee.person.name %></td>
-        <td><%= open_close_cash.date_start %></td>
-        <td><%= open_close_cash.final_ammount %></td>
-        <td><%= link_to 'CERRAR', edit_open_close_cash_path(open_close_cash) %></td>
+        <td><%= open_close_cash.date_start.strftime("%d/%m/%Y %H:%M") %></td>
+        <% if open_close_cash.state == true %>
+          <td class>
+            <div class="badge badge-success">
+              Abierto
+            </div>
+          </td>
+        <%else %>
+          <td>
+            <div class="badge badge-danger">
+              Cerrado
+            </div>
+          </td>
+        <%end %>
+        <% if open_close_cash.state === true %>
+          <td><%= link_to 'Cerrar', edit_open_close_cash_path(open_close_cash) %></td>
+          <% else%>
+        <td></td>
+        <%end %>
       </tr>
     <% end %>
   </tbody>

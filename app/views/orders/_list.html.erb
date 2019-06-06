@@ -1,18 +1,3 @@
-<div class="card card-body bg-light d-block p-3 my-3">
-  <div class="row">
-    <div class="col-md-10">
-      <div>
-        <%= page_entries_info orders, :model => 'order', :class => 'align-middle' %>
-      </div>
-    </div>
-    <div class="col-md-2">
-      <div>
-        <%= link_to "Limpiar filtros", reset_filterrific_url, :class => 'btn btn-secondary align-middle' %>
-      </div>
-    </div>
-  </div>
-</div>
-
 <table class="table table-striped table-hover w-100" id="datatable2">
   <thead>
   <tr>
@@ -21,12 +6,6 @@
     </th>
     <th class="text-center">
       <strong >ENCARGADO</strong>
-    </th>
-    <th class="text-center">
-      <strong >DEPOSITO ORIGEN</strong>
-    </th>
-    <th class="text-center">
-      <strong >DEPOSITO DESTINO</strong>
     </th>
     <th class="text-center">
       <strong >FECHA PEDIDO</strong>
@@ -47,8 +26,6 @@
     <tr>
       <td class="text-center"><%= order.number %></td>
       <td class="text-center"><%= order.person.name %></td>
-      <td class="text-center"><%= order.origin.description %></td>
-      <td class="text-center"><%= order.destination.description %></td>
       <td class="text-center"><%= l(order.date_request.to_date, format: :long) %></td>
       <% if order.date_finished == nil then %>
         <td></td>
@@ -68,7 +45,7 @@
       <td class="text-center">
         <div class="btn-group" role="group">
           <%= link_to order do %>
-            <button class="btn btn-sm btn-secondary"><i class="fas fa-eye"></i></button>
+            <button class="btn btn-sm btn-secondary"><i class="fas fa-search"></i></button>
           <% end %>
 
           <% if order.state.finished? || order.state.canceled? %>
@@ -78,16 +55,17 @@
               <button class="btn btn-sm btn-secondary"><i class="fas fa-edit"></i></button>
             <% end %>
           <% end %>
-
-          <%= link_to order, method: :delete, data: {confirm: 'Estás seguro?'},
-                      :remote => true, :class => 'delete_order' do %>
-            <button class="btn btn-sm btn-secondary"><i class="fas fa-trash-alt"></i></button>
-          <% end %>
         </div>
       </td>
     </tr>
   <% end %>
   </tbody>
 </table>
+
+<div class="card card-body bg-gray-lighter">
+      <div>
+        <%= page_entries_info orders, :model => 'order', :class => 'align-middle' %>
+      </div>
+    </div>
 
 <%= will_paginate orders, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>

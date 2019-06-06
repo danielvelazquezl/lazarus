@@ -1,5 +1,3 @@
-<p id="notice"><%= notice %></p>
-
 <div class="content-heading">
   <div>Funcionarios</div>
   <div class="ml-auto">
@@ -11,86 +9,16 @@
   </div>
 </div>
 
-<<<<<<< .mine
-<table class="table table-striped table-hover w-100" id="datatable2">
-  <thead>
-  <tr>
-  <tr>
-    <th class="text-center">
-      <strong>NOMBRE Y APELLIDO</strong>
-    </th>
-    <th class="text-center">
-      <strong>C.I.</strong>
-    </th>
-    <th class="text-center">
-      <strong>CARGO</strong>
-    </th>
-    <th class="text-center">
-      <strong>E-MAIL</strong>
-    </th>
-    <th class="text-center">
-      <strong>TELÉFONO</strong>
-    </th>
-    <th>
-      <strong></strong>
-    </th>
-  </tr>
-  </thead>
-||||||| .r691
-<table class="table table-striped table-hover w-100">
-  <thead>
-  <tr>
-  <tr>
-    <th class="text-center">
-      <strong>NOMBRE Y APELLIDO</strong>
-    </th>
-    <th class="text-center">
-      <strong>C.I.</strong>
-    </th>
-    <th class="text-center">
-      <strong>E-MAIL</strong>
-    </th>
-    <th class="text-center">
-      <strong>TELÉFONO</strong>
-    </th>
-    <th>
-      <strong></strong>
-    </th>
-  </tr>
-  </thead>
-=======
 <div class="card card-body bg-light">
   <%= puts @filterrific.inspect %>
   <%= form_for_filterrific @filterrific do |f| %>
     <div class="form-group row">
->>>>>>> .r703
 
-<<<<<<< .mine
-  <tbody>
-  <% @employee.each do |employee| %>
-    <tr>
-      <td><%= Person.find_by(id: employee.person_id).name %></td>
-      <td><%= employee.ci %></td>
-      <td><%= employee.charge.text %></td>
-      <td><%= Person.find_by(id: employee.person_id).email %></td>
-      <td><%= Person.find_by(id: employee.person_id).phone %></td>
-      <!--td><%#= Person.find_by(id: client.person_id).address %></td-->
-||||||| .r691
-  <tbody>
-  <% @employee.each do |employee| %>
-    <tr>
-      <td><%= Person.find_by(id: employee.person_id).name %></td>
-      <td><%= employee.ci %></td>
-      <td><%= Person.find_by(id: employee.person_id).email %></td>
-      <td><%= Person.find_by(id: employee.person_id).phone %></td>
-      <!--td><%#= Person.find_by(id: client.person_id).address %></td-->
-=======
       <div class="col-4">
         <label class="font-weight-bold">Buscar</label>
         <%= f.text_field :search_query,
                          :class => 'filterrific-periodically-observed form-control' %>
       </div>
->>>>>>> .r703
 
       <div>
         <div class="col-12">
@@ -104,6 +32,13 @@
       </div>
 
     </div>
+
+    <div class="ml-auto">
+      <div>
+        <%= link_to "Limpiar filtros", reset_filterrific_url, :class => 'btn btn-secondary align-middle' %>
+      </div>
+    </div>
+
   <% end %>
 </div>
 

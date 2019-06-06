@@ -14,17 +14,6 @@ class RolesController < ApplicationController
     @role = Role.new(role_params)
     respond_to do |format|
       if @role.save
-        @resuocers = Resource.all
-        @type_action = TypeAction.all
-        @resuocers.each do |r|
-          @type_action.each do |t|
-            p = Permission.new
-            p.resource_id = r.id
-            p.role_id = @role.id
-            p.type_action_id = t.id
-            p.save
-          end
-        end
         format.html { redirect_to roles_path }
         format.json { render :show, status: :created, location: @role }
       else
@@ -38,6 +27,15 @@ class RolesController < ApplicationController
   end
 
   def update
+    respond_to do |format|
+      if @role.update_attributes(role_params)
+        format.html {redirect_to roles_path, notice: 'Role actualizado.'}
+      else
+
+        format.html { render :edit }
+        format.json { render json: @role.errors, note: :unprocessable_entity }
+      end
+    end
   end
   
   def destroy
@@ -66,6 +64,6 @@ class RolesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def role_params
-    params.require(:role).permit(:name, permissions_attributes: [:id, :resource_id, :new, :create, :update, :destroy])
+    params.require(:role).permit(:name, permissions_attributes: [:id, :resource_id, :action_create, :action_read, :action_update, :action_destroy])
   end
 end

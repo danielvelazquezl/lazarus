@@ -19,22 +19,8 @@
 
   <div class="card card-default">
     <div class="card-body">
+      <p class="lead bb">FORMULARIO Nº <%= @form.number %></p>
         <div class="form-group row">
-          <div class="col-2">
-            <strong>N° de Formulario:</strong>
-          </div>
-          <div class="col-4">
-            <input type="text" class="form-control valid" value="<%= @form.number %> " disabled>
-          </div>
-          <div class="col-2">
-            <strong>Encargado:</strong>
-          </div>
-          <div class="col-4">
-            <%= fo.select :person_id,
-                            options_from_collection_for_select(Person.all, "id", "name", fo.object.person_id),
-                            class: "custom-select custom-select-sm" %>
-          </div>
-
           <div class="col-2">
             <strong>Fecha de pedido:</strong>
           </div>
@@ -46,6 +32,14 @@
                   $('#datetimepicker1').datetimepicker();
               });
           </script>
+          <div class="col-2">
+            <strong>Encargado:</strong>
+          </div>
+          <div class="col-4">
+            <%= fo.select :person_id,
+                            options_from_collection_for_select(Person.person_employees, "id", "name", fo.object.person_id),
+                            class: "custom-select custom-select-sm" %>
+          </div>
 
         </div>
         <div class="form-group row">
@@ -80,19 +74,34 @@
 
   <div class="card card-default">
     <div class="card-body">
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th>Producto</th>
-            <th>Cantidad</th>
-            <th></th>
-          </tr>
-        </thead>
-      </table>
-      <%= fo.fields_for :form_items, @form_items do |f| %>
-        <%= render 'form_item', f: f %>
-      <% end %>
-      <%= link_to_add_fields "Agregar Producto", fo, :form_items %>
+      <p class="lead bb">DETALLES</p>
+      <div class="row">
+        <div class="col"></div>
+        <div class="col-8">
+          <table class="table table-striped table-bordered table-hover">
+            <thead class="thead-dark">
+            <tr>
+              <th class="col-6">Producto</th>
+              <th class="col-4">Cantidad</th>
+              <th class="col-1">Opciones</th>
+            </tr>
+            </thead>
+            <tbody id="invoices-items-table">
+            <%= fo.fields_for :form_items, @form_items do |f| %>
+              <%= render 'form_item', f: f %>
+            <% end %>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+
+            </tbody>
+          </table>
+          <%= link_to_add_fields "Agregar Producto", fo, :form_items %>
+        </div>
+        <div class="col"></div>
+      </div>
     </div>
   </div>
 

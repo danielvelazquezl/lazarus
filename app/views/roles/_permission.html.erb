@@ -4,10 +4,10 @@
       <td class="col"><%= f.select :resource_id,
                        options_from_collection_for_select(Resource.all, "id", "name", f.object.resource_id),{},
                        {class:'component-select'} %></td>
-      <td class="col"><%= f.check_box :action_create ,{checked: f.object.action_create}, false, true%></td>
-      <td class="col"><%= f.check_box :action_read ,{checked: f.object.action_read}, false, true%></td>
-      <td class="col"><%= f.check_box :action_update ,{checked: f.object.action_update}, false, true%></td>
-      <td class="col"><%= f.check_box :action_destroy ,{checked: f.object.action_destroy}, false, true%></td>
+      <td class="col"><%= f.check_box :action_create ,{checked: f.object.action_create}, true, false%></td>
+      <td class="col"><%= f.check_box :action_read ,{checked: f.object.action_read}, true, false%></td>
+      <td class="col"><%= f.check_box :action_update ,{checked: f.object.action_update}, true, false%></td>
+      <td class="col"><%= f.check_box :action_destroy ,{checked: f.object.action_destroy}, true, false%></td>
       <td class="col">
         <%= link_to "Eliminar",'#',class: "remove_fields" %>
       </td>

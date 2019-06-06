@@ -1,21 +1,5 @@
+<% if !@open_cashes.blank? || !@closed_cashes.blank? %>
 <%= form_with(model: open_close_cash, local: true) do |form| %>
-  <% if open_close_cash.errors.any? %>
-    <div id="error_explanation">
-      <h2>
-      <%= pluralize(open_close_cash.errors.count, "error") %> 
-      <% if open_close_cash.errors.count > 1 %>
-        impidieron que esta apertura/cierre de caja sea guardado:
-      <% else %>
-        impidió que esta apertura/cierre de caja sea guardado:
-      <% end %>
-      </h2>
-      <ul>
-      <% open_close_cash.errors.full_messages.each do |message| %>
-        <li><%= message %></li>
-      <% end %>
-      </ul>
-    </div>
-  <% end %>
 
   <div class="card card-default">
     <div class="card-body">
@@ -23,66 +7,92 @@
         <div class="col-2">
           <strong>Movimiento:</strong>
         </div>
-        <div class="col-3">
+        <div class="col-2">
           <%= form.select :cash_id,
-                          options_from_collection_for_select(@open_close_cash.persisted? ? Cash.all_open : Cash.all_close,"id", "description", form.object.cash_id)%>
+                          options_from_collection_for_select(@open_close_cash.persisted? ? @open_cashes : @closed_cashes,"id", "description", form.object.cash_id)%>
         </div>
         <div class="col-2">
           <strong>Encargado:</strong>
         </div>
-        <div class="col-5">
+        <div class="col-4">
           <%= form.select :employee_id,
-                          options_from_collection_for_select(Person.joins(:employee), "id", "name", form.object.employee)%>
+                          Employee.all.map { |e| [e.person.name, e.id] },
+                          class: "custom-select custom-select-sm" %>
         </div>
 
-        <table>
-          <tr>
-            <td><strong>Cantidad:</strong></td>
-            <td><%#= form.number_field :start_ammount %></td>
-          </tr>
-          <tr>
-            <td>Billetes de Gs. 100.000:</td>
-            <td><%= form.number_field ' ' %></td>
-          </tr>
-          <tr>
-            <td>Billetes de Gs. 50.000:</td>
-            <td><%= form.number_field ' '%></td>
-          </tr>
-            <tr>
-              <td>Billetes de Gs 20.000:</td>
-              <td><%= form.number_field ' '%></td>
-            </tr>
-            <tr>
-              <td>Billetes de Gs 10.000:</td>
-              <td><%= form.number_field ' '%></td>
-            </tr>
-            <tr>
-              <td>Billetes de Gs 5.000:</td>
-              <td><%= form.number_field ' '%></td>
-            </tr>
-            <tr>
-              <td>Billetes de Gs 2.000:</td>
-              <td><%= form.number_field ' '%></td>
-            </tr>
-        </table>
+        <%= form.hidden_field :start_ammount %>
+        <%= form.hidden_field :final_ammount %>
+        <%= form.hidden_field :balance %>
+        <div class="card-body">
+          <div class="row">
+            <div class="col">
+              <table>
+                <thead>
+                  <th>Efectivo:</th>
+                  <th></th>
+                </thead>
+                <tr>
+                  <td>Billetes de Gs. 100.000:</td>
+                  <td><%= form.number_field ' ' ,class: "amount_field bil_100", value: 0, min:0 %></td>
+                </tr>
+                <tr>
+                  <td>Billetes de Gs. 50.000:</td>
+                  <td><%= form.number_field ' ',class: "amount_field bil_50", value: 0%></td>
+                </tr>
+                  <tr>
+                    <td>Billetes de Gs. 20.000:</td>
+                    <td><%= form.number_field ' ',class: "amount_field bil_20", value: 0%></td>
+                  </tr>
+                  <tr>
+                    <td>Billetes de Gs. 10.000:</td>
+                    <td><%= form.number_field ' ',class: "amount_field bil_10", value: 0%></td>
+                  </tr>
+                  <tr>
+                    <td>Billetes de Gs. 5.000:</td>
+                    <td><%= form.number_field ' ',class: "amount_field bil_5", value: 0%></td>
+                  </tr>
+                  <tr>
+                    <td>Billetes de Gs. 2.000:</td>
+                    <td><%= form.number_field ' ',class: "amount_field bil_2", value: 0%></td>
+                  </tr>
+              </table>
+            </div>
+            <div class="col">
+              <table>
+                <thead>
+                <th>Cheque:</th>
+                <th></th>
+                </thead>
+                <tr>
+                  <td>Monto:</td>
+                  <td><%= form.number_field ' ',class: "amount_field check_am" , value: 0%></td>
+                </tr>
+              </table>
+              <table>
+                <thead>
+                <strong>Tarjeta de Crédito:</strong>
+                </thead>
+                <tr>
+                  <td>Monto:</td>
+                  <td><%= form.number_field ' ',class: "amount_field card_am" , value: 0%></td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
         <!--div class="col-2">
           <strong>Fecha de inicio:</strong>
         </div-->
-        <div class="col-5 select_time">
-          <%= form.datetime_select :date_start , {:disabled => true, :class => 'date_select'} %>
+        <div class="col-5 select_time" hidden="true">
+          <%= form.datetime_select :date_start , {:class => 'date_select'} %>
         </div>
 
-        <div class="col-2">
-          <strong>Cantidad final:</strong>
-        </div>
-        <div class="col-3">
-          <%= form.number_field :final_ammount, {:readonly => true} %>
-        </div>
+
         <!--div class="col-2">
           <strong>Fecha de finalización:</strong>
         </div-->
-        <div class="col-5 select_time">
-          <%= form.datetime_select :final_date, {:disabled => true, :class => 'date_select'}%>
+        <div class="col-5 select_time" hidden="true">
+          <%= form.datetime_select :final_date, { :class => 'date_select'}%>
         </div>
       </div>
     </div>
@@ -99,50 +109,82 @@
     </div>
   </div>
 <% end %>
-
+<%else %>
+  <div class="col">
+    <span>No existen caja/s abiertas. Debe crear una.</span>
+    <%= link_to new_cash_path do%>
+      <button class="mb-1 btn btn-primary" type="button">Crear Caja</button>
+    <%end %>
+  </div>
+<%end %>
 
 <script>
-    <%if !@open_close_cash.new_record?%>
-      let open = true;
-    <%end %>
-    if (open === true) {
-        $("#open_close_cash_employee_id").prop("disabled", true);
-        $("#open_close_cash_cash_id").prop("disabled", true);
-        $("#open_close_cash_cash_id").val("<%=  @open_close_cash.cash_id%>")
-        $("#open_close_cash_start_ammount").prop("readonly", true);
 
-        let year = ("<%= DateTime.now.year %>");
-        let month = ("<%= DateTime.now.month %>");
-        let day = ("<%= DateTime.now.day %>");
-        let hour = ("<%= DateTime.now.hour %>");
-        let minute = ("<%= DateTime.now.minute %>");
+    $('form').submit(function (e) {
 
-        $("#open_close_cash_final_date_3i").val(day);
-        $("#open_close_cash_final_date_2i").val(month);
-        $("#open_close_cash_final_date_1i").val(year);
-        $("#open_close_cash_final_date_4i").val(hour);
-        $("#open_close_cash_final_date_5i").val(minute);
-        $('#open_close_cash_state').prop('checked', false);
-    }else{
-        $("#open_close_cash_start_ammount").change(function(event){
-            $("#open_close_cash_final_ammount").val($("#open_close_cash_start_ammount").val());
-        });
-    }
-    $('form').submit(function () {
-        $("#open_close_cash_final_date_3i").prop("disabled", false);
-        $("#open_close_cash_final_date_2i").prop("disabled", false);
-        $("#open_close_cash_final_date_1i").prop("disabled", false);
-        $("#open_close_cash_final_date_4i").prop("disabled", false);
-        $("#open_close_cash_final_date_5i").prop("disabled", false);
+        if(confirm("Do you really want to do this?")){
+          const bill_100 = 100000 * parseInt($('.bil_100').val());
+          const bill_50 = 50000 * parseInt($('.bil_50').val());
+          const bill_20 = 20000 * parseInt($('.bil_20').val());
+          const bill_10 = 10000 * parseInt($('.bil_10').val());
+          const bill_5 = 5000 * parseInt($('.bil_5').val());
+          const bill_2 = 2000 * parseInt($('.bil_2').val());
 
-        $("#open_close_cash_date_start_3i").prop("disabled", false);
-        $("#open_close_cash_date_start_2i").prop("disabled", false);
-        $("#open_close_cash_date_start_1i").prop("disabled", false);
-        $("#open_close_cash_date_start_4i").prop("disabled", false);
-        $("#open_close_cash_date_start_5i").prop("disabled", false);
+          const check_am = parseInt($('.check_am').val());
+          const card_am = parseInt($('.card_am').val());
+
+          const total = bill_100 + bill_50 + bill_20 + bill_10 + bill_5 + bill_2 + check_am + card_am;
+
+          <% if !@open_close_cash.persisted? %>
+          //apertura
+          $('#open_close_cash_start_ammount').val(total);
+
+
+          <%else %>
+
+          //cierre
+          let total_cash = 0;
+          total_cash = <%= @open_close_cash.final_ammount %>;
+          alert('Total introducido por cajero: '+total_cash);
+          alert('Total en caja: '+total);
+          if(total_cash === total){
+            alert('Conciliacion exitosa');
+            //$('#open_close_cash_final_ammount')
+          }
+          //se setea txt de balance de apertura y cierre
+          $('#open_close_cash_balance').val(total_cash - total);
+          <%end %>
+        } else {
+            return false;
+
+          }
+      });
+
+
+    $( ".amount_field" ).focus(function() {
+        if ($(this).val() == 0 ) $(this).val("");
     });
 
-    $(".select_time").prop("hidden", true);
+    $( ".amount_field" ).focusout(function() {
+        if($(this).val()==="") $(this).val(0) ;
+    });
 
+    $('select').selectize({
+        create: false,
+        sortField: 'text'
+    });
+
+    //alert
+            let dialog = $('<p>Desea concretar el cierre?</p>').dialog({
+                buttons: {
+                    "Si": function() {
+                        alert('you chose yes');
+                        },
+                    "Cancelar":  function() {
+
+                        dialog.dialog('close');
+                    }
+                }
+            });
 
 </script>

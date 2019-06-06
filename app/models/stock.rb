@@ -11,7 +11,7 @@ class Stock < ApplicationRecord
 
 
   def check_quantity
-    if self.quantity <= 0
+    if self.quantity < 0
       errors.add(:quantity, "no puede ser menor a la cantidad minima")
     end
   end

@@ -20,6 +20,7 @@
 
   <div class="card card-default">
     <div class="card-body">
+      <p class="lead bb">PRODUCTO TERMINADO</p>
       <div class="form-group row">
         <div class="col-2">
           <strong>Descripción:</strong>
@@ -30,16 +31,36 @@
       </div>
       <div class="form-group row">
         <div class="col-2">
+          <strong><label>Código de barras:</label></strong>
+        </div>
+        <div class="col-4">
+          <%= form.text_field :bar_code , class: 'form-control form-control-sm'%>
+        </div>
+        <div class="col-1">
           <strong>Imagen:</strong>
         </div>
         <div class="col-4">
           <%= form.file_field :image %>
         </div>
+
+      </div>
+      <div class="form-group row">
         <div class="col-2">
-          <strong><label>Código de barras:</label></strong>
+          <strong>Categoría:</strong>
         </div>
         <div class="col-4">
-          <%= form.text_field :bar_code , class: 'form-control form-control-sm'%>
+          <%= form.select :product_category_id,
+                          options_from_collection_for_select(ProductCategory.all, "id", "description", form.object.product_category_id)%>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Marca:</strong>
+        </div>
+        <div class="col-4">
+          <%= form.select :brand_id,
+                          options_from_collection_for_select(Brand.all, "id", "description", form.object.brand_id),
+                          class: 'form-control'%>
         </div>
       </div>
       <div class="form-group row">
@@ -49,25 +70,8 @@
         <div class="col-4">
           <%= form.text_field :location, class: 'form-control' %>
         </div>
-        <div class="col-2">
-          <strong>Marca:</strong>
-        </div>
-        <div class="col-4">
-          <%= form.select :brand_id,
-                          options_from_collection_for_select(Brand.all, "id", "description", form.object.brand_id),
-                          class: 'form-control', prompt: "Seleccionar"%>
-        </div>
       </div>
-      <div class="form-group row">
-        <div class="col-2">
-          <strong>Categoría:</strong>
-        </div>
-        <div class="col-4">
-          <%= form.select :product_category_id,
-                          options_from_collection_for_select(ProductCategory.all, "id", "description", form.object.product_category_id),
-                          prompt: "Seleccionar" %>
-        </div>
-      </div>
+
       <%= form.hidden_field :product_type %>
       <%= form.hidden_field :unit_cost %>
     </div>
@@ -75,19 +79,34 @@
 
   <div class="card card-default">
     <div class="card-body">
-      <table class="table table-hover">
-        <thead>
-        <tr>
-          <th>Producto</th>
-          <th>Cantidad</th>
-          <th></th>
-        </tr>
-        </thead>
-      </table>
-      <%= form.fields_for :product_items, @product_items do |f| %>
-        <%= render 'product_item', f: f %>
-      <% end %>
-      <%= link_to_add_fields "Agregar Componente", form, :product_items %>
+      <p class="lead bb">DETALLES</p>
+      <div class="row">
+        <div class="col"></div>
+        <div class="col-8">
+          <table class="table table-striped table-bordered table-hover">
+            <thead class="thead-dark">
+            <tr>
+              <th class="col-6">Producto</th>
+              <th class="col-4">Cantidad</th>
+              <th class="col-1">Opciones</th>
+            </tr>
+            </thead>
+            <tbody id="invoices-items-table">
+            <%= form.fields_for :product_items, @product_items do |f| %>
+              <%= render 'product_item', f: f %>
+            <% end %>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+
+            </tbody>
+          </table>
+          <%= link_to_add_fields "Agregar Componente", form, :product_items %>
+        </div>
+        <div class="col"></div>
+      </div>
     </div>
   </div>
 

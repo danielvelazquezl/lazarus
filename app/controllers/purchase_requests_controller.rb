@@ -4,7 +4,19 @@ class PurchaseRequestsController < ApplicationController
   # GET /purchase_requests
   # GET /purchase_requests.json
   def index
-    @purchase_requests = PurchaseRequest.all
+    (@filterrific = initialize_filterrific(
+      PurchaseRequest,
+      params[:filterrific],
+      select_options: {
+          sorted_by: PurchaseRequest.options_for_sorted_by
+      },
+      )) || return
+    @purchase_requests = @filterrific.find.page(params[:page])
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   # GET /purchase_requests/1

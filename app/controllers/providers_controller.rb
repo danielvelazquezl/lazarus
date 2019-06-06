@@ -1,5 +1,5 @@
 class ProvidersController < ApplicationController
-  before_action :set_provider, only: [:show, :edit, :update ,:destroy]
+  before_action :set_provider, only: [:show, :edit, :update, :destroy]
   def index
     (@filterrific = initialize_filterrific(
         Provider,

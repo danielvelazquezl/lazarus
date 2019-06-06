@@ -21,6 +21,7 @@ class CashMovementsController < ApplicationController
   def new
     @cash_movement = CashMovement.new
     @cash_movement_values =  @cash_movement.cash_movement_values.build
+    @open_cashes = Cash.all_open
   end
 
   def create
@@ -39,13 +40,13 @@ class CashMovementsController < ApplicationController
       total_check += CashMovementValue.find_cash_mov_total_by_pay_method(@cash_movement.id,2)
       total_card += CashMovementValue.find_cash_mov_total_by_pay_method(@cash_movement.id,3)
 
-
+      total_mov = total_bill + total_check + total_card
 
       OpenCloseCash.update_open_cashes_bill(@cash_movement.cash_id,total_bill)
       OpenCloseCash.update_open_cashes_check(@cash_movement.cash_id,total_check)
       OpenCloseCash.update_open_cashes_card(@cash_movement.cash_id,total_card)
-
-
+     #se actualiza monto para hacer conciliacion
+      OpenCloseCash.update_open_cash_final_ammount(@cash_movement.cash_id,total_mov)
       #actualizar saldos de facturas a 0 (solo pago al contado)
       #SalesInvoice.where(id: params[:invoices_ids]).update_all(balance: 0)
       SalesInvoice.update_invoices_balance(params[:invoices_ids],0)

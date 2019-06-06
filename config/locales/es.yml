@@ -15,6 +15,7 @@ es:
       product_type:
         component: "Componente"
         product: "Terminado"
+        both: "Componente/Terminado"
     order_ticket:
       state:
         invoiced: "Facturado"
@@ -25,8 +26,8 @@ es:
         finished: "Listo"
     purchase_order:
       state:
-        created: "Pendiente"
-        received: "Listo"
+        created: "Creado"
+        received: "Recibido"
         invoiced: "Facturado"
     employee:
       sex:
@@ -41,6 +42,7 @@ es:
       state:
         pending: "Pendiente"
         generated: "Generado"
+        finished: "Finalizado"
   activerecord:
     errors:
       messages:

@@ -17,7 +17,7 @@ class PurchaseOrdersController < ApplicationController
     @purchase_order = PurchaseOrder.new
     if params[:request_number].present? then
       @purchaseRqst = PurchaseRequest.find_by(number: params[:request_number])
-      if @purchaseRqst != nil
+      if @purchaseRqst != nil && @purchaseRqst.state == :generated
         @purchase_order.state = :created
         @budget_items = BudgetRequest.get_cheapest_items(@purchaseRqst)
       else
@@ -53,6 +53,7 @@ class PurchaseOrdersController < ApplicationController
     purchaseRqst = PurchaseRequest.find_by(number: params[:request_number])
     budget_items = BudgetRequest.get_cheapest_items(purchaseRqst)
     PurchaseOrder.create_purchase_order(budget_items)
+    purchaseRqst.update_attribute(:state, PurchaseRequest.state.finished)
     respond_to do |format|
       format.html {redirect_to purchase_orders_path, notice: 'Ordenes creadas.'}
     end
@@ -63,7 +64,7 @@ class PurchaseOrdersController < ApplicationController
   def update
     respond_to do |format|
       if @purchase_order.update(purchase_order_params)
-        format.html { redirect_to edit_purchase_order_path, notice: 'Orden de compra actualizada' }
+        format.html { redirect_to @purchase_order, notice: 'Orden de compra actualizada' }
         format.json { render :show, status: :ok, location: @purchase_order }
       else
         format.html { render :edit }

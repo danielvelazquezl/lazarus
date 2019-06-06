@@ -6,11 +6,5 @@ class CashMovement < ApplicationRecord
   accepts_nested_attributes_for :cash_movement_values, :allow_destroy => true
   accepts_nested_attributes_for :cash_movement_invoices, :allow_destroy => true
 
-  scope :created_at_gte, -> (reference_time) {
-    where('cash_movements.date >= ?', reference_time)
-  }
-  scope :created_at_lt, -> (reference_time) {
-    where('cash_movements.date < ?', reference_time)
-  }
 
 end

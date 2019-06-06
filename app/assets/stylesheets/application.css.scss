@@ -15,8 +15,9 @@
  *= require selectize
  *= require selectize.default
  */
+  @import 'components/datepicker';
 
 .error {
-    color: red;
-    font-weight: normal;
+  color: red;
+  font-weight: normal;
 }

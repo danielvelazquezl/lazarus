@@ -8,7 +8,8 @@ class OrderTicketsController < ApplicationController
       OrderTicket,
       params[:filterrific],
       select_options: {
-          sorted_by: OrderTicket.options_for_sorted_by
+          sorted_by: OrderTicket.options_for_sorted_by,
+          with_employee_id: Employee.options_for_select
       },
       )) || return
     @order_tickets = @filterrific.find.page(params[:page])
