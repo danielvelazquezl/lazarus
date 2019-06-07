@@ -54,23 +54,25 @@ class SalesInvoice < ApplicationRecord
   scope :search_query, ->(query) {
     return nil if query.blank?
   # condition query, parse into individual keywords
-    terms = query.downcase.split(/\s+/)
+    terms = query.to_s.downcase.split(/\s+/)
   # replace "*" with "%" for wildcard searches,
   # append '%', remove duplicate '%'s
     terms = terms.map { |e| ('%'+e.gsub('*','%')+'%').gsub(/%+/, '%') }
   # configure number of OR conditions for provision
   # of interpolation arguments. Adjust this if you
   # change the number of OR conditions.
-    num_or_conditions = 1
+    num_or_conditions = 3
     where(
         terms.map {
           or_clauses = [
-              "LOWER(people.name) LIKE ?"
+              "LOWER(people.name) LIKE ?",
+              "LOWER(stampeds.name) LIKE ?",
+              "CAST(sales_invoices.invoice_number AS CHAR VARYING) LIKE ?"
           ].join(' OR ')
           "(#{ or_clauses })"
         }.join(' AND '),
         *terms.map {|e| [e] * num_or_conditions}.flatten
-    ).joins(client: :person).references(:people, :clients)
+    ).joins({client: :person}, :stamped).references(:people, :clients, :stampeds)
   }
 
   scope :sorted_by, ->(sort_option) {
