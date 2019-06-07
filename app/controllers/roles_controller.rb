@@ -54,8 +54,22 @@ class RolesController < ApplicationController
     @users_roles.each do |us|
       @roles.push(Role.find(us.role_id))
     end
+    if params[:role_id].present?
+      UsersRole.create(user_id: @user.id, role_id: params[:role_id])
+    end
   end
 
+  def get_users
+    user = User.find(params[:id])
+    users_roles = UsersRole.where(user_id: params[:id])
+    @roles = []
+    users_roles.each do |us|
+      @roles.push(Role.find(us.role_id))
+    end
+      respond_to do |format|
+        format.js
+      end
+  end
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_role

@@ -21,7 +21,7 @@
       <td><%= user.email %></td>
       <td class="text-center">
         <div class="btn-group" role="group">
-          <%= link_to user_role_path(user) do%>
+          <%= link_to user_roles_path(:id => user) do%>
             <button class="btn btn-sm btn-secondary"><i class="fas fa-edit"></i></button>
           <%end%>
         </div>
