@@ -42,7 +42,8 @@
             <% if @budget == nil %>
               <%= form.select :employee_id,
                            Employee.all.map { |e| [e.person.name, e.id] },
-                           class: "custom-select custom-select-sm" %>
+                           class: "employee-select" %>
+
             <%else %>
               <%= @purchase_request.employee.person.name %>
             <%end %>
@@ -74,21 +75,17 @@
           <tbody id="invoices-items-table">
             <%= form.fields_for :purchase_request_items, @purchase_request.purchase_request_items do |f| %>
               <tr>
-                <td style="width:293px"><%= f.label :product_id, :value => Product.find(f.object.product_id).description %></td>
+                <td><%= f.label :product_id, :value => Product.find(f.object.product_id).description %></td>
                 <% if @budget != nil %>
                   <td><%= f.label :quantity, class: 'quantity', :value => f.object.quantity %></td>
                   <%= f.hidden_field :quantity%>
                   <%= f.hidden_field :product_id%>
                 <%else %>
-                  <td><%= f.text_field :quantity, :size => 10, :value => f.object.quantity, class: 'quantity' %></td>
+                  <td><%= f.text_field :quantity, :size => 3, :value => f.object.quantity, class: 'quantity' %></td>
                 <%end %>
+                <td></td>
               </tr>
             <% end %>
-            <tr>
-              <td></td>
-              <td></td>
-              <td></td>
-            </tr>
           </tbody>
         </table>
           <% if @budget == nil %>

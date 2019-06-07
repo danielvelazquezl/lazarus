@@ -134,10 +134,10 @@
       <% @purchase_invoice.purchase_invoice_items.each do |f| %>
         <tr>
           <td><%= Product.find(f.product_id).description %></td>
-          <td><%= f.price %></td>
+          <td><%= number_to_currency(f.price, :unit => "Gs", :separator => ".", :precision => 0) %></td>
           <td><%= f.quantity %></td>
-          <td><%= f.sub_total %></td>
-          <td><%= f.iva %></td>
+          <td><%= number_to_currency(f.sub_total, :unit => "Gs", :separator => ".", :precision => 0) %></td>
+          <td><%= number_to_currency(f.iva, :unit => "Gs", :separator => ".", :precision => 0) %></td>
         </tr>
 
       <% end %>
