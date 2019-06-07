@@ -18,15 +18,16 @@ $(document).on('click','.add_fields',function (e) {
     });
     //se quita saldo actual
     let balance = $('#balance-field').val();
+    //console.log(balance);
     //se setea en nuevo campo de forma a pagar saldo pendiente
     //en pago
     $('fieldset').last().children().first().children('#amount_div').find('.amount-value').val((balance === '')? 0: balance);
+    //$('#balance-field').val(0);
 
 });
 //si se elige una forma de pago
 $(document).on('change', '.pay_method_value', function (e) {
    let pay_value = $('#'+e.target.id+' option:selected').text();
-    console.log(pay_value);
     //se esconden campos que no sean necesarios mostrar
     switch(pay_value) {
         case 'Efectivo':

@@ -34,12 +34,13 @@ document.addEventListener('click',(event) => {
 //reiniciar campos de montos al buscar facturas de cliente
 $('#search-invoices').click(function () {
 
-    $('#total-field').val(0);
-    $('#balance-field').val(0);
-    $('#pay-field').val(0);
-    $('#pay-btn').prop('disabled', true);
+    $('#total-field').val('');
+    $('#balance-field').val('');
+    $('#pay-field').val('');
+    //$('#pay-btn').prop('disabled', true);
 
 });
+
 
 
 

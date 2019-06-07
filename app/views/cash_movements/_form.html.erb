@@ -78,6 +78,7 @@
   <%= render "validate.js" %>
   <%= render "select.js" %>
   <%= render "total_pay.js" %>
+
   document.addEventListener('ajax:success', function(event){
     var detail = event.detail;
     var data = detail[0], status = detail[1], xhr = detail[2];
@@ -106,7 +107,7 @@
 
     if(isNaN(balance) && total >= amount) {
       update_balance(amount,false);
-      update_to_pay(amount,true)
+      update_to_pay(amount,true);
     }
     else if(balance >= amount){
       update_balance(amount,false);
@@ -116,8 +117,9 @@
 
     $(this).parent().parent().parent().children().last().click(function () {
       update_balance(amount,true);
-      update_to_pay(amount,false)
-    })
+      update_to_pay(amount,false);
+    });
+
   });
   //-------------------------------------------------------------
 
