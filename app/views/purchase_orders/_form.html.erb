@@ -18,37 +18,60 @@
     </div>
   <% end %>
 
-  <div class="row">
-    <div class="col"></div>
-    <div class="col-6">
-      <table class="table  table-sm">
-        <thead class="thead-dark">
-        <tr>
-          <th scope="col">Producto</th>
-          <th scope="col">Cantidad</th>
-          <th scope="col">Precio</th>
-          <th scope="col">Proveedor</th>
-        </tr>
-        </thead>
-        <tbody>
+  <div class="card card-default">
+    <div class="card-body">
+      <p class="d-flex">
+        <span><b>PC-
+          <%= @purchaseRqst.number%></b></span>
+        <span class="ml-auto"><b><%=@purchase_order.date.strftime("%d-%m-%Y")%></b></span>
+      </p>
+      <p class="d-flex">
+        <span><b>Encargado: </b><%=@purchase_order.employee.person.name%></span>
+      </p>
 
-        <% @budget_items.each do |budget| %>
-          <tr>
-            <td><%= budget.product.description %></td>
-            <td><%= budget.requested_quantity %></td>
-            <td><%= budget.price %></td>
-            <td><%= budget.budget_request.provider.person.name %></td>
-          </tr>
-        <% end %>
 
-        </tbody>
-      </table>
+      <% unless  @budget_items.empty? %>
+        <div class="row">
+          <div class="col"></div>
+          <div class="col-6">
+            <table class="table  table-sm" >
+              <thead>
+              <tr>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+                <th scope="col"></th>
+              </tr>
+              </thead>
+              <tbody id="invoices-items-table">
+              <tr>
+                <td><b>Producto</b></td>
+                <td><b>Cantidad</b></td>
+                <td><b>Precio</b></td>
+                <td><b>Proveedor</b></td>
+              </tr>
+              <% @budget_items.each do |budget| %>
+                <tr>
+                  <td><%= budget.product.description %></td>
+                  <td><%= budget.requested_quantity %></td>
+                  <td><%= budget.price %></td>
+                  <td><%= budget.budget_request.provider.person.name %></td>
+                </tr>
+              <% end %>
+              </tbody>
+            </table>
+          </div>
+          <div class="col"></div>
+        </div>
+      <%end %>
     </div>
-    <div class="col"></div>
   </div>
 
 <% end %>
 <%= form_tag(save_purchase_orders_purchase_orders_path, method: :post ) do %>
-  <%= hidden_field_tag(:request_number, @purchaseRqst.number) %>
-  <%= submit_tag "Guardar", name:'nil', class: "btn btn-sm btn-primary"%>
+  <div class="col-12 col-xl-auto">
+    <%= hidden_field_tag(:request_number, @purchaseRqst.number) %>
+    <%= submit_tag "Guardar", name:'nil', class: "btn btn-sm btn-success"%>
+  </div>
+
 <% end %>

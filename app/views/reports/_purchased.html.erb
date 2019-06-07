@@ -1,7 +1,7 @@
 <table class="table table-striped table-hover w-100">
   <tr>
     <th class="text-center"> CODIGO DE BARRAS</th>
-    <th class="text-left">PRODUCTO</th>
+    <th  class="text-center">PRODUCTO</th>
     <th class="text-center"> MARCA</th>
     <th class="text-center"> PRECIO</th>
     <th class="text-center"> FECHA DE COMPRA</th>
@@ -9,11 +9,11 @@
   <% products.each do |product| %>
     <tr>
       <td class="text-center"><%= product.bar_code %></td>
-      <td class="text-left"><%= product.description %></td>
+      <td class="text-center"><%= product.description %></td>
       <td class="text-center"><%= Brand.find_by(id: product.brand_id).description %></td>
       <td class="text-center"><%= product.unit_cost %></td>
       <% purchase_invoice_id = PurchaseInvoiceItem.find_by(product_id: product.id).purchase_invoice_id %>
-      <td class="text-center"><%= l(PurchaseInvoice.find_by(id: purchase_invoice_id).to_date, format: :long) %></td>
+      <td class="text-center"><%= l(PurchaseInvoice.find_by(id: purchase_invoice_id).date.to_date, format: :long) %></td>
     </tr>
   <% end %>
 </table>

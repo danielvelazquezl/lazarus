@@ -10,7 +10,7 @@
     <tr>
       <td class="col-6">
         <%= f.select :product_id,
-                     options_from_collection_for_select(@products, "id", "description"), {},
+                     options_from_collection_for_select(@products, "id", "description", f.object.product_id), {},
                      {class: 'component-select'}%>
       </td>
       <td class="col-4">

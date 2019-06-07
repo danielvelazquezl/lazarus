@@ -11,7 +11,7 @@ class PurchaseOrder < ApplicationRecord
       request_id = item.budget_request.purchase_request_id
       @purchase_order = PurchaseOrder.find_or_create_by(provider_id: item.budget_request.provider_id, purchase_request_id: request_id ) do |order|
         order.provider_id = item.budget_request.provider_id
-        order.employee_id = 1
+        order.employee_id = item.budget_request.employee_id
         order.date = Time.now
         order.state = :created
         order.purchase_request_id = request_id

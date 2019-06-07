@@ -31,6 +31,8 @@ class PurchaseOrdersController < ApplicationController
       @purchaseRqst = PurchaseRequest.find_by(number: params[:request_number])
       if @purchaseRqst != nil && @purchaseRqst.state == :generated
         @purchase_order.state = :created
+        @purchase_order.date = Time.now
+        @purchase_order.employee_id = @purchaseRqst.employee_id
         @budget_items = BudgetRequest.get_cheapest_items(@purchaseRqst)
       else
         respond_to do |format|

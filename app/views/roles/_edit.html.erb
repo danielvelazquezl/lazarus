@@ -44,6 +44,18 @@
 
 <% end %>
 <script>
+    $('#delete_permission').on('ajax:success', function (event) {
+        $(this). closest('tr').fadeOut();
+
+    })
+
+
+    $(document).on('click','add_fields',function (e) {
+        $('fieldset').children().first().children().first().children().first().children().first().children().first().selectize({
+            create: false,
+            sortField: 'text'
+        });
+    });
 
 
 </script>
