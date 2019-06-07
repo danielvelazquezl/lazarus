@@ -8,7 +8,13 @@
       <strong>DEPOSITO</strong>
     </th>
     <th class="text-center">
+      <strong>PRECIO</strong>
+    </th>
+    <th class="text-center">
       <strong>CANTIDAD</strong>
+    </th>
+    <th class="text-center">
+      <strong>STOCK MINIMO</strong>
     </th>
   </tr>
   </thead>
@@ -16,8 +22,38 @@
   <% stocks.each do |stock| %>
     <tr>
       <td class="text-center"><%= stock.product.description %></td>
-      <td class="text-center"><%= stock.deposit.description %></td>
-      <td class="text-center"><%= stock.quantity %></td>
+      <%if stock.deposit.id.to_s == Setting.find_by!(key: 'id_components_deposit').value%>
+        <td class="text-center">
+          <div class="badge badge-success">
+            <%= stock.deposit.description %>
+          </div>
+        </td>
+      <%elsif stock.deposit.id.to_s == Setting.find_by!(key: 'id_products_deposit').value %>
+        <td class="text-center">
+          <div class="badge badge-warning">
+            <%= stock.deposit.description %>
+          </div>
+        </td>
+      <%else %>
+        <td class="text-center">
+          <div class="badge badge-primary">
+            <%= stock.deposit.description %>
+          </div>
+        </td>
+      <%end %>
+      <td class="text-center"><%=number_to_currency(Product.find_by(id: stock.product.id).unit_cost, :unit => "Gs", :separator => ".", :precision => 0) %></td>
+      <%if stock.quantity <= stock.min_stock %>
+        <td class="text-center">
+          <div class="badge badge-danger">
+            <%= stock.quantity %>
+          </div>
+        </td>
+      <%else %>
+        <td class="text-center">
+            <%= stock.quantity %>
+        </td>
+      <%end %>
+      <td class="text-center"><%= stock.min_stock %></td>
     </tr>
   <% end %>
   </tbody>

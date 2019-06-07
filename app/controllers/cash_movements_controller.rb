@@ -1,9 +1,21 @@
 class CashMovementsController < ApplicationController
   before_action :set_cash_movement, only: [:show]
-  #load_and_authorize_resource
+  load_and_authorize_resource
 
   def index
-    @cash_movements = CashMovement.all
+    (@filterrific = initialize_filterrific(
+        CashMovement,
+        params[:filterrific],
+        select_options: {
+            sorted_by: CashMovement.options_for_sorted_by
+        },
+        )) || return
+    @cash_movements = @filterrific.find.page(params[:page])
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   def get_invoices

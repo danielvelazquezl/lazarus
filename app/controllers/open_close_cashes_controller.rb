@@ -5,7 +5,19 @@ class OpenCloseCashesController < ApplicationController
   # GET /open_close_cashes
   # GET /open_close_cashes.json
   def index
-    @open_close_cashes = OpenCloseCash.all
+    (@filterrific = initialize_filterrific(
+        OpenCloseCash,
+        params[:filterrific],
+        select_options: {
+            sorted_by: OpenCloseCash.options_for_sorted_by
+        },
+        )) || return
+    @open_close_cashes = @filterrific.find.page(params[:page])
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   # GET /open_close_cashes/1
@@ -29,13 +41,14 @@ class OpenCloseCashesController < ApplicationController
   # POST /open_close_cashes
   # POST /open_close_cashes.json
   def create
+
     @open_close_cash = OpenCloseCash.new(open_close_cash_params)
 
     respond_to do |format|
+      @open_close_cash.cash.state = true
+      @open_close_cash.final_ammount = @open_close_cash.start_ammount
+      @open_close_cash.cash.save
       if @open_close_cash.save
-        @open_close_cash.cash.state = true
-        @open_close_cash.final_ammount = @open_close_cash.start_ammount
-        @open_close_cash.cash.save
         format.html { redirect_to open_close_cashes_path, notice: 'Apertura de caja concretada' }
         format.json { render :show, status: :created, location: @open_close_cash }
       else
@@ -44,6 +57,7 @@ class OpenCloseCashesController < ApplicationController
       end
     end
   end
+
 
   # PATCH/PUT /open_close_cashes/1
   # PATCH/PUT /open_close_cashes/1.json

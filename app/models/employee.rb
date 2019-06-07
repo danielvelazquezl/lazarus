@@ -5,7 +5,7 @@ class Employee < ApplicationRecord
 
   extend Enumerize
     enumerize :sex, in: [:male, :female]
-    enumerize :charge, in: [:cashier, :warehouse_manager, :seller, :manager]
+    enumerize :charge, in: [:cashier, :warehouse_manager, :seller, :manager, :external_employee]
 
   filterrific :default_filter_params => {:sorted_by => 'created_at_asc'},
               :available_filters => %w[
@@ -23,9 +23,7 @@ class Employee < ApplicationRecord
     terms = query.to_s.downcase.split(/\s+/)
     # replace "*" with "%" for wildcard searches,
     # append '%', remove duplicate '%'s
-    terms = terms.map {|e|
-      (e.gsub('*', '%') + '%').gsub(/%+/, '%')
-    }
+    terms = terms.map { |e| ('%'+e.gsub('*','%')+'%').gsub(/%+/, '%') }
     # configure number of OR conditions for provision
     # of interpolation arguments. Adjust this if you
     # change the number of OR conditions.

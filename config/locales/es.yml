@@ -36,20 +36,14 @@ es:
       charge:
         cashier: "Cajero"
         warehouse_manager: "Encargado de depósito"
-        seller: "Facturador"
+        seller: "Vendedor"
         manager: "Gerente"
+        external_employee: "Empleado externo"
     purchase_request:
       state:
         pending: "Pendiente"
         generated: "Generado"
         finished: "Finalizado"
-  activerecord:
-    errors:
-      messages:
-        record_invalid: 'La validación falló: %{errors}'
-        restrict_dependent_destroy:
-          has_one: No se puede eliminar el registro porque existe un %{record} dependiente
-          has_many: No se puede eliminar el registro porque existen %{record} dependientes
   date:
     abbr_day_names:
       - dom
@@ -264,13 +258,93 @@ es:
   will_paginate:
     page_entries_info:
       single_page:
-        zero:  "No %{model} found"
-        one:   "Displaying 1 %{model}"
-        other: "Displaying all %{count} %{model}"
+        zero:  "No se encontraron %{model}"
+        one:   "Mostrando 1 %{model}"
+        other: "Mostrando en total %{count} %{model}"
       single_page_html:
-        zero:  "No %{model} found"
-        one:   "Displaying <b>1</b> %{model}"
-        other: "Displaying <b>all&nbsp;%{count}</b> %{model}"
+        zero:  "No se encontraron %{model}"
+        one:   "Mostrando <b>1</b> %{model}"
+        other: "Mostrando en <b>total&nbsp;%{count}</b> %{model}"
 
-      multi_page: "Displaying %{model} %{from} - %{to} of %{count} in total"
-      multi_page_html: "Displaying %{model} <b>%{from}&nbsp;-&nbsp;%{to}</b> of <b>%{count}</b> in total"
+      multi_page: "Mostrando %{model} %{from} - %{to} de %{count} en total"
+      multi_page_html: "Mostrando %{model} <b>%{from}&nbsp;-&nbsp;%{to}</b> de <b>%{count}</b> en total"
+    models:
+      product:
+        zero:  productos
+        one:   producto
+        few:   productos
+        other: productos
+      form:
+          zero:  formularios
+          one:   formulario
+          few:   formularios
+          other: formularios
+      order:
+        zero:  ordenes
+        one:   orden
+        few:   ordenes
+        other: ordenes
+      movement:
+        zero:  movimientos
+        one:   movimiento
+        few:   movimientos
+        other: movimientos
+      client:
+        zero:  clientes
+        one:   cliente
+        few:   clientes
+        other: clientes
+      employee:
+        zero:  funcionarios
+        one:   funcionario
+        few:   funcionarios
+        other: funcionarios
+      provider:
+        zero:  proveedores
+        one:   proveedor
+        few:   proveedores
+        other: proveedores
+      sales_invoice:
+        zero:  facturas de ventas
+        one:   factura de venta
+        few:   facturas de ventas
+        other: facturas de ventas
+      purchase_request:
+        zero:  pedidos de compras
+        one:   pedido de compra
+        few:   pedidos de compras
+        other: pedidos de compras
+      purchase_order:
+        zero:  ordenes de compras
+        one:   orden de compra
+        few:   ordenes de compras
+        other: ordenes de compras
+      purchase_invoice:
+        zero:  facturas de compras
+        one:   factura de compra
+        few:   facturas de compras
+        other: facturas de compras
+      budget_request:
+        zero:  pedidos de cotizaciones
+        one:   pedido de cotización
+        few:   pedidos de cotizaciones
+        other: pedidos de cotizaciones
+      cash_movement:
+        zero:  movimientos de cajas
+        one:   movimiento de caja
+        few:   movimientos de cajas
+        other: movimientos de cajas
+      open_close_cash:
+        zero:  aperturas y cierres de cajas
+        one:   apertura y cierre de caja
+        few:   aperturas y cierres de cajas
+        other: aperturas y cierres de cajas
+
+
+  activerecord:
+    errors:
+      messages:
+        record_invalid: 'La validación falló: %{errors}'
+        restrict_dependent_destroy:
+          has_one: No se puede eliminar el registro porque existe un %{record} dependiente
+          has_many: No se puede eliminar el registro porque existen %{record} dependientes

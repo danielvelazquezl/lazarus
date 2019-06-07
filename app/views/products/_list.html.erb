@@ -59,4 +59,4 @@
       </div>
 </div>
 
-<%= will_paginate products, renderer: WillPaginate::ActionView::BootstrapLinkRenderer  %>
+<%= will_paginate products, :model => Product, renderer: WillPaginate::ActionView::BootstrapLinkRenderer  %>

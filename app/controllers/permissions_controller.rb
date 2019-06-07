@@ -55,10 +55,7 @@ class PermissionsController < ApplicationController
   # DELETE /permissions/1.json
   def destroy
     @permission.destroy
-    respond_to do |format|
-      format.html { redirect_to permissions_url, notice: 'Permission was successfully destroyed.' }
-      format.json { head :no_content }
-    end
+
   end
 
   private

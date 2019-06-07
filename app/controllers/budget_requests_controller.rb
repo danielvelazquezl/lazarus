@@ -1,10 +1,22 @@
 class BudgetRequestsController < ApplicationController
   before_action :set_budget_request, only: [:show, :edit, :update, :destroy]
-
+  load_and_authorize_resource
   # GET /budget_requests
   # GET /budget_requests.json
   def index
-    @budget_requests = BudgetRequest.all
+    (@filterrific = initialize_filterrific(
+        BudgetRequest,
+        params[:filterrific],
+        select_options: {
+            sorted_by: BudgetRequest.options_for_sorted_by
+        },
+        )) || return
+    @budget_requests = @filterrific.find.page(params[:page])
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   # GET /budget_requests/1

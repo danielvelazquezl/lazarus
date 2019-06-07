@@ -146,6 +146,7 @@
           <th scope="col">Precio</th>
           <th scope="col">Cantidad</th>
           <th scope="col">Subtotal</th>
+          <th scope="col">IVA</th>
         </tr>
         </thead>
         <tbody id="invoices-items-table">
@@ -156,7 +157,7 @@
             <td><%= f.label :price, class: 'price', :value => f.object.price %></td>
             <td><%= f.text_field :quantity, :size => 3, class: 'quantity' %></td>
             <td><%= f.label :sub_total, class: 'sub_total', :value => f.object.price * f.object.quantity %></td>
-
+            <td><%= f.label :iva, class: 'iva', :value => f.object.sub_total/11 %></td>
             <%= f.hidden_field :product_id %>
             <%= f.hidden_field :price %>
             <%= f.hidden_field :sub_total %>
@@ -167,10 +168,11 @@
         <% end %>
 
         <tr>
+          <td><strong>Total</strong></td>
           <td></td>
           <td></td>
-          <td></td>
-          <td><%= form.label :total, id: 'total', :value => form.object.total %></td>
+          <td><strong><%= form.label :total, id: 'total', :value =>  form.object.total%></strong></td>
+          <td><strong><%= form.label :iva, id: 'total_iva', :value => form.object.iva %></strong></td>
         </tr>
 
         </tbody>
@@ -203,23 +205,35 @@
 
 
         let total = 0;
+        let iva = 0;
         $(".sub_total").each(function () {
             total += parseInt($(this).text());
         });
-        $("#total").text('Total: ' + total);
+        $("#total").text(total + ' Gs');
+        $(".iva").each(function () {
+            iva += parseInt($(this).text());
+        });
+        $("#total_iva").text(iva + ' Gs');
 
         $(".quantity").change(function (event) {
             // $(event.target).parent(".sub_total").val()
             let quantity = $(event.target).val();
             let price = $(event.target).parent().siblings().children(".price").text();
             $(event.target).parent().siblings().children(".sub_total").text(price * quantity);
+            let sub_total = $(event.target).parent().siblings().children(".sub_total").text();
+            $(event.target).parent().siblings().children(".iva").text(parseInt(sub_total / 11));
             // alert($(event.target).val());
 
             let total = 0;
+            let iva = 0;
             $(".sub_total").each(function () {
                 total += parseInt($(this).text());
             });
-            $("#total").text('Total: ' + total);
+            $(".iva").each(function () {
+                iva += parseInt($(this).text());
+            });
+            $("#total").text(total +' Gs');
+            $("#total_iva").text(iva + ' Gs');
 
         });
         $(sales_invoice_stamped_id).change(function (event) {

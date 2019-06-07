@@ -109,4 +109,12 @@
 <script>
     <%= render "validate.js" %>
     <%= render "select.js" %>
+
+  //para agregar selectize a detalles de producto terminado
+  $(document).on('click','.add_fields',function (e) {
+      $('fieldset').last().children().children().last().children().first().children().first().children().first().selectize({
+          create: false,
+          sortField: 'text'
+      });
+  });
 </script>

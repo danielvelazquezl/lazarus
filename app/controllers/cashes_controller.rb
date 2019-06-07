@@ -30,7 +30,7 @@ class CashesController < ApplicationController
 
     respond_to do |format|
       if @cash.save
-        format.html { redirect_to @cash, notice: 'Caja creada exitosamente.' }
+        format.html { redirect_to cashes_path, notice: 'Caja creada exitosamente.' }
         format.json { render :show, status: :created, location: @cash }
       else
         format.html { render :new }
@@ -44,7 +44,7 @@ class CashesController < ApplicationController
   def update
     respond_to do |format|
       if @cash.update(cash_params)
-        format.html { redirect_to @cash, notice: 'Caja actualizada exitosamente.' }
+        format.html { redirect_to cashes_path, notice: 'Caja actualizada exitosamente.' }
         format.json { render :show, status: :ok, location: @cash }
       else
         format.html { render :edit }

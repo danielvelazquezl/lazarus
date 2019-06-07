@@ -1,6 +1,6 @@
 class StocksController < ApplicationController
   before_action :set_stock, only: [:show, :edit, :update, :destroy]
-
+  load_and_authorize_resource
   # GET /stocks
   # GET /stocks.json
   def index

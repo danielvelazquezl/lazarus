@@ -72,9 +72,7 @@ class MovementProof < ApplicationRecord
     terms = query.downcase.split(/\s+/)
     # replace "*" with "%" for wildcard searches,
     # append '%', remove duplicate '%'s
-    terms = terms.map { |e|
-      (e.gsub('*', '%') + '%').gsub(/%+/, '%')
-    }
+    terms = terms.map { |e| ('%'+e.gsub('*','%')+'%').gsub(/%+/, '%') }
     # configure number of OR conditions for provision
     # of interpolation arguments. Adjust this if you
     # change the number of OR conditions.
@@ -82,7 +80,8 @@ class MovementProof < ApplicationRecord
     where(
         terms.map {
           or_clauses = [
-              "LOWER(movement_types.description) LIKE ?"
+              "LOWER(movement_types.description) LIKE ?",
+              "LOWER(movement_proofs.comment) LIKE ?"
           ].join(' OR ')
           "(#{ or_clauses })"
         }.join(' AND '),

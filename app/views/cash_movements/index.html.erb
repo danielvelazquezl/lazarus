@@ -1,43 +1,49 @@
 <div class="content-heading">Movimientos de Caja
 </div>
-<table class="table table-striped table-hover w-100" id="datatable2">
-  <thead>
-    <tr>
-      <th>
-        <strong>CLIENTE</strong>
-      </th>
-      <th>
-        <strong>TOTAL</strong>
-      </th>
-      <th>
-        <strong>CAJA</strong>
-      </th>
-      <th>
-        <strong>COMENTARIOS</strong>
-      </th>
-      <th class="text-center">
-        <strong>OPCIONES</strong>
-      </th>
-    </tr>
-  </thead>
-  <tbody>
-  <% @cash_movements.each do |cash_movement| %>
-    <tr>
-      <td><%= cash_movement.client.person.name %></td>
-      <td><%= cash_movement.total %></td>
-      <td><%= cash_movement.cash.description %></td>
-      <td><%= cash_movement.comments %></td>
+<div class="card card-body bg-light">
+  <%= puts @filterrific.inspect %>
+  <%= form_for_filterrific @filterrific do |f| %>
+    <div class="form-group row">
 
-      <td class="text-center">
-        <div class="btn-group" role="group">
-          <%= link_to cash_movement do%>
-            <button class="btn btn-sm btn-secondary"><i class="fas fa-search"></i></button>
-          <%end%>
+      <div class="col-4">
+        <label class="font-weight-bold">Buscar</label>
+        <%= f.text_field :search_query,
+                         :class => 'filterrific-periodically-observed form-control' %>
+      </div>
+
+      <div>
+        <div class="col-12">
+          <label class="font-weight-bold">Ordenar por</label>
+          <%= f.select :sorted_by,
+                       @filterrific.select_options[:sorted_by],
+                       {},
+                       {:class => 'form-control'}
+          %>
         </div>
-      </td>
-    </tr>
-  <%end%>
-  </tbody>
-</table>
+      </div>
+
+    </div>
+
+    <div class="ml-auto">
+      <div>
+        <%= link_to "Limpiar filtros", reset_filterrific_url, :class => 'btn btn-secondary align-middle' %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div id="results">
+  <%= render(
+          partial: 'cash_movements/list',
+          locals: {cash_movements: @cash_movements}
+      ) %>
+</div>
+
+<script>
+    $('[data-toggle="datepicker"]').datepicker({
+        autoHide: true,
+        zIndex: 2048,
+    });
+</script>
 
 

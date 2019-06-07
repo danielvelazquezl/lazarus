@@ -1,18 +1,13 @@
-<div class="content-heading">Editar Formularios de Movimiento</div>
-
-<%= render 'form', movement_proof: @movement_proof %>
-
-<div class="card">
-  <div class="row">
-    <div class="col-12 col-xl-auto">
-      <%= link_to @movement_proof do%>
-        <button class="mb-1 btn btn-primary" type="button">Mirar</button>
-      <% end %>
+<div class="content-heading">
+    <div class="text-align-right">
+      <%= link_to movement_proofs_path do%>
+        <button class="btn btn-secondary">
+          <i class="fas fa-arrow-left text-primary fa-1x"></i>
+        </button>
+      <%end %>
     </div>
-    <div class="col col-xl-2">
-      <%= link_to movement_proofs_path do %>
-        <button class="mb-1 btn btn-primary" type="button">Volver</button>
-      <% end %>
-    </div>
-  </div>
+    <div class="col-8"> Editar Movimiento </div>
+</div>
+<div class="card-body">
+  <%= render 'form', movement_proof: @movement_proof %>
 </div>

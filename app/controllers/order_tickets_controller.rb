@@ -1,6 +1,6 @@
 class OrderTicketsController < ApplicationController
   before_action :set_order_ticket, only: [:show, :edit, :update, :destroy]
-
+  load_and_authorize_resource
   # GET /order_tickets
   # GET /order_tickets.json
   def index

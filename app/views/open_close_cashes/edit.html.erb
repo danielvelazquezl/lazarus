@@ -1,5 +1,17 @@
-<h1>Cierre de Caja</h1>
+<div class="content-heading">
+  <div class="text-align-right">
+    <%= link_to open_close_cashes_path do%>
+      <button class="btn btn-secondary">
+        <i class="fas fa-arrow-left text-primary fa-1x"></i>
+      </button>
+    <%end %>
+  </div>
+
+  <div>Cierre de Caja
+  </div>
+</div>
+
 
 <%= render 'form', open_close_cash: @open_close_cash %>
 
-<%= link_to 'Back', open_close_cashes_path %>
+

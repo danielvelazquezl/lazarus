@@ -86,5 +86,6 @@ Rails.application.routes.draw do
   get '/reports/min_stock'
   get '/reports/sold_products'
   get '/reports/purchased_products'
+  get '/reports/cash_balance'
 
 end

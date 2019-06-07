@@ -48,13 +48,13 @@ class ProductsController < ApplicationController
     @product = Product.new
     @product.product_type = :product
     @product_items = @product.product_items.build
-    @components = Product.where(product_type: :component).map {|product| [product.description, product.id]}
-
+    #@components = Product.where(product_type: :component).map {|product| [product.description, product.id]}
+    @components = Product.components_all
   end
 
   # GET /products/1/edit
   def edit
-
+    @components = Product.components_all
   end
 
   # POST /products

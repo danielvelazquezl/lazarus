@@ -12,11 +12,11 @@
   <%= puts @filterrific.inspect %>
   <%= form_for_filterrific @filterrific do |f| %>
     <div class="form-group row">
-      <div class="col-4">
+      <!--div class="col-4">
         <label class="font-weight-bold">Buscar</label>
-        <%= f.text_field :search_query,
+        <%#= f.text_field :search_query,
                          :class => 'filterrific-periodically-observed form-control' %>
-      </div>
+      </div-->
 
       <div>
         <div class="col-12">
@@ -27,6 +27,30 @@
                        {:class => 'form-control'} %>
         </div>
       </div>
+
+      <div class="col-2">
+        <div>
+          <label class="font-weight-bold">Despues de</label>
+          <%= f.text_field(:with_date_gte, class: 'form-control datetimepicker-input',
+                           :'id' => 'filterrific_with_date_gte',
+                           :'data-target' => '#filterrific_with_date_gte',
+                           :'data-toggle' => 'datepicker',
+                           :'value' => '' ) %>
+        </div>
+      </div>
+
+      <div class="col-2">
+        <div >
+          <label class="font-weight-bold">Antes de</label>
+          <%= f.text_field(:with_date_lt, class: 'form-control datetimepicker-input',
+                           :'id' => 'filterrific_with_date_lt',
+                           :'data-target' => '#filterrific_with_date_lt',
+                           :'data-toggle' => 'datepicker',
+                           :'value' => '' ) %>
+        </div>
+      </div>
+
+
     </div>
   <% end %>
 </div>
@@ -36,3 +60,10 @@
           locals: {products: @products}
       ) %>
 </div>
+
+<script>
+    $('[data-toggle="datepicker"]').datepicker({
+        autoHide: true,
+        zIndex: 2048,
+    });
+</script>

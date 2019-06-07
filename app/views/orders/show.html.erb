@@ -51,7 +51,17 @@
           <strong>Estado:</strong>
         </div>
         <div class="col-4">
-          <%= @order.state.text %>
+          <%if @order.state == :daft %>
+            <span class="badge badge-secondary"><%= @order.state.text %></span>
+          <%elsif @order.state == :created %>
+            <span class="badge badge-warning"><%= @order.state.text %></span>
+          <%elsif @order.state == :in_progress %>
+            <span class="badge badge-primary"><%= @order.state.text %></span>
+          <%elsif @order.state == :terminated %>
+            <span class="badge badge-success"><%= @order.state.text %></span>
+          <%else %>
+            <span class="badge badge-danger"><%= @order.state.text %></span>
+          <%end %>
         </div>
       </div>
 

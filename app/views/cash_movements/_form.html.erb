@@ -75,6 +75,9 @@
 
 
 <script>
+  <%= render "validate.js" %>
+  <%= render "select.js" %>
+  <%= render "total_pay.js" %>
   document.addEventListener('ajax:success', function(event){
     var detail = event.detail;
     var data = detail[0], status = detail[1], xhr = detail[2];
@@ -116,9 +119,10 @@
       update_to_pay(amount,false)
     })
   });
+  //-------------------------------------------------------------
 
   //-------------------------------------------------------------
-  $('#ruc-select').selectize({
+  $('#ruc-select, #cash_movement_cash_id').selectize({
       create: false,
       sortField: 'text'
   });
@@ -128,5 +132,11 @@
       $('#mydiv').css('width',w);
   })
 
-
+  //para agregar selectize a detalles de producto terminado
+  $(document).on('click','.add_fields',function (e) {
+      $('fieldset').last().children().children().last().children().first().children().first().children().first().selectize({
+          create: false,
+          sortField: 'text'
+      });
+  });
 </script>

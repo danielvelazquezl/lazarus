@@ -1,4 +1,4 @@
-<%= form_with(model: purchase_request, local: true) do |form| %>
+<%= form_with(model: purchase_request, local: true, html: { id: "purchase_request_form" }) do |form| %>
   <% if purchase_request.errors.any? %>
     <div id="error_explanation">
       <h2>
@@ -66,37 +66,34 @@
           <table class="table  table-sm" >
           <thead>
           <tr>
-            <th scope="col"></th>
-            <th scope="col"></th>
+            <th class="col-6">Producto</th>
+            <th class="col-4">Cantidad</th>
+            <th class="col-1">Opciones</th>
           </tr>
           </thead>
           <tbody id="invoices-items-table">
+            <%= form.fields_for :purchase_request_items, @purchase_request.purchase_request_items do |f| %>
+              <tr>
+                <td style="width:293px"><%= f.label :product_id, :value => Product.find(f.object.product_id).description %></td>
+                <% if @budget != nil %>
+                  <td><%= f.label :quantity, class: 'quantity', :value => f.object.quantity %></td>
+                  <%= f.hidden_field :quantity%>
+                  <%= f.hidden_field :product_id%>
+                <%else %>
+                  <td><%= f.text_field :quantity, :size => 10, :value => f.object.quantity, class: 'quantity' %></td>
+                <%end %>
+              </tr>
+            <% end %>
             <tr>
-              <td style="width:293px"><b>Productos</b></td>
-              <td><b>Cantidad</b></td>
+              <td></td>
+              <td></td>
+              <td></td>
             </tr>
-          <%= form.fields_for :purchase_request_items, @purchase_request.purchase_request_items do |f| %>
-            <tr>
-              <td style="width:293px"><%= f.label :product_id, :value => Product.find(f.object.product_id).description %></td>
-              <% if @budget != nil %>
-                <td><%= f.label :quantity, class: 'quantity', :value => f.object.quantity %></td>
-                <%= f.hidden_field :quantity%>
-                <%= f.hidden_field :product_id%>
-              <%else %>
-                <td><%= f.text_field :quantity, :size => 10, :value => f.object.quantity, class: 'quantity' %></td>
-              <%end %>
-
-
-            </tr>
-          <% end %>
-
           </tbody>
         </table>
-
           <% if @budget == nil %>
             <%=link_to_add_fields "Agregar Producto", form, :purchase_request_items%>
           <% end %>
-
         </div>
         <div class="col"></div>
 
@@ -150,7 +147,7 @@
                   <td><%= budget_request.date.strftime("%d-%m-%Y") %></td>
                   <td>
                     <%= link_to edit_budget_request_path(BudgetRequest.find_by(id: budget_request.id)) do %>
-                      <i class="fas fa-eye text-primary"></i>
+                      <i class="fas fa-search text-primary"></i>
                     <% end %>
                   </td>
                 </tr>
@@ -177,3 +174,16 @@
     <%= submit_tag "Generar Orden", name:'nil', class: "btn btn-sm btn-primary"%>
   <% end %>
 <% end %>
+
+<script type="text/javascript">
+  <%= render "validate.js" %>
+  <%= render "select.js" %>
+
+  //para agregar selectize a detalles de producto terminado
+  $(document).on('click','.add_fields',function (e) {
+      $('fieldset').last().children().children().last().children().first().children().first().children().first().selectize({
+          create: false,
+          sortField: 'text'
+      });
+  });
+</script>

@@ -13,7 +13,7 @@ $(document).ready(function () {
     });
     $("#product_form").validate({
         errorPlacement: function(error, element) {
-            error.appendTo(element.parent("td").next("td"));
+            error.insertAfter(element);
         },
         submitHandler: function() {
             $("#product_form").get(0).submit(1);

@@ -1,3 +1,15 @@
+<div class="content-heading">
+  <div class="text-align-right">
+    <%= link_to sales_invoices_path do%>
+      <button class="btn btn-secondary" title="Volver atras">
+        <i class="fas fa-arrow-left text-primary fa-1x"></i>
+      </button>
+    <%end %>
+  </div>
+  <div class="col-8">Factura de Venta
+  </div>
+</div>
+
 <div class="card card-default">
   <div class="card-body">
     <div class="row">
@@ -16,7 +28,7 @@
               <strong>Fecha de venta:</strong>
             </div>
             <div class="col-8">
-              <input type="text" class="form-control valid" value="<%= @sales_invoice.date %>" disabled>
+              <input type="text" class="form-control valid" value="<%= l(@sales_invoice.date.to_date, format: :long) %>" disabled>
             </div>
           </div>
           <div class="form-group row">
@@ -44,7 +56,7 @@
               <strong>N° Factura</strong>
             </div>
             <div class="col-8">
-              <input type="text" class="form-control valid" value="<%=@sales_invoice.stamped.name %><%=@sales_invoice.invoice_number %>" disabled>
+              <input type="text" class="form-control valid" value="<%=@sales_invoice.stamped.name %> <%=@sales_invoice.invoice_number %>" disabled>
 
             </div>
           </div>
@@ -112,6 +124,7 @@
         <th scope="col">Precio</th>
         <th scope="col">Cantidad</th>
         <th scope="col">Subtotal</th>
+        <th scope="col">IVA</th>
       </tr>
       </thead>
       <tbody id="invoices-items-table">
@@ -122,15 +135,25 @@
           <td><%= f.price %></td>
           <td><%= f.quantity %></td>
           <td><%= f.sub_total %></td>
+          <td><%= f.iva %></td>
         </tr>
 
       <% end %>
 
       <tr>
+        <td><strong>Total</strong></td>
         <td></td>
         <td></td>
-        <td></td>
-        <td><%= @sales_invoice.total %></td>
+        <td>
+          <strong>
+            <%= number_to_currency(@sales_invoice.total, :unit => "Gs", :separator => ".", :precision => 0) %>
+          </strong>
+        </td>
+        <td>
+          <strong>
+            <%= number_to_currency(@sales_invoice.iva, :unit => "Gs", :separator => ".", :precision => 0) %>
+          </strong>
+        </td>
       </tr>
 
       </tbody>

@@ -1,0 +1,77 @@
+<table class="table table-striped table-hover w-100">
+  <thead>
+  <tr>
+    <th  class="text-center">
+      <strong>N° ORDEN</strong>
+    </th>
+    <th  class="text-center">
+      <strong>PROVEEDOR</strong>
+    </th>
+    <th  class="text-center">
+      <strong>RESPONSABLE</strong>
+    </th>
+    <th  class="text-center">
+      <strong>FECHA</strong>
+    </th>
+    <th  class="text-center">
+      <strong>ESTADO</strong>
+    </th>
+    <th  class="text-center">
+      <strong>ACCION</strong>
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @purchase_orders.each do |order| %>
+    <tr>
+      <td  class="text-center"><%= order.number %></td>
+      <td  class="text-center"><%= order.provider.person.name %></td>
+      <td  class="text-center"><%= order.employee.person.name %></td>
+      <td  class="text-center"><%= l(order.date.to_date, format: :long)%></td>
+      <% if order.state == :invoiced %>
+        <td class="text-center">
+          <div class="badge badge-success">
+            <%=order.state.text%>
+          </div>
+        </td>
+      <%elsif order.state == :received%>
+        <td class="text-center">
+          <div class="badge badge-warning">
+            <%=order.state.text%>
+          </div>
+        </td>
+      <%else %>
+        <td class="text-center">
+          <div class="badge badge-danger">
+            <%=order.state.text%>
+          </div>
+        </td>
+      <%end %>
+
+      <td class="text-center">
+        <div class="btn-group" role="group">
+          <%= link_to order do %>
+            <button class="btn btn-sm btn-secondary"><i class="fas fa-search"></i></button>
+          <% end %>
+          <% if order.state.created? %>
+            <%= link_to edit_purchase_order_path(order) do %>
+              <button class="btn btn-sm btn-secondary"><i class="fas fa-edit"></i></button>
+            <% end %>
+          <% else %>
+            <button class="btn btn-sm btn-secondary" disabled><i class="fas fa-edit"></i></button>
+          <% end %>
+        </div>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<div class="card card-body bg-gray-lighter">
+  <div>
+    <%= page_entries_info purchase_orders, :model => 'purchase_order', :class => 'align-middle' %>
+  </div>
+</div>
+
+<%= will_paginate purchase_orders, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+

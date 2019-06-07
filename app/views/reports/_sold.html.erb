@@ -14,7 +14,7 @@
       <td class="text-center"><%= product.unit_cost %></td>
       <% sales_invoices_item_id = SalesInvoicesItem.find_by(product_id: product.id).sales_invoice_id %>
       <% sales_invoice_client_id = SalesInvoice.find_by(id: sales_invoices_item_id).client_id %>
-      <td class="text-center"><%= CashMovement.find_by(client_id: sales_invoice_client_id).date.to_date.to_s(:long) %></td>
+      <td class="text-center"><%= l(CashMovement.find_by(client_id: sales_invoice_client_id).date.to_date, format: :long) %></td>
     </tr>
   <% end %>
 </table>

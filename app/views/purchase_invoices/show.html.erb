@@ -1,54 +1,165 @@
-<p id="notice"><%= notice %></p>
+<div class="content-heading">
+  <div class="text-align-right">
+    <%= link_to purchase_invoices_path do%>
+      <button class="btn btn-secondary" title="Volver atras">
+        <i class="fas fa-arrow-left text-primary fa-1x"></i>
+      </button>
+    <%end %>
+  </div>
+  <div class="col-8">Factura de Compra
+  </div>
+</div>
 
-<p>
-  <strong>Provider:</strong>
-  <%= @purchase_invoice.provider %>
-</p>
+<div class="card card-default">
+  <div class="card-body">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="form-horizontal">
+          <div class="form-group row">
+            <div class="col-4">
+              <strong>Orden de compra:</strong>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control valid" value="<%=@purchase_invoice.purchase_order.number %>" disabled>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-4">
+              <strong>Fecha de venta:</strong>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control valid" value="<%= l(@purchase_invoice.date.to_date, format: :long) %>" disabled>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-4">
+              <strong>Encargado:</strong>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control valid" value="<%= @purchase_invoice.employee.person.name %>" disabled>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-horizontal">
 
-<p>
-  <strong>Date:</strong>
-  <%= @purchase_invoice.date %>
-</p>
+          <div class="form-group row">
+            <div class="col-4">
+              <strong>Timbrado</strong>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control valid" value="<%=@purchase_invoice.stamped %>" disabled>
 
-<p>
-  <strong>Total:</strong>
-  <%= @purchase_invoice.total %>
-</p>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-4">
+              <strong>N° Factura:</strong>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control valid" value="<%=@purchase_invoice.invoice_number %>" disabled>
 
-<p>
-  <strong>Iva:</strong>
-  <%= @purchase_invoice.iva %>
-</p>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-4">
+              <strong>Deposito:</strong>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control valid" value="<%= @purchase_invoice.deposit.description %>" disabled>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<p>
-  <strong>Balance:</strong>
-  <%= @purchase_invoice.balance %>
-</p>
+    <p class="lead bb">Datos del Proveedor</p>
+    <div class="row">
 
-<p>
-  <strong>Invoice number:</strong>
-  <%= @purchase_invoice.invoice_number %>
-</p>
+      <div class="col-lg-6">
+        <div class="form-horizontal">
+          <div class="form-group row">
+            <div class="col-4">
+              <strong>Nombre:</strong>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control valid" value="<%= @purchase_invoice.provider.person.name %>" disabled>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-4">
+              <strong>Telefono:</strong>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control valid" value="<%= @purchase_invoice.provider.person.phone %>" disabled>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-6">
+        <div class="form-horizontal">
+          <div class="form-group row">
+            <div class="col-4">
+              <strong>RUC:</strong>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control valid" value="<%= @purchase_invoice.provider.ruc %>" disabled>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-4">
+              <strong>Direccion:</strong>
+            </div>
+            <div class="col-8">
+              <input type="text" class="form-control valid" value="<%= @purchase_invoice.provider.person.address %>" disabled>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
 
-<p>
-  <strong>Stamped:</strong>
-  <%= @purchase_invoice.stamped %>
-</p>
+    <table class="table mt-4">
+      <thead class="thead-dark">
+      <tr>
+        <th scope="col">Producto</th>
+        <th scope="col">Precio</th>
+        <th scope="col">Cantidad</th>
+        <th scope="col">Subtotal</th>
+        <th scope="col">IVA</th>
+      </tr>
+      </thead>
+      <tbody id="invoices-items-table">
 
-<p>
-  <strong>Deposit:</strong>
-  <%= @purchase_invoice.deposit %>
-</p>
+      <% @purchase_invoice.purchase_invoice_items.each do |f| %>
+        <tr>
+          <td><%= Product.find(f.product_id).description %></td>
+          <td><%= f.price %></td>
+          <td><%= f.quantity %></td>
+          <td><%= f.sub_total %></td>
+          <td><%= f.iva %></td>
+        </tr>
 
-<p>
-  <strong>Pay method:</strong>
-  <%= @purchase_invoice.pay_method %>
-</p>
+      <% end %>
 
-<p>
-  <strong>Purchase order:</strong>
-  <%= @purchase_invoice.purchase_order %>
-</p>
+      <tr>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td>
+          <strong>
+            <%= number_to_currency(@purchase_invoice.total, :unit => "Gs", :separator => ".", :precision => 0) %>
+          </strong>
+        </td>
+        <td>
+          <strong>
+            <%= number_to_currency(@purchase_invoice.iva, :unit => "Gs", :separator => ".", :precision => 0) %>
+          </strong>
+        </td>
+      </tr>
 
-<%= link_to 'Edit', edit_purchase_invoice_path(@purchase_invoice) %> |
-<%= link_to 'Back', purchase_invoices_path %>
+      </tbody>
+    </table>
+  </div>
+</div>
+

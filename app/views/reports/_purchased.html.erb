@@ -13,7 +13,7 @@
       <td class="text-center"><%= Brand.find_by(id: product.brand_id).description %></td>
       <td class="text-center"><%= product.unit_cost %></td>
       <% purchase_invoice_id = PurchaseInvoiceItem.find_by(product_id: product.id).purchase_invoice_id %>
-      <td class="text-center"><%= PurchaseInvoice.find_by(id: purchase_invoice_id).date.to_date.to_s(:long) %></td>
+      <td class="text-center"><%= l(PurchaseInvoice.find_by(id: purchase_invoice_id).to_date, format: :long) %></td>
     </tr>
   <% end %>
 </table>

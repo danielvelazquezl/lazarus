@@ -1,5 +1,7 @@
 class EmployeesController < ApplicationController
   before_action :set_employee, only: [:show, :destroy]
+  load_and_authorize_resource
+
   def index
     (@filterrific = initialize_filterrific(
         Employee,
@@ -35,8 +37,12 @@ class EmployeesController < ApplicationController
 
       respond_to do |format|
         if @employee.save
+          UsersRole.create(user_id: @user.id, role_id: Setting.find_by!(key: @employee.charge).value)
           format.html { redirect_to @employee, notice: 'Funcionario guardado' }
         else
+          @person.destroy!
+          @user.destroy!
+          @user_roles.destroy!
           format.html { render :new, notice: 'No se pudo guardar el nuevo funcionario' }
         end
       end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_06_06_010411) do
+ActiveRecord::Schema.define(version: 2019_06_07_024911) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -385,7 +385,9 @@ ActiveRecord::Schema.define(version: 2019_06_06_010411) do
     t.bigint "purchase_order_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "employee_id"
     t.index ["deposit_id"], name: "index_purchase_invoices_on_deposit_id"
+    t.index ["employee_id"], name: "index_purchase_invoices_on_employee_id"
     t.index ["pay_method_id"], name: "index_purchase_invoices_on_pay_method_id"
     t.index ["provider_id"], name: "index_purchase_invoices_on_provider_id"
     t.index ["purchase_order_id"], name: "index_purchase_invoices_on_purchase_order_id"
@@ -443,6 +445,7 @@ ActiveRecord::Schema.define(version: 2019_06_06_010411) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "alias"
   end
 
   create_table "roles", force: :cascade do |t|

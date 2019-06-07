@@ -57,9 +57,7 @@ class SalesInvoice < ApplicationRecord
     terms = query.downcase.split(/\s+/)
   # replace "*" with "%" for wildcard searches,
   # append '%', remove duplicate '%'s
-    terms = terms.map {|e|
-      (e.gsub('*', '%') + '%').gsub(/%+/, '%')
-    }
+    terms = terms.map { |e| ('%'+e.gsub('*','%')+'%').gsub(/%+/, '%') }
   # configure number of OR conditions for provision
   # of interpolation arguments. Adjust this if you
   # change the number of OR conditions.
@@ -94,7 +92,6 @@ class SalesInvoice < ApplicationRecord
     where("sales_invoices.date >= ?", ref_date)
   }
 
-  # always exclude the upper boundary for semi open intervals
   scope :with_date_lt, ->(ref_date) {
     where('sales_invoices.date <= ?', ref_date)
   }

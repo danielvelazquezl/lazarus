@@ -1,0 +1,70 @@
+<table class="table table-striped table-hover " id="datatable2">
+  <thead>
+  <tr class="align-content-start">
+    <th class="text-left">
+      <strong>CAJERO</strong>
+    </th>
+    <th class="text-left">
+      <strong>CAJA</strong>
+    </th>
+    <th class="text-center">
+      <strong>APERTURA</strong>
+    </th>
+    <th class="text-center">
+      <strong>CIERRE</strong>
+    </th>
+    <th class="text-center">
+      <strong>VALORES EN EFECTIVO</strong>
+    </th>
+    <th class="text-center">
+      <strong>VALORES EN CHEQUE</strong>
+    </th>
+    <th class="text-center">
+      <strong>VALORES EN TARJETA C.</strong>
+    </th>
+    <th class="text-center">
+      <strong>MONTO INICIAL</strong>
+    </th>
+    <!--th class="text-center">
+      <strong>MONTO FINAL</strongs>
+    </th-->
+    <th class="text-center">
+      <strong>BALANCE</strong>
+    </th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @cashes.each do |cash| %>
+    <tr>
+      <td class="text-left"><%= Person.find_by(id: Employee.find_by(id: cash.employee_id).person_id).name %></td>
+      <td class="text-left"><%= Cash.find_by(id: cash.cash_id).description %></td>
+      <td class="text-center"><%= l(cash.date_start.to_date, format: :long) %></td>
+      <td class="text-center"><%= l(cash.final_date.to_date, format: :long) %></td>
+      <td class="text-center"><%= cash.bill_amount %></td>
+      <td class="text-center"><%= cash.check_amount %></td>
+      <td class="text-center"><%= cash.card_amount %></td>
+      <td class="text-center"><%= cash.start_ammount %></td>
+      <!--td class="text-center"><%#= cash.final_ammount %></td-->
+      <td class="text-center"><%= cash.balance %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<div class="card card-body bg-light d-block p-3 my-3">
+  <div class="row">
+    <div class="col-md-10">
+      <div>
+        <%= page_entries_info open_close_cashes, :model => 'open_close_cashe', :class => 'align-middle' %>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div>
+        <%#= link_to "Limpiar filtros", reset_filterrific_url, :class => 'btn btn-secondary align-middle' %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= will_paginate open_close_cashes, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>

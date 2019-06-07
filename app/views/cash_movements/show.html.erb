@@ -56,20 +56,21 @@
         <strong>Opción:</strong>
       </div>
     </div>
-    <div class="row">
-      <% @cash_movement_invoices.each do |invoice|%>
 
+      <% @cash_movement_invoices.each do |invoice|%>
+      <div class="row">
         <div class="col-2"><%=invoice.sales_invoice.invoice_number %></div>
         <div class="col-2"><%=invoice.sales_invoice.date.strftime("%d/%m/%Y") %></div>
         <div class="col-2"><%=invoice.sales_invoice.total %></div>
-        <div class="col-2"><%= link_to edit_sales_invoice_path(invoice.sales_invoice) do%>
+        <div class="col-2"><%= link_to sales_invoice_path(invoice.sales_invoice) do%>
             <i class="fas fa-search"></i>
           <%end %>
         </div>
+      </div>
       <% end %>
 
 
-    </div>
+
   </div>
 </div>
 <% @cash_movement_values.each do |cash| %>

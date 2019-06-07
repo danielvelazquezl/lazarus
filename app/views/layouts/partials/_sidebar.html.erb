@@ -10,7 +10,7 @@
                   <!-- User picture-->
                   <div class="user-block-picture">
                      <div class="user-block-status">
-                        <img src="<%= image_path('angle/user/02.jpg') %>" alt="Avatar" width="60" height="60" class="img-thumbnail rounded-circle" />
+                        <img src="<%= image_path('angle/user/person.png') %>" alt="Avatar" width="60" height="60" class="img-thumbnail rounded-circle" />
                         <!--div class="circle circle-success circle-lg"></div>-->
                      </div>
                   </div>
@@ -28,203 +28,38 @@
          <li class="nav-heading">
             <span>Menú</span>
          </li>
-        <!--STOCK-->
-        <li class="">
-          <a href="#elements" title="Stock" data-toggle="collapse">
-            <em class="icon-layers"></em>
-            <span>Stock</span>
-          </a>
-          <ul id="elements" class="sidebar-nav sidebar-subnav collapse">
-            <li class="sidebar-subnav-header">Stock</li>
-            <li class="">
-              <a href="/products" title="Productos">
-                <span>Productos</span>
-              </a>
-            </li>
-            <li class="">
-              <a href="#form_level1" title="Formularios" data-toggle="collapse">
-                <span>Formularios</span>
-              </a>
-              <ul id="form_level1" class="sidebar-nav sidebar-subnav collapse">
-                <li class="">
-                  <a href="/forms" title="CPU Producidas">
-                    <span>CPU Producidas</span>
-                  </a>
-                </li>
-                <li class="">
-                  <a href="/forms/request_forms_index" title="Solicitud de Componentes">
-                    <span>Solicitud de Componentes</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="">
-              <a href="#orden_level1" title="Orden" data-toggle="collapse">
-                <span>Ordenes</span>
-              </a>
-              <ul id="orden_level1" class="sidebar-nav sidebar-subnav collapse">
-                <li class="">
-                  <a href="/orders" title="Orden de Producción">
-                    <span>Orden de Producción</span>
-                  </a>
-                </li>
-                <li class="">
-                  <a href="/orders/component_orders_index" title="Orden de Componentes">
-                    <span>Orden de Componentes</span>
-                  </a>
-                </li>
-              </ul>
-            </li>
-            <li class="">
-              <a href="/movement_proofs" title="Movimientos">
-                <span>Movimientos</span>
-              </a>
-            </li>
-            <li class="">
-              <a href="/stocks" title="Stocks">
-                <span>Stocks</span>
-              </a>
-            </li>
-          </ul>
-        </li>
+        <% if current_user.has_role? :admin %>
+          <%= render partial: 'layouts/partials/stock' %>
+          <%= render partial: 'layouts/partials/human_resources' %>
+          <%= render partial: 'layouts/partials/sales' %>
+          <%= render partial: 'layouts/partials/purchases' %>
+          <%= render partial: 'layouts/partials/cash' %>
+          <%= render partial: 'layouts/partials/reports' %>
+          <%= render partial: 'layouts/partials/roles' %>
 
-        <!--RECURSOS HUMANOS-->
-        <li class="">
-          <a href="#elements2" title="Recursos humanos" data-toggle="collapse">
-            <em class="icon-people"></em>
-            <span>Recursos humanos</span>
-          </a>
-          <ul id="elements2" class="sidebar-nav sidebar-subnav collapse">
-            <li class="sidebar-subnav-header">Recursos humanos</li>
-            <li class="">
-              <a href="/clients" title="Clientes">
-                <span>Clientes</span>
-              </a>
-            </li>
-            <li class="">
-              <a href="/employees" title="Funcionarios">
-                <span>Funcionarios</span>
-              </a>
-            </li>
-            <li class="">
-              <a href="/providers" title="Proveedores">
-                <span>Proveedores</span>
-              </a>
-            </li>
-          </ul>
-        </li>
+        <% elsif current_user.has_role? :manager %>
+          <%= render partial: 'layouts/partials/stock' %>
+          <%= render partial: 'layouts/partials/human_resources' %>
+          <%= render partial: 'layouts/partials/sales' %>
+          <%= render partial: 'layouts/partials/purchases' %>
+          <%= render partial: 'layouts/partials/cash' %>
+          <%= render partial: 'layouts/partials/reports' %>
 
-        <!--VENTAS-->
-        <li class="">
-          <a href="#elements3" title="Ventas" data-toggle="collapse">
-            <em class="icon-basket"></em>
-            <span>Ventas</span>
-          </a>
-          <ul id="elements3" class="sidebar-nav sidebar-subnav collapse">
-            <li class="sidebar-subnav-header">Ventas</li>
-            <li class="">
-              <a href="/sales_invoices" title="Facturas de Ventas">
-                <span>Facturas de Ventas</span>
-              </a>
-            </li>
+        <% elsif current_user.has_role? :cashier %>
+          <%= render partial: 'layouts/partials/sales' %>
+          <%= render partial: 'layouts/partials/cash' %>
 
-            <li class="">
-              <a href="/order_tickets" title="Nota de Pedido">
-                <span>Nota de Pedido</span>
-              </a>
-            </li>
-          </ul>
-        </li>
+        <% elsif current_user.has_role? :seller %>
+          <%= render partial: 'layouts/partials/stock_list' %>
+          <%= render partial: 'layouts/partials/sales' %>
 
-        <!--COMPRAS-->
-        <li class="">
-          <a href="#elements4" title="Compras" data-toggle="collapse">
-            <em class="icon-bag"></em>
-            <span>Compras</span>
-          </a>
-          <ul id="elements4" class="sidebar-nav sidebar-subnav collapse">
-            <li class="sidebar-subnav-header">Compras</li>
-            <li class="">
-              <a href="/purchase_requests" title="Pedido de compras">
-                <span>Pedido de Compras</span>
-              </a>
-            </li>
-            <li class="">
-              <a href="/budget_requests" title="Pedido de cotización">
-                <span>Pedido de Cotización</span>
-              </a>
-            </li>
+        <% elsif current_user.has_role? :warehouse_manager %>
+          <%= render partial: 'layouts/partials/stock' %>
+          <%= render partial: 'layouts/partials/purchases' %>
 
-            <li class="<%= 'active' if controller?('elements') && action?('button') %>">
-              <a href="/purchase_orders" title="Orden de Compra">
-                <span>Orden de Compra</span>
-              </a>
-            </li>
-            <li class="">
-              <a href="/purchase_invoices" title="Facturas de Compras">
-                <span>Facturas de Compras</span>
-              </a>
-            </li>
-
-          </ul>
-        </li>
-
-        <!--CAJA-->
-        <li class="">
-          <a href="#elements5" title="Caja" data-toggle="collapse">
-            <em class="icon-wallet"></em>
-            <span>Caja</span>
-          </a>
-          <ul id="elements5" class="sidebar-nav sidebar-subnav collapse">
-            <li class="sidebar-subnav-header">Caja</li>
-            <li class="">
-              <a href="/cash_movements" title="Movimiento de Caja">
-                <span>Movimiento de Caja</span>
-              </a>
-            </li>
-            <li class="">
-              <a href="/cash_movements/new" title="Cobro a Clientes">
-                <span>Cobro a Clientes</span>
-              </a>
-            </li>
-            <li class="">
-              <a href="/open_close_cashes" title="Apertura y Cierre de Caja">
-                <span>Apertura y Cierre de Caja</span>
-              </a>
-            <li class="">
-              <a href="/cashes" title="Lista de Cajas">
-                <span>Lista de Cajas</span>
-              </a>
-            </li>
-          </ul>
-        </li>
-
-        <!--REPORTS-->
-        <li class="">
-          <a href="#elements6" title="Reportes" data-toggle="collapse">
-            <em class="icon-docs"></em>
-            <span>Reportes</span>
-          </a>
-          <ul id="elements6" class="sidebar-nav sidebar-subnav collapse">
-            <li class="sidebar-subnav-header">Reportes</li>
-            <li class="">
-              <a href="/reports/min_stock" title="Stock minimo">
-                <span>Stock mínimo</span>
-              </a>
-            </li>
-            <li class="">
-              <a href="/reports/sold_products" title="Productos vendidos">
-                <span>Productos vendidos</span>
-              </a>
-            </li>
-            <li class="">
-              <a href="/reports/purchased_products" title="Productos comprados">
-                <span>Productos comprados</span>
-              </a>
-            </li>
-          </ul>
-        </li>
-
+        <% elsif current_user.has_role? :external_employee %>
+          <span class="nav-heading">Menús no disponibles</span>
+        <% end %>
       </ul>
       <!-- END sidebar nav-->
    </nav>

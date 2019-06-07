@@ -1,6 +1,6 @@
 class MovementProofsController < ApplicationController
   before_action :set_movement_proof, only: [:show, :edit, :update, :destroy]
-
+  load_and_authorize_resource
   # GET /movement_proofs
   # GET /movement_proofs.json
   def index

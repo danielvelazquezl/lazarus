@@ -1,6 +1,7 @@
 class ClientsController < ApplicationController
   before_action :set_client, only: [:show, :destroy]
   rescue_from ActiveRecord::RecordNotFound, with: :handle_record_not_found
+  load_and_authorize_resource
   
   def index
     (@filterrific = initialize_filterrific(
@@ -19,7 +20,6 @@ class ClientsController < ApplicationController
   end
 
   def show
-    @client = Client.find(params[:id])
   end
 
   def new
@@ -36,7 +36,7 @@ class ClientsController < ApplicationController
         if @client.save
           format.html { redirect_to @client, notice: 'Cliente guardado' }
         else
-          @person.destroy
+          @person.destroy!
           format.html { render :new, alert: 'No se pudo guardar el nuevo cliente' }
         end
       end

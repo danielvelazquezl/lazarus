@@ -1,12 +1,13 @@
 
 document.addEventListener('click',(event) => {
-   if (event.target.matches('.pay_check')) {
+
+    if (event.target.matches('.pay_check')) {
      let checkedInvoices = 0;
 
      let invoiceValue = parseInt(event.target.dataset.invoiceValue);
      let totalField = document.getElementById("total-field");
      let lastValue = totalField.value;
-
+        //console.log(lastValue);
      let balanceField = document.getElementById("balance-field");
      let balanceLastValue = balanceField.value;
 
@@ -25,16 +26,17 @@ document.addEventListener('click',(event) => {
      }
 
      document.getElementById('pay-btn').disabled = (0 >= checkedInvoices);
+
+
    }
  });
 
 //reiniciar campos de montos al buscar facturas de cliente
 $('#search-invoices').click(function () {
 
-
-    $('#total-field').val('');
-    $('#balance-field').val('');
-    $('#pay-field').val('');
+    $('#total-field').val(0);
+    $('#balance-field').val(0);
+    $('#pay-field').val(0);
     $('#pay-btn').prop('disabled', true);
 
 });

@@ -1,10 +1,22 @@
 class PurchaseInvoicesController < ApplicationController
   before_action :set_purchase_invoice, only: [:show, :edit, :update, :destroy]
-
+  load_and_authorize_resource
   # GET /purchase_invoices
   # GET /purchase_invoices.json
   def index
-    @purchase_invoices = PurchaseInvoice.all
+    (@filterrific = initialize_filterrific(
+        PurchaseInvoice,
+        params[:filterrific],
+        select_options: {
+            sorted_by: PurchaseInvoice.options_for_sorted_by
+        },
+        )) || return
+    @purchase_invoices = @filterrific.find.page(params[:page])
+
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
 
   # GET /purchase_invoices/1
@@ -20,6 +32,7 @@ class PurchaseInvoicesController < ApplicationController
       if purchaseOrder != nil && purchaseOrder.state == :received
         @purchaseOrder_items = PurchaseOrderItem.where(purchase_order_id: purchaseOrder.id)
         @purchase_invoice.provider_id = purchaseOrder.provider_id
+        @purchase_invoice.employee_id = purchaseOrder.employee_id
         @purchase_invoice.deposit_id = Setting.find_by!(key: 'id_components_deposit').value
         @purchase_invoice.purchase_order_id = purchaseOrder.id
         @purchase_invoice.date = Time.now
@@ -27,7 +40,7 @@ class PurchaseInvoicesController < ApplicationController
         @purchaseOrder_items.each do |item|
           @purchase_invoice.purchase_invoice_items.build(product_id: item.product_id,
                                                     quantity: item.requested_quantity,
-                                                    price: item.product.unit_cost,
+                                                    price: item.price,
                                                     sub_total: item.requested_quantity * item.product.unit_cost,
                                                     iva: (item.requested_quantity * item.product.unit_cost) / 11)
         end
@@ -59,8 +72,15 @@ class PurchaseInvoicesController < ApplicationController
 
     respond_to do |format|
       if @purchase_invoice.save
+        @purchase_invoice_items = @purchase_invoice.purchase_invoice_items
+        @purchase_invoice_items.each do |item|
+          product = Product.find_by(id: item.product.id)
+          product.update_attribute(:unit_cost, item.price)
+        end
+
         purchase_order = PurchaseOrder.find_by(number: @purchase_invoice.purchase_order.number)
         purchase_order.update_attribute(:state, PurchaseOrder.state.invoiced)
+
         format.html { redirect_to purchase_invoices_path, notice: 'Factura creada.' }
         format.json { render :show, status: :created, location: @purchase_invoice }
       else
@@ -102,6 +122,6 @@ class PurchaseInvoicesController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def purchase_invoice_params
-    params.require(:purchase_invoice).permit(:provider_id, :date, :total, :iva, :balance, :invoice_number, :stamped, :deposit_id, :purchase_order_id,  purchase_invoice_items_attributes: [:id, :product_id, :quantity, :price, :iva, :sub_total])
+    params.require(:purchase_invoice).permit(:provider_id, :employee_id, :date, :total, :iva, :balance, :invoice_number, :stamped, :deposit_id, :purchase_order_id,  purchase_invoice_items_attributes: [:id, :product_id, :quantity, :price, :iva, :sub_total])
   end
 end

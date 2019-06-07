@@ -1,6 +1,15 @@
-<h1>Editing Cash</h1>
+<div class="content-heading">
+    <div class="text-align-right">
+      <%= link_to cashes_path do%>
+        <button class="btn btn-secondary">
+          <i class="fas fa-arrow-left text-primary fa-1x"></i>
+        </button>
+      <%end %>
+    </div>
 
-<%= render 'form', cash: @cash %>
+    <div class="col-8"> Editar Caja </div>
 
-<%= link_to 'Show', @cash %> |
-<%= link_to 'Back', cashes_path %>
+</div>
+<div class="card-body">
+  <%= render 'form', cash: @cash %>
+</div>

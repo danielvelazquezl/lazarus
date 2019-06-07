@@ -13,7 +13,7 @@ $(document).ready(function() {
     });
     $("#movement_form").validate({
         errorPlacement: function(error, element) {
-            error.appendTo(element.parent("td").next("td"));
+            error.insertAfter(element);
         },
         submitHandler: function(form) {
             form.submit();

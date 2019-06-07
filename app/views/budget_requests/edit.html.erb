@@ -9,7 +9,7 @@
 
   <div class="col-8"> Pedido de cotización </div>
 
-  <div class="text-align-right">
+  <div class="ml-auto">
     <%= link_to edit_purchase_request_path(PurchaseRequest.find_by(id: @budget_request.purchase_request_id)) do%>
       <button class="btn btn-primary">
         Pedido de Compra

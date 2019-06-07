@@ -1,60 +1,71 @@
-<p id="notice"><%= notice %></p>
 <div class="content-heading">
   <div> Pedido de Cotización </div>
 </div>
 
-<table class="table table-striped table-hover w-100" id="datatable2">
-  <thead>
-  <tr>
-    <th>
-      <strong>FECHA</strong>
-    </th>
-    <th>
-      <strong>PROVEEDOR</strong>
-    </th>
-    <th>
-      <strong>RESPONSABLE</strong>
-    </th>
-    <th>
-      <strong>ESTADO</strong>
-    </th>
-    <th>
-      <strong>OBSERVACIÓN</strong>
-    </th>
-    <th>
-      <strong>OPCIONES</strong>
-    </th>
+<div class="card card-body bg-light">
+  <%= puts @filterrific.inspect %>
+  <%= form_for_filterrific @filterrific do |f| %>
+    <div class="form-group row">
 
-  </tr>
-  </thead>
-  <tbody>
-  <% @budget_requests.each do |budget_request| %>
-    <tr>
-      <td><%= budget_request.date.strftime("%d-%m-%Y") %></td>
-      <td><%= budget_request.provider.person.name%></td>
-      <td><%= budget_request.employee.person.name %></td>
-      <% if budget_request.state == :finished %>
-        <td>
-          <div class="badge badge-success">
-            <%=budget_request.state.text%>
-          </div>
-        </td>
-      <%else %>
-        <td>
-          <div class="badge badge-danger">
-            <%=budget_request.state.text%>
-          </div>
-        </td>
-      <%end %>
-      <td><%= budget_request.comment %></td>
-      <td class="text-center">
-        <div class="btn-group" role="group">
-          <%= link_to edit_budget_request_path(budget_request) do%>
-            <button class="btn btn-sm btn-secondary"><i class="fas fa-search"></i></button>
-          <%end %>
+      <div class="col-4">
+        <label class="font-weight-bold">Buscar</label>
+        <%= f.text_field :search_query,
+                         :class => 'filterrific-periodically-observed form-control' %>
+      </div>
+
+      <div class="col-2">
+        <div>
+          <label class="font-weight-bold">Despues de</label>
+          <%= f.text_field(:with_date_gte, class: 'form-control datetimepicker-input',
+                           :'id' => 'filterrific_with_date_gte',
+                           :'data-target' => '#filterrific_with_date_gte',
+                           :'data-toggle' => 'datepicker',
+                           :'value' => '' ) %>
         </div>
-      </td>
-    </tr>
-  <%end%>
-  </tbody>
-</table>
+      </div>
+
+      <div class="col-2">
+        <div >
+          <label class="font-weight-bold">Antes de</label>
+          <%= f.text_field(:with_date_lt, class: 'form-control datetimepicker-input',
+                           :'id' => 'filterrific_with_date_lt',
+                           :'data-target' => '#filterrific_with_date_lt',
+                           :'data-toggle' => 'datepicker',
+                           :'value' => '' ) %>
+        </div>
+      </div>
+
+      <div>
+        <div class="col-12">
+          <label class="font-weight-bold">Ordenar por</label>
+          <%= f.select :sorted_by,
+                       @filterrific.select_options[:sorted_by],
+                       {},
+                       {:class => 'form-control'}
+          %>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ml-auto">
+      <div>
+        <%= link_to "Limpiar filtros", reset_filterrific_url, :class => 'btn btn-secondary align-middle' %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div id="results">
+  <%= render(
+          partial: 'budget_requests/list',
+          locals: {budget_requests: @budget_requests}
+      ) %>
+</div>
+
+<script>
+    $('[data-toggle="datepicker"]').datepicker({
+        autoHide: true,
+        zIndex: 2048,
+    });
+</script>

@@ -37,23 +37,23 @@
                 </tr>
                 <tr>
                   <td>Billetes de Gs. 50.000:</td>
-                  <td><%= form.number_field ' ',class: "amount_field bil_50", value: 0%></td>
+                  <td><%= form.number_field ' ',class: "amount_field bil_50", value: 0, min:0 %></td>
                 </tr>
                   <tr>
                     <td>Billetes de Gs. 20.000:</td>
-                    <td><%= form.number_field ' ',class: "amount_field bil_20", value: 0%></td>
+                    <td><%= form.number_field ' ',class: "amount_field bil_20", value: 0, min:0 %></td>
                   </tr>
                   <tr>
                     <td>Billetes de Gs. 10.000:</td>
-                    <td><%= form.number_field ' ',class: "amount_field bil_10", value: 0%></td>
+                    <td><%= form.number_field ' ',class: "amount_field bil_10", value: 0, min:0 %></td>
                   </tr>
                   <tr>
                     <td>Billetes de Gs. 5.000:</td>
-                    <td><%= form.number_field ' ',class: "amount_field bil_5", value: 0%></td>
+                    <td><%= form.number_field ' ',class: "amount_field bil_5", value: 0, min:0 %></td>
                   </tr>
                   <tr>
                     <td>Billetes de Gs. 2.000:</td>
-                    <td><%= form.number_field ' ',class: "amount_field bil_2", value: 0%></td>
+                    <td><%= form.number_field ' ',class: "amount_field bil_2", value: 0, min:0 %></td>
                   </tr>
               </table>
             </div>
@@ -65,7 +65,7 @@
                 </thead>
                 <tr>
                   <td>Monto:</td>
-                  <td><%= form.number_field ' ',class: "amount_field check_am" , value: 0%></td>
+                  <td><%= form.number_field ' ',class: "amount_field check_am" , value: 0, min:0 %></td>
                 </tr>
               </table>
               <table>
@@ -74,7 +74,7 @@
                 </thead>
                 <tr>
                   <td>Monto:</td>
-                  <td><%= form.number_field ' ',class: "amount_field card_am" , value: 0%></td>
+                  <td><%= form.number_field ' ',class: "amount_field card_am" , value: 0, min:0 %></td>
                 </tr>
               </table>
             </div>
@@ -104,7 +104,7 @@
         <%= form.check_box :state, :checked => true, :style => 'visibility: hidden' %>
       </div>
       <div class="actions">
-        <%= form.submit @open_close_cash.persisted? ? "CERRAR CAJA" : "ABRIR CAJA", class: "btn btn-success"  %>
+        <%= form.submit @open_close_cash.persisted? ? "CERRAR CAJA" : "ABRIR CAJA", class: "btn btn-success" %>
       </div>
     </div>
   </div>
@@ -122,43 +122,39 @@
 
     $('form').submit(function (e) {
 
-        if(confirm("Do you really want to do this?")){
-          const bill_100 = 100000 * parseInt($('.bil_100').val());
-          const bill_50 = 50000 * parseInt($('.bil_50').val());
-          const bill_20 = 20000 * parseInt($('.bil_20').val());
-          const bill_10 = 10000 * parseInt($('.bil_10').val());
-          const bill_5 = 5000 * parseInt($('.bil_5').val());
-          const bill_2 = 2000 * parseInt($('.bil_2').val());
+            const bill_100 = 100000 * parseInt($('.bil_100').val());
+            const bill_50 = 50000 * parseInt($('.bil_50').val());
+            const bill_20 = 20000 * parseInt($('.bil_20').val());
+            const bill_10 = 10000 * parseInt($('.bil_10').val());
+            const bill_5 = 5000 * parseInt($('.bil_5').val());
+            const bill_2 = 2000 * parseInt($('.bil_2').val());
 
-          const check_am = parseInt($('.check_am').val());
-          const card_am = parseInt($('.card_am').val());
+            const check_am = parseInt($('.check_am').val());
+            const card_am = parseInt($('.card_am').val());
 
-          const total = bill_100 + bill_50 + bill_20 + bill_10 + bill_5 + bill_2 + check_am + card_am;
+            const total = bill_100 + bill_50 + bill_20 + bill_10 + bill_5 + bill_2 + check_am + card_am;
 
-          <% if !@open_close_cash.persisted? %>
-          //apertura
-          $('#open_close_cash_start_ammount').val(total);
+            <% if !@open_close_cash.persisted? %>
+            //apertura
+            $('#open_close_cash_start_ammount').val(total);
 
 
-          <%else %>
+            <%else %>
 
-          //cierre
-          let total_cash = 0;
-          total_cash = <%= @open_close_cash.final_ammount %>;
-          alert('Total introducido por cajero: '+total_cash);
-          alert('Total en caja: '+total);
-          if(total_cash === total){
-            alert('Conciliacion exitosa');
-            //$('#open_close_cash_final_ammount')
-          }
-          //se setea txt de balance de apertura y cierre
-          $('#open_close_cash_balance').val(total_cash - total);
-          <%end %>
-        } else {
-            return false;
+            //cierre
+            let total_cash = 0;
+            total_cash = <%= @open_close_cash.final_ammount %>
+            alert('Total introducido por cajero: '+total_cash.toLocaleString("es") + 'Gs.');
+            alert('Total en caja: '+total.toLocaleString("es")+' Gs.');
 
-          }
-      });
+            alert('Conciliacion exitosa. Saldo: '+ (total_cash - total).toLocaleString("es") +' Gs.');
+            $('#open_close_cash_final_ammount')
+
+            //se setea txt de balance de apertura y cierre
+            $('#open_close_cash_balance').val(total_cash - total);
+            <%end %>
+
+    });
 
 
     $( ".amount_field" ).focus(function() {
@@ -166,7 +162,7 @@
     });
 
     $( ".amount_field" ).focusout(function() {
-        if($(this).val()==="") $(this).val(0) ;
+        if($(this).val() === "") $(this).val(0);
     });
 
     $('select').selectize({
@@ -174,17 +170,7 @@
         sortField: 'text'
     });
 
-    //alert
-            let dialog = $('<p>Desea concretar el cierre?</p>').dialog({
-                buttons: {
-                    "Si": function() {
-                        alert('you chose yes');
-                        },
-                    "Cancelar":  function() {
 
-                        dialog.dialog('close');
-                    }
-                }
-            });
+
 
 </script>

@@ -1,6 +1,6 @@
 class RolesController < ApplicationController
   before_action :set_role, only: [:show, :edit, :update, :destroy]
-
+  load_and_authorize_resource
   def index
      @roles = Role.all_role
 
@@ -37,7 +37,7 @@ class RolesController < ApplicationController
       end
     end
   end
-  
+
   def destroy
 
     @role.destroy

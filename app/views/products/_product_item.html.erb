@@ -10,11 +10,11 @@
     <tr>
       <td class="col-6">
         <%= f.select :component_id,
-                     options_from_collection_for_select(Product.where(product_type: :component), "id", "description", f.object.component_id),{},
-                     {class:'component-select',prompt: "Seleccionar"} %>
+                     options_from_collection_for_select(@components, "id", "description", f.object.component_id),{},
+                     {class:'component-select'} %>
       </td>
       <td class="col-4">
-        <%= f.text_field :quantity, class: "validate form-control-sm form-control" %>
+        <%= f.text_field :quantity, :size => 3, class: "validame" %>
       </td>
       <td class="col-1">
         <%= link_to "Eliminar" do%>

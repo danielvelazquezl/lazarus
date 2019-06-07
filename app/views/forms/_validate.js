@@ -15,7 +15,8 @@ $(document).ready(function () {
     });
     $("#form_movimiento").validate({
         errorPlacement: function(error, element) {
-            error.appendTo(element.parent("td").next("td"));
+            error.insertAfter(element);
+            //error.appendTo(element.parent("td").next("td"));
         },
         submitHandler: function(form) {
             form.submit();
