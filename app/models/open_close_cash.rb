@@ -15,7 +15,7 @@ class OpenCloseCash < ApplicationRecord
 
   scope :update_open_cash_final_ammount, ->(cash_id,amount) {where(cash_id: cash_id, state:true).update_all(final_ammount: amount)}
 
-  scope :cashes_closed, -> { where(state: true) }
+  scope :cashes_closed, -> { where(state: false) }
 
   filterrific :default_filter_params => {:sorted_by => 'date_asc'},
               :available_filters => %w[

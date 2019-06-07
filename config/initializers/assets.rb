@@ -106,3 +106,5 @@ Rails.application.config.assets.precompile += %w( purchase_invoices.css )
 Rails.application.config.assets.precompile += %w( purchase_invoices.js )
 
 Rails.application.config.assets.precompile += %w( filterrific/filterrific-spinner.gif )
+
+Rails.application.config.assets.precompile += %w( pdf.css )

@@ -53,8 +53,8 @@ class FormsController < ApplicationController
     @form = Form.new
     @form.form_type = :cpuproduced
     @form.person_id = 1
-    #lastAdd = @form.number = Form.find_by(form_type: :cpuproduced)
-    if Form.any?
+    lastAdd = @form.number = Form.find_by(form_type: :cpuproduced)
+    if lastAdd != nil
       @form.number = Form.where(form_type: :cpuproduced).last.number + 1
     else
       @form.number = 1

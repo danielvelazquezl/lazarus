@@ -58,8 +58,8 @@ class OrdersController < ApplicationController
     @order.origin_id = Setting.find_by!(key: 'id_production_deposit').value
     @order.destination_id = Setting.find_by!(key: 'id_production_deposit').value
     @order.date_request = Time.now
-    #orderLast = @order.number = Order.find_by(order_type: :production)
-    if Order.any?
+    orderLast = @order.number = Order.find_by(order_type: :production)
+    if orderLast != nil
       @order.number = Order.where(order_type: :production).last.number + 1
     else
       @order.number = 1
