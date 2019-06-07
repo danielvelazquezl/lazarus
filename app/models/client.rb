@@ -76,5 +76,5 @@ class Client < ApplicationRecord
         ['R.U.C (descendente)', 'ruc_desc']
     ]
   end
-
+  resourcify
 end

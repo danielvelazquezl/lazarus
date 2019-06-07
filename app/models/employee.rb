@@ -90,5 +90,5 @@ class Employee < ApplicationRecord
   end
 
   scope :products_from_d1, -> {joins(:stocks).merge(Stock.stock_from_d1)}
-
+  resourcify
 end

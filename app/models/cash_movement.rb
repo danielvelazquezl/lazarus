@@ -55,11 +55,11 @@ class CashMovement < ApplicationRecord
   }
 
   scope :with_date_gte, ->(ref_date) {
-    where("sales_invoices.date >= ?", ref_date)
+    where("cash_movements.date >= ?", ref_date)
   }
 
   scope :with_date_lt, ->(ref_date) {
-    where('sales_invoices.date <= ?', ref_date)
+    where('cash_movements.date <= ?', ref_date)
   }
 
   def self.options_for_sorted_by
@@ -70,5 +70,5 @@ class CashMovement < ApplicationRecord
         ['Cliente (descendente)', 'person_desc']
     ]
   end
-
+  resourcify
 end

@@ -76,17 +76,18 @@ class MovementProof < ApplicationRecord
     # configure number of OR conditions for provision
     # of interpolation arguments. Adjust this if you
     # change the number of OR conditions.
-    num_or_conditions = 1
+    num_or_conditions = 3
     where(
         terms.map {
           or_clauses = [
               "LOWER(movement_types.description) LIKE ?",
-              "LOWER(movement_proofs.comment) LIKE ?"
+              "LOWER(movement_proofs.comment) LIKE ?",
+              "LOWER(deposits.description) LIKE ?"
           ].join(' OR ')
           "(#{ or_clauses })"
         }.join(' AND '),
         *terms.map { |e| [e] * num_or_conditions }.flatten
-    ).joins(:movement_type).references(:movement_types)
+    ).joins(:movement_type, :deposit).references(:movement_types, :deposits)
   }
 
   scope :sorted_by, ->(sort_option) {
@@ -94,7 +95,7 @@ class MovementProof < ApplicationRecord
     direction = (sort_option =~ /desc$/) ? 'desc' : 'asc'
     deposits = Deposit.arel_table
     movements = MovementProof.arel_table
-    persons = Person.arel_table
+    persons = Person.person_employees.arel_table
     movement_types = MovementType.arel_table
     case sort_option.to_s
     when /^created_at_/
@@ -140,5 +141,5 @@ class MovementProof < ApplicationRecord
         ['Fecha (viejos primero)', 'created_at_asc']
     ]
   end
-
+  resourcify
 end

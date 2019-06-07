@@ -87,5 +87,5 @@ class PurchaseOrder < ApplicationRecord
         ['Fecha (recientes primero)', 'date_desc']
     ]
   end
-
+  resourcify
 end

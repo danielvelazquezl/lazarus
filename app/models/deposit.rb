@@ -13,4 +13,5 @@ class Deposit < ApplicationRecord
     # order('LOWER(name)').map { |e| [e.name, e.id] }
     order(deposits[:description].lower).pluck(:description, :id)
   end
+  resourcify
 end

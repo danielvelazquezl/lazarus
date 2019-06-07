@@ -43,7 +43,8 @@ class Form < ApplicationRecord
               :available_filters => %w[
                   sorted_by
                   search_query
-                  with_created_at_gte
+                  with_date_lt
+                  with_date_gte
                   with_person_id
                 ]
 
@@ -60,11 +61,12 @@ class Form < ApplicationRecord
     # configure number of OR conditions for provision
     # of interpolation arguments. Adjust this if you
     # change the number of OR conditions.
-    num_or_conditions = 1
+    num_or_conditions = 2
     where(
         terms.map {
           or_clauses = [
-              "LOWER(people.name) LIKE ?"
+              "LOWER(people.name) LIKE ?",
+              "LOWER(forms.comments) LIKE ?"
           ].join(' OR ')
           "(#{ or_clauses })"
         }.join(' AND '),
@@ -99,8 +101,12 @@ class Form < ApplicationRecord
     where(:person_id => [*person_ids])
   }
 
-  scope :with_created_at_gte, ->(ref_date) {
-    where('forms.date >= ?', ref_date)
+  scope :with_date_gte, ->(ref_date) {
+    where("forms.date >= ?", ref_date)
+  }
+
+  scope :with_date_lt, ->(ref_date) {
+    where('forms.date <= ?', ref_date)
   }
 
   delegate :name, :to => :person, :prefix => true
@@ -113,4 +119,5 @@ class Form < ApplicationRecord
         ['Encargado (descendente)', 'person_desc']
     ]
   end
+  resourcify
 end

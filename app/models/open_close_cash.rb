@@ -21,8 +21,6 @@ class OpenCloseCash < ApplicationRecord
               :available_filters => %w[
                   sorted_by
                   search_query
-                  with_date_gte
-                  with_date_lt
                 ]
   # default for will_paginate
   self.per_page = 10
@@ -37,7 +35,7 @@ class OpenCloseCash < ApplicationRecord
     # configure number of OR conditions for provision
     # of interpolation arguments. Adjust this if you
     # change the number of OR conditions.
-    num_or_conditions = 2
+    num_or_conditions = 1
     where(
         terms.map {
           or_clauses = [
@@ -46,7 +44,7 @@ class OpenCloseCash < ApplicationRecord
           "(#{ or_clauses })"
         }.join(' AND '),
         *terms.map {|e| [e] * num_or_conditions}.flatten
-    ).joins(client: :person).references(:people, :clients)
+    ).joins(employee: :person).references(:people, :employee)
   }
 
   scope :sorted_by, ->(sort_option) {
@@ -57,6 +55,8 @@ class OpenCloseCash < ApplicationRecord
     case sort_option.to_s
     when /^date_/
       order(opens[:date_start].send(direction))
+    when /^date_finish_/
+      order(opens[:final_date].send(direction))
     when /^person_/
       OpenCloseCash.joins(client: :person).order(persons[:name].lower.send(direction)).order(opens[:created_at].send(direction))
     else
@@ -64,21 +64,13 @@ class OpenCloseCash < ApplicationRecord
     end
   }
 
-  scope :with_date_gte, ->(ref_date) {
-    where("sales_invoices.date >= ?", ref_date)
-  }
-
-  scope :with_date_lt, ->(ref_date) {
-    where('sales_invoices.date <= ?', ref_date)
-  }
-
   def self.options_for_sorted_by
     [
-        ['Fecha (viejos primero)', 'date_asc'],
-        ['Fecha (recientes primero)', 'date_desc'],
-        ['Cliente (ascendente)', 'person_asc'],
-        ['Cliente (descendente)', 'person_desc']
+        ['Fecha de apretura (viejos primero)', 'date_asc'],
+        ['Fecha de apertura (recientes primero)', 'date_desc'],
+        ['Fecha de cierre (viejos primero)', 'date_finish_asc'],
+        ['Fecha de cierre (recientes primero)', 'date_finish_desc']
     ]
   end
-
+  resourcify
 end

@@ -104,7 +104,7 @@ class SalesInvoice < ApplicationRecord
         ['Cliente (descendente)', 'person_desc']
     ]
   end
-
+  resourcify
 end
 
 

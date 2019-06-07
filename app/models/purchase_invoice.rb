@@ -86,5 +86,5 @@ class PurchaseInvoice < ApplicationRecord
         ['Fecha (recientes primero)', 'date_desc']
     ]
   end
-
+  resourcify
 end

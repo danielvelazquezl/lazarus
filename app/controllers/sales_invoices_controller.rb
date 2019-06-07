@@ -1,6 +1,6 @@
 class SalesInvoicesController < ApplicationController
   before_action :set_sales_invoice, only: [:show, :edit, :update, :destroy]
-  load_and_authorize_resource
+  #load_and_authorize_resource
 
   # GET /sales_invoices
   # GET /sales_invoices.json
@@ -23,6 +23,13 @@ class SalesInvoicesController < ApplicationController
   # GET /sales_invoices/1
   # GET /sales_invoices/1.json
   def show
+    respond_to do |format|
+      format.html
+      format.json
+      format.pdf {render template: 'sales_invoices/reporte', pdf: 'Reporte', page_size: 'A4',lowquality: true,
+                         zoom: 1, layout: "pdf.html",
+                         dpi: 75}
+    end
   end
 
   # GET /sales_invoices/new
@@ -31,7 +38,7 @@ class SalesInvoicesController < ApplicationController
     if params[:note_number].present? then
       orderTicket = OrderTicket.find_by(ticket_number: params[:note_number])
       @stampeds = Stamped.all
-      if orderTicket != nil
+      if orderTicket != nil && orderTicket.state == :uninvoiced
         @orderTicket_items = OrderTicketItem.where(order_ticket_id: orderTicket.id)
         @sales_invoice.client_id = orderTicket.client_id
         @sales_invoice.employee_id = orderTicket.employee_id

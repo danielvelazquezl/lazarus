@@ -66,7 +66,7 @@ class ReportsController < ApplicationController
         OpenCloseCash.cashes_closed,
         params[:filterrific],
         select_options: {
-            sorted_by: Product.options_for_sorted_by
+            sorted_by: OpenCloseCash.options_for_sorted_by
         },
         available_filters: [:sorted_by]
     ) || return

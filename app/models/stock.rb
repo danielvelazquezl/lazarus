@@ -110,4 +110,5 @@ class Stock < ApplicationRecord
         ['Producto (descendente)', 'product_desc']
     ]
   end
+  resourcify
 end

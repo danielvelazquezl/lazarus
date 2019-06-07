@@ -21,6 +21,28 @@
                          :class => 'filterrific-periodically-observed form-control' %>
       </div>
 
+      <div class="col-2">
+        <div>
+          <label class="font-weight-bold">Despues de</label>
+          <%= f.text_field(:with_date_gte, class: 'form-control datetimepicker-input',
+                           :'id' => 'filterrific_with_date_gte',
+                           :'data-target' => '#filterrific_with_date_gte',
+                           :'data-toggle' => 'datepicker',
+                           :'value' => '' ) %>
+        </div>
+      </div>
+
+      <div class="col-2">
+        <div >
+          <label class="font-weight-bold">Antes de</label>
+          <%= f.text_field(:with_date_lt, class: 'form-control datetimepicker-input',
+                           :'id' => 'filterrific_with_date_lt',
+                           :'data-target' => '#filterrific_with_date_lt',
+                           :'data-toggle' => 'datepicker',
+                           :'value' => '' ) %>
+        </div>
+      </div>
+
       <div>
         <div class="col-12">
           <label class="font-weight-bold">Ordenar por</label>
@@ -48,3 +70,10 @@
           locals: {forms: @forms}
       ) %>
 </div>
+
+<script>
+    $('[data-toggle="datepicker"]').datepicker({
+        autoHide: true,
+        zIndex: 2048,
+    });
+</script>

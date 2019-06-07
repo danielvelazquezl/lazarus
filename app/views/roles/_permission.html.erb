@@ -1,16 +1,107 @@
 <fieldset>
   <table class="table">
     <tr class="row">
-      <td class="col"><%= f.select :resource_id,
-                       options_from_collection_for_select(Resource.all, "id", "name", f.object.resource_id),{},
-                       {class:'component-select'} %></td>
+      <td class="col">
+
+          <%= f.select :resource_id,
+                       options_from_collection_for_select(Resource.all, "id", "alias", f.object.resource_id),
+                       {class:'component-selectt'} %></td>
+      <%=  f.hidden_field :action_create, value:'false' %>
       <td class="col"><%= f.check_box :action_create ,{checked: f.object.action_create}, true, false%></td>
+      <%=  f.hidden_field :action_read, value:'false' %>
       <td class="col"><%= f.check_box :action_read ,{checked: f.object.action_read}, true, false%></td>
+      <%=  f.hidden_field :action_update, value:'false' %>
       <td class="col"><%= f.check_box :action_update ,{checked: f.object.action_update}, true, false%></td>
+      <%=  f.hidden_field :action_destroy, value:'false' %>
       <td class="col"><%= f.check_box :action_destroy ,{checked: f.object.action_destroy}, true, false%></td>
       <td class="col">
-        <%= link_to "Eliminar",'#',class: "remove_fields" %>
+      <%if f.object.persisted? %>
+          <div class = "col-3">
+          <%= link_to  f.object , method: :delete, data: { confirm: '¿Estás seguro?' },:id =>+  'delete_permission', :remote => true do%>
+            <i class="fas fa-trash-alt text-danger"></i>
+          <%end %>
+          </div>
+      <%else %>
+          <%= link_to "Eliminar" do%>
+            <div class=" remove_fields btn btn-link text-danger">
+              <i class="fas fa-trash-alt text-danger"></i>
+            </div>
+          <%end %>
+     <%end %>
+
+
+
+
+
       </td>
     </tr>
   </table>
 </fieldset>
+
+<script>
+    $('#delete_permission').on('ajax:success', function (event) {
+        $(this). closest('tr').fadeOut();
+
+    })
+    $(document).on('click','add_fields',function (e) {
+       $('fieldset').children().first().children().first().children().first().children().first().children().first().serialize({
+           create: false,
+           sortField: 'text'
+       });
+    });
+
+</script><fieldset>
+  <table class="table">
+    <tr class="row">
+      <td class="col">
+
+          <%= f.select :resource_id,
+                       options_from_collection_for_select(Resource.all, "id", "alias", f.object.resource_id),
+                       {class:'component-selectt'} %></td>
+      <%=  f.hidden_field :action_create, value:'false' %>
+      <td class="col"><%= f.check_box :action_create ,{checked: f.object.action_create}, true, false%></td>
+      <%=  f.hidden_field :action_read, value:'false' %>
+      <td class="col"><%= f.check_box :action_read ,{checked: f.object.action_read}, true, false%></td>
+      <%=  f.hidden_field :action_update, value:'false' %>
+      <td class="col"><%= f.check_box :action_update ,{checked: f.object.action_update}, true, false%></td>
+      <%=  f.hidden_field :action_destroy, value:'false' %>
+      <td class="col"><%= f.check_box :action_destroy ,{checked: f.object.action_destroy}, true, false%></td>
+      <td class="col">
+      <%if f.object.persisted? %>
+          <div class = "col-3">
+          <%= link_to  f.object , method: :delete, data: { confirm: '¿Estás seguro?' },:id =>+  'delete_permission', :remote => true do%>
+            <i class="fas fa-trash-alt text-danger"></i>
+          <%end %>
+          </div>
+      <%else %>
+          <%= link_to "Eliminar" do%>
+            <div class=" remove_fields btn btn-link text-danger">
+              <i class="fas fa-trash-alt text-danger"></i>
+            </div>
+          <%end %>
+     <%end %>
+
+
+
+
+
+      </td>
+    </tr>
+  </table>
+</fieldset>
+
+<script>
+    $('#delete_permission').on('ajax:success', function (event) {
+        $(this). closest('tr').fadeOut();
+
+    })
+    $(document).on('click','add_fields',function (e) {
+        console.log(this);
+       $('fieldset').children().first().children().first().children().first().children().first().children().first().serialize({
+
+           create: false,
+           sortField: 'text'
+       });
+    });
+
+</script>

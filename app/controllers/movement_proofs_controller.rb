@@ -10,7 +10,7 @@ class MovementProofsController < ApplicationController
         select_options: {
             sorted_by: MovementProof.options_for_sorted_by,
             with_deposit_id: Deposit.options_for_select,
-            with_person_id: Person.options_for_select
+            with_person_id: Person.person_employees.options_for_select
         },
         )) || return
     @movement_proofs = @filterrific.find.page(params[:page])

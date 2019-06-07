@@ -56,6 +56,20 @@
   border: 1px solid #555;
 }
 
+.invoice-box table tr.heading_black td {
+  background: #000;
+  color: #fff;
+  border-bottom: 1px solid #333;
+  font-weight: bold;
+  text-align: center;
+  border: 1px solid #555;
+}
+
+.invoice-box table td.footer {
+  background: #eee;
+
+}
+
 .invoice-box table tr.center td {
   text-align: center;
   border: 1px solid #555;

@@ -6,8 +6,15 @@
       </button>
     <%end %>
   </div>
-  <div class="col-8">Factura de Venta
+  <div class="col-8">Factura de Venta</div>
+  <div class="text-align-right">
+    <%= link_to sales_invoice_url(@sales_invoice, :format => :pdf) do%>
+      <button class="btn btn-secondary">
+        <i class="fas fa-print text-primary fa-1x"></i> Imprimir PDF
+      </button>
+    <%end %>
   </div>
+
 </div>
 
 <div class="card card-default">
@@ -132,10 +139,10 @@
       <% @sales_invoice.sales_invoices_items.each do |f| %>
         <tr>
           <td><%= Product.find(f.product_id).description %></td>
-          <td><%= f.price %></td>
+          <td><%= number_to_currency(f.price, :unit => "Gs", :separator => ".", :precision => 0) %></td>
           <td><%= f.quantity %></td>
-          <td><%= f.sub_total %></td>
-          <td><%= f.iva %></td>
+          <td><%= number_to_currency(f.sub_total, :unit => "Gs", :separator => ".", :precision => 0) %></td>
+          <td><%= number_to_currency(f.iva, :unit => "Gs", :separator => ".", :precision => 0) %></td>
         </tr>
 
       <% end %>

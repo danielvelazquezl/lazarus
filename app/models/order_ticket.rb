@@ -74,4 +74,5 @@ class OrderTicket < ApplicationRecord
         ['Cliente (descendente)', 'person2_desc']
     ]
   end
+  resourcify
 end

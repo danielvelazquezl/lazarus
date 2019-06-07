@@ -1,6 +1,5 @@
-class AddResources < ActiveRecord::Migration[5.2]
+class AddResource < ActiveRecord::Migration[5.2]
   def up
-
     Resource.create(
         :name => "Product",
         :alias => "Productos"
@@ -14,11 +13,11 @@ class AddResources < ActiveRecord::Migration[5.2]
         :alias => "Ordenes"
     )
     Resource.create(
-        :name => "MovementProofs",
+        :name => "MovementProof",
         :alias => "Movimientos"
     )
     Resource.create(
-        :name => "Stocks",
+        :name => "Stock",
         :alias => "Stocks"
     )
     Resource.create(
@@ -30,53 +29,52 @@ class AddResources < ActiveRecord::Migration[5.2]
         :alias => "Empleados"
     )
     Resource.create(
-        :name => "Providers",
+        :name => "Provider",
         :alias => "Proveedores"
     )
     Resource.create(
         :alias => "Facturas de Ventas",
-        :name => "SalesInvoices"
+        :name => "SalesInvoice"
     )
     Resource.create(
-        :name => "OrderTickes",
+        :name => "OrderTicket",
         :alias => "Nota de Pedidos"
     )
     Resource.create(
-        :name => "PurchaseRequests",
+        :name => "PurchaseRequest",
         :alias => "Pedido de Compras"
     )
     Resource.create(
-        :name => "BudgetRequests",
+        :name => "BudgetRequest",
         :alias => "Pedido de Cotización"
     )
     Resource.create(
-        :name => "PurchaseOrders",
+        :name => "PurchaseOrder",
         :alias => "Orden de Compra"
     )
     Resource.create(
-        :name => "PurchaseInvoices",
+        :name => "PurchaseInvoice",
         :alias => "Facturas de Compra"
     )
 
     Resource.create(
-        :name => "CashMovements",
+        :name => "CashMovement",
         :alias => "Movimiento de Caja"
     )
     Resource.create(
-        :name => "Cashes",
+        :name => "Cash",
         :alias => "Cajas"
     )
     Resource.create(
-        :name => "OpenCloseCashes",
+        :name => "OpenCloseCash",
         :alias => "Apertura y Cierre de Cajas"
     )
     Resource.create(
-        :name => "Reports",
+        :name => "Report",
         :alias => "Reportes"
     )
 
   end
-
 
   def down
     raise ActiveRecord::IrreversibleMigration

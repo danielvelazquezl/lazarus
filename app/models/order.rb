@@ -169,5 +169,5 @@ class Order < ApplicationRecord
             ['Encargado (descendente)', 'person_desc']
         ]
     end
-
+    resourcify
 end

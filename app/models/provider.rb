@@ -70,5 +70,5 @@ class Provider < ApplicationRecord
         ['Nombre (z-a)', 'person_desc']
     ]
   end
-
+  resourcify
 end
