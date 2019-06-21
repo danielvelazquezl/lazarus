@@ -48,10 +48,15 @@
         $(this). closest('tr').fadeOut();
 
     })
+    $('.component-select').selectize({
+        create: false,
+        sortField: 'text'
+    });
 
 
     $(document).on('click','add_fields',function (e) {
-        $('fieldset').children().first().children().first().children().first().children().first().children().first().selectize({
+
+        $('fieldset').last().first().children().first().children().first().children().first().children().first().selectize({
             create: false,
             sortField: 'text'
         });

@@ -26,7 +26,7 @@
     <tr>
       <td class="text-center"><%= order.number %></td>
       <td class="text-center"><%= order.person.name %></td>
-      <td class="text-center"><%= l(order.date_request.to_date, format: :long) %></td>
+      <td class="text-center"><%= order.date_request.strftime("%d-%m-%Y") %></td>
       <% if order.date_finished == nil then %>
         <td></td>
       <% else %>

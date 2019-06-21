@@ -29,7 +29,7 @@
       <td class="text-center"><%= Person.find_by(id: movement_proof.person_id).name %></td>
       <td class="text-center"><%= movement_proof.deposit.description %></td>
       <td class="text-center"><%= movement_proof.movement_type.description %></td>
-      <td class="text-center"><%= l(movement_proof.date.to_datetime, format: :long) %></td>
+      <td class="text-center"><%= movement_proof.date.strftime("%d-%m-%Y  %H:%m") %></td>
       <td class="text-center"><%= movement_proof.comment %></td>
 
       <td class="text-center">

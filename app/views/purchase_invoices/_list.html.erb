@@ -23,7 +23,7 @@
     <tr>
       <td  class="text-center"><%= purchase_invoice.invoice_number %></td>
       <td  class="text-center"><%= purchase_invoice.provider.person.name %></td>
-      <td  class="text-center"><%=  l(purchase_invoice.date.to_date, format: :long)%></td>
+      <td  class="text-center"><%= purchase_invoice.date.strftime("%d-%m-%Y")%></td>
       <td  class="text-center"><%= number_to_currency(purchase_invoice.total, :unit => "Gs", :separator => ".", :precision => 0) %></td>
       <td  class="text-center">
         <div class="btn-group" role="group">

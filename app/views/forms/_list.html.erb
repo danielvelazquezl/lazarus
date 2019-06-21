@@ -24,7 +24,7 @@
     <tr>
       <td class="text-center"><%= form.number %></td>
       <td class="text-center"><%= form.person.name %></td>
-      <td class="text-center"><%= l(form.date.to_datetime, format: :long) %></td>
+      <td class="text-center"><%= form.date.strftime("%d-%m-%Y") %></td>
       <td class="text-center"><%= form.comments %></td>
       <td class="text-center">
         <div class="btn-group" role="group">

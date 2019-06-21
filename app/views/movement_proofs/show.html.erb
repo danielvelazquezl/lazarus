@@ -26,7 +26,7 @@
           <strong>Fecha:</strong>
         </div>
         <div class="col-4">
-          <%= @movement_proof.date %>
+          <%= @movement_proof.date.strftime("%d-%m-%Y %H:%m") %>
         </div>
       </div>
 

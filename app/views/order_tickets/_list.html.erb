@@ -28,7 +28,7 @@
       <td class="text-center"><%= order_ticket.ticket_number %></td>
       <td class="text-center"><%= order_ticket.client.person.name %></td>
       <td class="text-center"><%= order_ticket.employee.person.name %></td>
-      <td class="text-center"><%= l(order_ticket.date.to_date, format: :long) %></td>
+      <td class="text-center"><%= order_ticket.date.strftime("%d-%m-%Y") %></td>
       <% if order_ticket.state == :invoiced %>
         <td class="text-center">
           <div class="badge badge-success">

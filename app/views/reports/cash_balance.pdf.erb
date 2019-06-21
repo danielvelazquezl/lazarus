@@ -14,7 +14,7 @@
               <b>Balance de cajas</b>
             </td>
             <td>
-              <b class="valid">Fecha: <%= l(Time.now.to_date, format: :long) %></b>
+              <b class="valid">Fecha: <%= Time.now.strftime("%d-%m-%Y") %></b>
             </td>
           </tr>
         </table>

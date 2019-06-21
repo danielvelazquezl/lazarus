@@ -27,7 +27,7 @@
       <!--td class="text-center"><%#= sales.invoice_number %></td-->
       <td class="text-center"><%=sales.stamped.name %> <%=sales.invoice_number %></td>
       <td class="text-center"><%= sales.client.person.name %></td>
-      <td class="text-center"><%= l(sales.date.to_date, format: :long) %></td>
+      <td class="text-center"><%= sales.date.strftime("%d-%m-%Y") %></td>
       <td class="text-center"><%= number_to_currency(sales.total, :unit => "Gs", :separator => ".", :precision => 0) %></td>
       <td class="text-center"><%= number_to_currency(sales.iva, :unit => "Gs", :separator => ".", :precision => 0) %></td>
       <td class="text-center">

@@ -39,8 +39,8 @@
     <tr>
       <td class="text-left"><%= Person.find_by(id: Employee.find_by(id: cash.employee_id).person_id).name %></td>
       <td class="text-left"><%= Cash.find_by(id: cash.cash_id).description %></td>
-      <td class="text-center"><%= l(cash.date_start.to_date, format: :long) %></td>
-      <td class="text-center"><%= l(cash.final_date.to_date, format: :long) %></td>
+      <td class="text-center"><%= cash.date_start.strftime("%d-%m-%Y") %></td>
+      <td class="text-center"><%= cash.final_date.strftime("%d-%m-%Y") %></td>
       <td class="text-center"><%= cash.bill_amount %></td>
       <td class="text-center"><%= cash.check_amount %></td>
       <td class="text-center"><%= cash.card_amount %></td>

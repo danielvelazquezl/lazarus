@@ -1,0 +1,38 @@
+<fieldset>
+  <table class="table">
+    <tr class="row">
+      <td class="col">
+
+        <%= f.select :role_id,
+                     Role.all.map { |c| [c.name, c.id] },
+                     {class:'component-select'} %></td>
+
+      <td class="col">
+        <%if @role.persisted? %>
+          <div class = "col-3">
+            <%= link_to  @role , method: :delete, data: { confirm: '¿Estás seguro?' },:id => 'delete_role', :remote => true do%>
+              <i class="fas fa-trash-alt text-danger"></i>
+            <%end %>
+          </div>
+        <%else %>
+          <%= link_to "Eliminar" do%>
+            <div class=" remove_fields btn btn-link text-danger">
+              <i class="fas fa-trash-alt text-danger"></i>
+            </div>
+          <%end %>
+        <%end%>
+
+
+
+
+
+      </td>
+    </tr>
+  </table>
+</fieldset>
+<script>
+    $('#delete_role').on('ajax:success', function (event) {
+        $(this). closest('tr').fadeOut();
+
+    })
+</script>

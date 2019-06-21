@@ -2,6 +2,9 @@
   <thead>
   <tr>
     <th  class="text-center">
+      <strong>FECHA</strong>
+    </th>
+    <th  class="text-center">
       <strong>CLIENTE</strong>
     </th>
     <th  class="text-center">
@@ -21,6 +24,7 @@
   <tbody>
   <% cash_movements.each do |cash_movement| %>
     <tr>
+      <td  class="text-center"><%= cash_movement.date.strftime("%d-%m-%Y") %></td>
       <td  class="text-center"><%= cash_movement.client.person.name %></td>
       <td  class="text-center"><%= cash_movement.total %></td>
       <td  class="text-center"><%= cash_movement.cash.description %></td>

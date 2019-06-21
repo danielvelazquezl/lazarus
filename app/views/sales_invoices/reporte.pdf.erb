@@ -32,7 +32,7 @@
         <table>
           <tr>
             <td>
-              Fecha: <b><%= l(@sales_invoice.date.to_date, format: :long) %></b>
+              Fecha: <b><%= @sales_invoice.date.strftime("%d-%m-%Y") %></b>
             </td>
             <td>
               N° Pedido: <b><%= @sales_invoice.order_ticket.ticket_number %></b><br>

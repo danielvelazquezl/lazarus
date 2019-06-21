@@ -4,8 +4,8 @@
       <td class="col">
 
           <%= f.select :resource_id,
-                       options_from_collection_for_select(Resource.all, "id", "alias", f.object.resource_id),
-                       {class:'component-selectt'} %></td>
+                       options_from_collection_for_select(Resource.all, "id", "alias", f.object.resource_id), {},
+                       {class:'component-select'} %></td>
       <%=  f.hidden_field :action_create, value:'false' %>
       <td class="col"><%= f.check_box :action_create ,{checked: f.object.action_create}, true, false%></td>
       <%=  f.hidden_field :action_read, value:'false' %>
@@ -17,7 +17,7 @@
       <td class="col">
       <%if f.object.persisted? %>
           <div class = "col-3">
-          <%= link_to  f.object , method: :delete, data: { confirm: '¿Estás seguro?' },:id =>+  'delete_permission', :remote => true do%>
+          <%= link_to  f.object , method: :delete, data: { confirm: '¿Estás seguro?' },:class => 'delete_permission', :remote => true do%>
             <i class="fas fa-trash-alt text-danger"></i>
           <%end %>
           </div>

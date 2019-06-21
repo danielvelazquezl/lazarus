@@ -1,4 +1,4 @@
-
+<div class="replace">
 
 <div class="content-heading">Usuarios</div>
 
@@ -34,8 +34,7 @@
       </thead>
 
 
-        <tbody>
-
+        <tbody >
         <%@roles.each do |role| %>
         <tr>
           <td><%= role.name %></td>
@@ -56,10 +55,10 @@
         </table>
   </div>
 
-</div>
+  </div>
 
 
-<%= form_tag(user_roles_path, method: :get, remote: true, locol: true) do %>
+<%= form_tag(get_users_roles_path, method: :get, remote: true) do %>
   <div>
     <p class="d-flex">
         <span id="mydiv">
@@ -74,6 +73,7 @@
     </p>
   </div>
 <% end %>
+</div>
 <script>
     $(document).ready(function () {
         $('#select_t').selectize({

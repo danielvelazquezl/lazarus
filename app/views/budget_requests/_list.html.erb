@@ -25,7 +25,7 @@
   <tbody>
   <% budget_requests.each do |budget_request| %>
     <tr>
-      <td  class="text-center"><%= l(budget_request.date.to_date, format: :long) %></td>
+      <td  class="text-center"><%= budget_request.date.strftime("%d-%m-%Y") %></td>
       <td  class="text-center"><%= budget_request.provider.person.name%></td>
       <td  class="text-center"><%= budget_request.employee.person.name %></td>
       <% if budget_request.state == :finished %>
