@@ -102,3 +102,5 @@ gem 'filterrific' #, path: '../filterrific'
 gem 'bootstrap'
 
 gem 'listen'
+
+gem "actionview", ">= 5.2.2.1"
