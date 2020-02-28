@@ -1,0 +1,153 @@
+<div class="content-heading">
+  <% if @order.order_type == :production then %>
+    <div class="text-align-right">
+      <%= link_to orders_path do%>
+        <button class="btn btn-secondary" title="Volver atras">
+          <i class="fas fa-arrow-left text-primary fa-1x"></i>
+        </button>
+      <%end %>
+    </div>
+
+    <div class="col-8"> Orden de Produccion </div>
+    <div class="ml-auto">
+      <%= link_to order_url(@order, :format => :pdf) do%>
+        <button class="btn btn-secondary">
+          <i class="fas fa-print text-primary fa-1x"></i> Imprimir PDF
+        </button>
+      <%end %>
+    </div>
+  <% else %>
+    <div class="text-align-right">
+      <%= link_to component_orders_index_orders_path do%>
+        <button class="btn btn-secondary" title="Volver atras">
+          <i class="fas fa-arrow-left text-primary fa-1x"></i>
+        </button>
+      <%end %>
+    </div>
+
+    <div class="col-8"> Orden de Componentes </div>
+    <div class="text-align-right">
+      <%= link_to order_url(@order, :format => :pdf) do%>
+        <button class="btn btn-secondary">
+          <i class="fas fa-print text-primary fa-1x"></i> Imprimir PDF
+        </button>
+      <%end %>
+    </div>
+  <% end %>
+</div>
+
+<div class="card card-default">
+  <div class="card-body">
+    <p class="lead bb">ORDEN Nº <%= @order.number %></p>
+    <form class="form-horizontal">
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Encargado:</strong>
+        </div>
+        <div class="col-4">
+          <%= @order.person.name %>
+        </div>
+        <div class="col-2">
+          <strong>Estado:</strong>
+        </div>
+        <div class="col-4">
+          <%if @order.state == :daft %>
+            <span class="badge badge-secondary"><%= @order.state.text %></span>
+          <%elsif @order.state == :created %>
+            <span class="badge badge-warning"><%= @order.state.text %></span>
+          <%elsif @order.state == :in_progress %>
+            <span class="badge badge-primary"><%= @order.state.text %></span>
+          <%elsif @order.state == :terminated %>
+            <span class="badge badge-success"><%= @order.state.text %></span>
+          <%else %>
+            <span class="badge badge-danger"><%= @order.state.text %></span>
+          <%end %>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Fecha Pedido:</strong>
+        </div>
+        <div class="col-4">
+          <%= @order.date_request.strftime("%d-%m-%Y %H:%M") %>
+        </div>
+        <div class="col-2">
+          <strong>Fecha Finalizado:</strong>
+        </div>
+        <div class="col-4">
+          <% if @order.date_finished == nil then %>
+          <% else %>
+            <%= @order.date_request.strftime("%d-%m-%Y %H:%M") %>
+          <% end %>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Depósito de origen:</strong>
+        </div>
+        <div class="col-4">
+          <%= @order.origin.description %>
+        </div>
+        <div class="col-2">
+          <strong>Depósito de destino:</strong>
+        </div>
+        <div class="col-4">
+          <%= @order.destination.description %>
+        </div>
+      </div>
+
+
+    </form>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <p class="lead bb">DETALLES</p>
+    <div class="row">
+      <div class="col"></div>
+      <div class="col-7">
+        <table class="table table-striped table-bordered table-hover">
+          <thead class="thead-dark">
+          <tr>
+            <th class="col-5">Producto</th>
+            <th class="col-1">Cantidad</th>
+            <th class="col-1">Opciones</th>
+          </tr>
+          </thead>
+          <tbody id="invoices-items-table">
+          <% @order.order_items.each do |m| %>
+            <tr>
+              <td><%= Product.find_by(id: m.product_id).description %></td>
+              <td><%= m.quantity %></td>
+              <td>
+                <%= link_to Product.find_by(id: m.product_id) do %>
+                  <button class="btn btn-sm btn-outline-info" title="Ver Producto"><i class="fas fa-search text-primary"></i>
+                  </button>
+                <% end %>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+      <div class="col"></div>
+    </div>
+  </div>
+</div>
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-12 col-xl-auto">
+      <% if @order.state.finished? || @order.state.canceled? %>
+        <button class="mb-1 btn btn-success" type="button" disabled>Editar</button>
+      <% else %>
+        <%= link_to edit_order_path do %>
+          <button class="mb-1 btn btn-success" type="button">Editar</button>
+        <% end %>
+      <% end %>
+
+    </div>
+
+  </div>

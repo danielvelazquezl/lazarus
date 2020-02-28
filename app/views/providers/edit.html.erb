@@ -1,0 +1,14 @@
+<p></p>
+
+<div class="content-heading">
+  <div class="text-align-right">
+    <%= link_to providers_path do %>
+      <button class="btn btn-secondary">
+        <i class="fas fa-arrow-left text-primary fa-1x"></i>
+      </button>
+    <% end %>
+  </div>
+  <div class="col-8">Editar datos del proveedor</div>
+</div>
+
+<%= render 'form', { provider: @provider, person: @person } %>

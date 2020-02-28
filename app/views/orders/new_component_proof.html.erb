@@ -1,0 +1,12 @@
+<p></p>
+<div class="content-heading">
+  <%= link_to component_orders_index_orders_path do%>
+    <button class="btn btn-secondary" title="Volver atras">
+      <i class="fas fa-arrow-left text-primary fa-1x"></i>
+    </button>
+  <%end %>
+  <div class="col-8">Nueva Orden de Componentes</div>
+</div>
+
+<%= render 'form', order: @order %>
+

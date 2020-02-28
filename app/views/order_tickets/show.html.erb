@@ -1,0 +1,101 @@
+<div class="content-heading">
+  <div class="text-align-right">
+    <%= link_to order_tickets_path do%>
+      <button class="btn btn-secondary">
+        <i class="fas fa-arrow-left text-primary fa-1x"></i>
+      </button>
+    <%end %>
+  </div>
+
+  <div class="col-8"> Nota de Pedido </div>
+</div>
+
+<div class="card card-default">
+  <div class="card-body">
+    <p class="lead bb">NOTA DE PEDIDO</p>
+    <form class="form-horizontal">
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Número de pedido:</strong>
+        </div>
+        <div class="col-4">
+          <%= @order_ticket.ticket_number %>
+        </div>
+        <div class="col-2">
+          <strong>Fecha:</strong>
+        </div>
+        <div class="col-4">
+          <%= @order_ticket.date.strftime("%d-%m-%Y") %>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Cliente:</strong>
+        </div>
+        <div class="col-4">
+          <%= @order_ticket.client.person.name %>
+        </div>
+        <div class="col-2">
+          <strong>Empleado:</strong>
+        </div>
+        <div class="col-4">
+          <%= @order_ticket.employee.person.name %>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Estado:</strong>
+        </div>
+        <div class="col-4">
+          <%= @order_ticket.state.text %>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Observación:</strong>
+        </div>
+        <div class="col">
+          <%= @order_ticket.observation %>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+
+    <p class="lead bb">DETALLES</p>
+    <div class="row">
+      <div class="col"></div>
+      <div class="col-5">
+        <table class="table table-striped table-bordered table-hover">
+          <thead class="thead-dark">
+          <tr>
+            <th class="col-4">Producto</th>
+            <th class="col-1">Cantidad</th>
+          </tr>
+          </thead>
+          <tbody id="invoices-items-table">
+          <% @order_ticket.order_ticket_items.each do |m| %>
+            <tr>
+              <td><%= Product.find_by(id: m.product_id).description%></td>
+              <td><%= m.request_quantity %></td>
+            </tr>
+          <%end %>
+          </tbody>
+        </table>
+      </div>
+      <div class="col"></div>
+    </div>
+  </div>
+</div>
+<% if @order_ticket.state.uninvoiced? %>
+  <%= form_tag(new_sales_invoice_path, method: :get) do %>
+    <%= hidden_field_tag :note_number, value = @order_ticket.ticket_number %>
+    <%= submit_tag "Facturar", name:'nil', class: "btn btn-sm btn-success"%>
+  <% end %>
+<% end %>

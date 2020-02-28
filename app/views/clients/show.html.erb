@@ -1,0 +1,63 @@
+<p></p>
+<div class="content-heading">
+  <div class="text-align-right">
+    <%= link_to clients_path do %>
+      <button class="btn btn-secondary">
+        <i class="fas fa-arrow-left text-primary fa-1x"></i>
+      </button>
+    <% end %>
+  </div>
+  <div class="col-8">Detalles del Cliente</div>
+</div>
+
+<div class="card card-default">
+  <div class="card-body">
+    <div class="form-group row">
+      <div class="col-2">
+        <strong>Nombre y Apellido:</strong>
+      </div>
+      <div class="col-4">
+        <%= Person.find_by(id: @client.person_id).name %>
+      </div>
+      <div class="col-2">
+        <strong>E-mail:</strong>
+      </div>
+      <div class="col-4">
+        <%= Person.find_by(id: @client.person_id).email %>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-2">
+        <strong>R.U.C.:</strong>
+      </div>
+      <div class="col-4">
+        <%= @client.ruc %>
+      </div>
+      <div class="col-2">
+        <strong>Teléfono:</strong>
+      </div>
+      <div class="col-4">
+        <%= Person.find_by(id: @client.person_id).phone %>
+      </div>
+    </div>
+
+    <div class="form-group row">
+      <div class="col-2">
+        <strong>Dirección:</strong>
+      </div>
+      <div class="col-4">
+        <%= Person.find_by(id: @client.person_id).address %>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!--div class="row">
+  <div class="col-12 col-xl-auto">
+    <%#= link_to edit_client_path do%>
+      <button class="mb-1 btn btn-primary" type="button">Editar</button>
+    <%# end %>
+  </div>
+</div-->

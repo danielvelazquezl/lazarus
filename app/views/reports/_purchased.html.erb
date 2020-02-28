@@ -1,0 +1,36 @@
+<table class="table table-striped table-hover w-100">
+  <tr>
+    <th class="text-center"> CODIGO DE BARRAS</th>
+    <th  class="text-center">PRODUCTO</th>
+    <th class="text-center"> MARCA</th>
+    <th class="text-center"> PRECIO</th>
+    <th class="text-center"> FECHA DE COMPRA</th>
+  </tr>
+  <% products.each do |product| %>
+    <tr>
+      <td class="text-center"><%= product.bar_code %></td>
+      <td class="text-center"><%= product.description %></td>
+      <td class="text-center"><%= Brand.find_by(id: product.brand_id).description %></td>
+      <td class="text-center"><%= product.unit_cost %></td>
+      <% purchase_invoice_id = PurchaseInvoiceItem.find_by(product_id: product.id).purchase_invoice_id %>
+      <td class="text-center"><%= PurchaseInvoice.find_by(id: purchase_invoice_id).date.strftime("%d-%m-%Y") %></td>
+    </tr>
+  <% end %>
+</table>
+
+<div class="card card-body bg-light d-block p-3 my-3">
+  <div class="row">
+    <div class="col-md-10">
+      <div>
+        <%= page_entries_info products, :model => 'product', :class => 'align-middle' %>
+      </div>
+    </div>
+    <div class="col-md-2">
+      <div>
+        <%#= link_to "Limpiar filtros", reset_filterrific_url, :class => 'btn btn-secondary align-middle' %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<%= will_paginate products, renderer: WillPaginate::ActionView::BootstrapLinkRenderer  %>

@@ -1,0 +1,18 @@
+$(function() {
+
+    $('#ruc-select').keypress(function (e) {
+        var key = e.which;
+        if (key == 13)  // the enter key code
+        {
+            const id = $('#ruc-select').selectize()[0].selectize.getValue();
+            //console.log(id);
+
+            $('#cash_movement_client_id').val(id);
+
+            //alert($('#val').val())
+
+
+            return false;
+        }
+    });
+});

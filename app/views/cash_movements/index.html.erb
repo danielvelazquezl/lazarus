@@ -1,0 +1,50 @@
+<div class="content-heading">Movimientos de Caja
+</div>
+<div class="card card-body bg-light">
+  <%= puts @filterrific.inspect %>
+  <%= form_for_filterrific @filterrific do |f| %>
+    <div class="form-group row">
+
+      <div class="col-4">
+        <label class="font-weight-bold">Buscar</label>
+        <%= f.text_field :search_query,
+                         :class => 'filterrific-periodically-observed form-control',
+                         placeholder: "por cliente" %>
+      </div>
+
+      <div>
+        <div class="col-12">
+          <label class="font-weight-bold">Ordenar por</label>
+          <%= f.select :sorted_by,
+                       @filterrific.select_options[:sorted_by],
+                       {},
+                       {:class => 'form-control'}
+          %>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ml-auto">
+      <div>
+        <%= link_to "Limpiar filtros", reset_filterrific_url, :class => 'btn btn-secondary align-middle' %>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div id="results">
+  <%= render(
+          partial: 'cash_movements/list',
+          locals: {cash_movements: @cash_movements}
+      ) %>
+</div>
+
+<script>
+    $('[data-toggle="datepicker"]').datepicker({
+        autoHide: true,
+        zIndex: 2048,
+    });
+</script>
+
+

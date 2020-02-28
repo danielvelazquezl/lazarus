@@ -1,0 +1,23 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * --- Angle Main Stylesheet
+ *
+ *= require angle/bootstrap
+ *= require angle/app
+ *
+ * --- Assets paths redefinition
+ *
+ *= require fonts
+ *= require vendor.assets
+ *
+ *= require selectize
+ *= require selectize.default
+ */
+  @import 'components/datepicker';
+
+.error {
+  color: red;
+  font-weight: normal;
+}

@@ -1,0 +1,66 @@
+<table class="table table-striped table-hover w-100">
+  <thead>
+  <tr>
+    <th class="text-center">
+      <strong>FECHA</strong>
+    </th>
+    <th class="text-center">
+      <strong>EMPLEADO</strong>
+    </th>
+    <th class="text-center">
+      <strong>ESTADO</strong>
+    </th>
+    <th class="text-center">
+      <strong>COMENTARIO</strong>
+    </th>
+    <th class="text-center">
+      <strong>OPCIONES</strong>
+    </th>
+
+  </tr>
+  </thead>
+  <tbody>
+  <% purchase_requests.each do |purchase_request| %>
+    <tr>
+      <td class="text-center"><%= purchase_request.date.strftime("%d-%m-%Y") %></td>
+      <td class="text-center"><%= purchase_request.employee.person.name %></td>
+      <% if purchase_request.state == :generated %>
+        <td class="text-center">
+          <div class="badge badge-warning">
+            <%= purchase_request.state.text %>
+          </div>
+        </td>
+      <% elsif purchase_request.state == :finished %>
+        <td class="text-center">
+          <div class="badge badge-success">
+            <%= purchase_request.state.text %>
+          </div>
+        </td>
+      <% else %>
+        <td class="text-center">
+          <div class="badge badge-danger">
+            <%= purchase_request.state.text %>
+          </div>
+        </td>
+      <% end %>
+      <td class="text-center"><%= purchase_request.comment %></td>
+      <td class="text-center">
+        <div class="btn-group" role="group">
+          <%= link_to edit_purchase_request_path(purchase_request) do %>
+            <button class="btn btn-sm btn-secondary"><i class="fas fa-search"></i></button>
+          <% end %>
+        </div>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+
+<div class="card card-body bg-gray-lighter">
+  <div>
+    <%= page_entries_info purchase_requests, :model => 'purchase_request', :class => 'align-middle' %>
+  </div>
+</div>
+
+<%= will_paginate purchase_requests, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>

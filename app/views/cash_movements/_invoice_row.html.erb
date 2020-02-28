@@ -1,0 +1,13 @@
+<tbody id="invoices-table">
+<% @invoices.each do |invoice| %>
+  <% if invoice.balance > 0 %>
+    <tr>
+      <td>Factura</td>
+      <td><%= invoice.invoice_number %></td>
+      <td><%= number_to_currency(invoice.total, :unit => "Gs", :separator => ".", :precision => 0) %></td>
+      <td> Guarani </td>
+      <td><%= check_box_tag "invoices_ids[]", invoice.id , false , class: "pay_check", data: { "invoice-value" => invoice.total }%></td>
+    </tr>
+  <% end %>
+<%end%>
+</tbody>

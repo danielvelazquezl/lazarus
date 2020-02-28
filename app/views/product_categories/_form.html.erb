@@ -1,0 +1,32 @@
+<%= form_with model: @product_category, local: true, html: { id: "product_category_form" } do |form| %>
+  <% if @product_category.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+      <%= pluralize(@product_category.errors.count, "error") %> 
+      <% if @product_category.errors.count > 1 %>
+        impidieron que esta categoría sea guardada:
+      <% else %>
+        impidió que esta categoría sea guardada:
+      <% end %>
+      </h2>
+      <ul>
+      <% @product_category.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label 'Descripción' %>
+    <%= form.text_field :description %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit 'Crear Categoría' %>
+  </div>
+<% end %>
+
+<script type="text/javascript" >
+  <%= render "validate.js" %>
+</script>

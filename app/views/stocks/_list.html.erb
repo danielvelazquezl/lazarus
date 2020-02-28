@@ -1,0 +1,90 @@
+<table class="table table-striped table-hover w-100" id="datatable2">
+  <thead>
+  <tr>
+    <th class="text-center">
+      <strong>PRODUCTO</strong>
+    </th>
+    <th class="text-center">
+      <strong>TIPO DE PRODUCTO</strong>
+    </th>
+    <th class="text-center">
+      <strong>PRECIO</strong>
+    </th>
+    <th class="text-center">
+      <strong>DEPOSITO</strong>
+    </th>
+    <th class="text-center">
+      <strong>CANTIDAD</strong>
+    </th>
+    <th class="text-center">
+      <strong>STOCK MINIMO</strong>
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <% stocks.each do |stock| %>
+    <tr>
+      <td class="text-center"><%= stock.product.description %></td>
+      <% if stock.product.product_type == :component %>
+        <td class="text-center">
+          <div class="badge badge-warning">
+            <%= stock.product.product_type.text %>
+          </div>
+        </td>
+      <%elsif stock.product.product_type == :product %>
+        <td class="text-center">
+          <div class="badge badge-info">
+            <%= stock.product.product_type.text %>
+          </div>
+        </td>
+      <%else %>
+        <td class="text-center">
+          <div class="badge badge-success">
+            <%= stock.product.product_type.text %>
+          </div>
+        </td>
+      <%end %>
+      <td class="text-center"><%=number_to_currency(Product.find_by(id: stock.product.id).unit_cost, :unit => "Gs", :separator => ".", :precision => 0) %></td>
+      <%if stock.deposit.id.to_s == Setting.find_by!(key: 'id_components_deposit').value%>
+        <td class="text-center">
+          <div class="badge badge-success">
+            <%= stock.deposit.description %>
+          </div>
+        </td>
+      <%elsif stock.deposit.id.to_s == Setting.find_by!(key: 'id_products_deposit').value %>
+        <td class="text-center">
+          <div class="badge badge-warning">
+            <%= stock.deposit.description %>
+          </div>
+        </td>
+      <%else %>
+        <td class="text-center">
+          <div class="badge badge-primary">
+            <%= stock.deposit.description %>
+          </div>
+        </td>
+        <%end %>
+      <%if stock.quantity <= stock.min_stock %>
+        <td class="text-center">
+          <div class="badge badge-danger">
+            <%= stock.quantity %>
+          </div>
+        </td>
+      <%else %>
+        <td class="text-center">
+            <%= stock.quantity %>
+        </td>
+      <%end %>
+      <td class="text-center"><%= stock.min_stock %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<div class="card card-body bg-gray-lighter">
+      <div>
+        <%= page_entries_info stocks, :model => 'stock', :class => 'align-middle' %>
+      </div>
+    </div>
+
+<%= will_paginate stocks, renderer: WillPaginate::ActionView::BootstrapLinkRenderer  %>

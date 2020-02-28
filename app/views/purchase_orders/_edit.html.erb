@@ -1,0 +1,80 @@
+<%= form_with(model: purchase_order, local: true) do |form| %>
+  <% if purchase_order.errors.any? %>
+    <div id="error_explanation">
+      <h2><%= pluralize(purchase_order.errors.count, "error") %> prohibited this purchase_order from being saved:</h2>
+
+      <ul>
+        <% purchase_order.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="card card-default">
+    <div class="card-body">
+      <p class="d-flex">
+        <span><b>OC-
+          <%= @purchase_order.number%></b></span>
+        <span class="ml-auto"><b><%=@purchase_order.date.strftime("%d-%m-%Y")%></b></span>
+      </p>
+      <p class="d-flex">
+        <span><b>Proveedor: </b><%=@purchase_order.provider.person.name%></span>
+      </p>
+      <p class="d-flex">
+        <span><b>Estado: </b>
+          <%= form.select :state, PurchaseOrder.state.options %>
+        </span>
+      </p>
+
+      <%= form.hidden_field :purchase_request_id %>
+      <% unless @purchase_order.purchase_order_items.empty? %>
+        <div class="row">
+          <div class="col"></div>
+          <div class="col-6">
+            <table class="table  table-sm" >
+              <thead>
+              <tr>
+                <th scope="col">Productos</th>
+                <th scope="col">Cantidad</th>
+                <th scope="col">Precio</th>
+              </tr>
+              </thead>
+              <tbody id="invoices-items-table">
+
+              <%= form.fields_for :purchase_order_items, @purchase_order.purchase_order_items do |f| %>
+                <tr>
+                  <td><%= f.label :product_id, :value => Product.find(f.object.product_id).description %></td>
+                  <td><%= f.label :requested_quantity, :value => f.object.requested_quantity %></td>
+                  <td><%= f.label :price, :value => f.object.price %></td>
+
+                  <%= f.hidden_field :product_id %>
+                  <%= f.hidden_field :requested_quantity %>
+                  <%= f.hidden_field :price %>
+                </tr>
+
+              <% end %>
+
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+
+              </tbody>
+            </table>
+          </div>
+          <div class="col"></div>
+        </div>
+      <%end %>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-12 col-xl-auto">
+      <%= form.submit 'Guardar', class: "btn btn-success" %>
+    </div>
+  </div>
+
+<% end %>
+

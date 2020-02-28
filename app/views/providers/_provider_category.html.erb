@@ -1,0 +1,26 @@
+<fieldset style="margin: 0; border: 0; padding: 0;">
+  <table class="table table-bordered">
+    <thead style="display:none">
+    <tr>
+      <th class="col-4">Categorias</th>
+      <th class="col-1"></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+      <td class="col-4">
+        <%= f.select :product_category_id,
+                     options_from_collection_for_select(ProductCategory.all, "id", "description", f.object.product_category_id), {},
+                     {class:'provider-category-select', prompt: "Seleccionar"} %>
+      </td>
+      <td class="col-1">
+        <%= link_to "Eliminar" do%>
+          <div class=" remove_fields btn btn-link text-danger">
+            <i class="fas fa-trash-alt"></i>
+          </div>
+        <%end %>
+      </td>
+    </tr>
+    </tbody>
+  </table>
+</fieldset>

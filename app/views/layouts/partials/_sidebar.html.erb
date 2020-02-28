@@ -1,0 +1,67 @@
+<!-- START Sidebar (left)-->
+<div class="aside-inner">
+   <nav class="sidebar" data-sidebar-anyclick-close="">
+      <!-- START sidebar nav-->
+      <ul class="sidebar-nav">
+         <!-- START user info-->
+         <li class="has-user-block">
+            <div id="user-block" class="collapse">
+               <div class="item user-block">
+                  <!-- User picture-->
+                  <div class="user-block-picture">
+                     <div class="user-block-status">
+                        <img src="<%= image_path('angle/user/person.png') %>" alt="Avatar" width="60" height="60" class="img-thumbnail rounded-circle" />
+                        <!--div class="circle circle-success circle-lg"></div>-->
+                     </div>
+                  </div>
+                  <!-- Name and Job-->
+                  <div class="user-block-info">
+
+                     <span class="user-block-name"><%= current_user.user_name %> </span>
+                    <span class="user-block-name"><%= link_to "Cerrar sesión", destroy_user_session_path, method: :delete, :class=> 'btn btn-primary' %> </span>
+                  </div>
+               </div>
+            </div>
+         </li>
+         <!-- END user info-->
+         <!-- Iterates over all sidebar items-->
+         <li class="nav-heading">
+            <span>Menú</span>
+         </li>
+        <% if current_user.has_role? :admin %>
+          <%= render partial: 'layouts/partials/stock' %>
+          <%= render partial: 'layouts/partials/human_resources' %>
+          <%= render partial: 'layouts/partials/sales' %>
+          <%= render partial: 'layouts/partials/purchases' %>
+          <%= render partial: 'layouts/partials/cash' %>
+          <%= render partial: 'layouts/partials/reports' %>
+          <%= render partial: 'layouts/partials/roles' %>
+
+        <% elsif current_user.has_role? :manager %>
+          <%= render partial: 'layouts/partials/stock' %>
+          <%= render partial: 'layouts/partials/human_resources' %>
+          <%= render partial: 'layouts/partials/sales' %>
+          <%= render partial: 'layouts/partials/purchases' %>
+          <%= render partial: 'layouts/partials/cash' %>
+          <%= render partial: 'layouts/partials/reports' %>
+
+        <% elsif current_user.has_role? :cashier %>
+          <%= render partial: 'layouts/partials/sales' %>
+          <%= render partial: 'layouts/partials/cash' %>
+
+        <% elsif current_user.has_role? :seller %>
+          <%= render partial: 'layouts/partials/stock_list' %>
+          <%= render partial: 'layouts/partials/sales' %>
+
+        <% elsif current_user.has_role? :warehouse_manager %>
+          <%= render partial: 'layouts/partials/stock' %>
+          <%= render partial: 'layouts/partials/purchases' %>
+
+        <% elsif current_user.has_role? :external_employee %>
+          <span class="nav-heading">Menús no disponibles</span>
+        <% end %>
+      </ul>
+      <!-- END sidebar nav-->
+   </nav>
+</div>
+<!-- END Sidebar (left)-->

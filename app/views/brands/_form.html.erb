@@ -1,0 +1,32 @@
+<%= form_with model: @brand, local: true, validate: true, html: { id: "brand_form" } do |form| %>
+  <% if @brand.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+      <%= pluralize(@brand.errors.count, "error") %> 
+      <% if @brand.errors.count > 1 %>
+        impidieron que esta marca sea guardada:
+      <% else %>
+        impidió que esta marca sea guardada:
+      <% end %>
+      </h2>
+      <ul>
+      <% @brand.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= form.label 'Descripción' %>
+    <%= form.text_field :description, required: true %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit 'Crear Marca'%>
+  </div>
+<% end %>
+
+<script type="text/javascript" >
+  <%= render "validate.js" %>
+</script>

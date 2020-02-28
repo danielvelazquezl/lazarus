@@ -1,0 +1,86 @@
+<div class="content-heading">
+  <div class="text-align-right">
+    <%= link_to purchase_orders_path do%>
+      <button class="btn btn-secondary">
+        <i class="fas fa-arrow-left text-primary fa-1x"></i>
+      </button>
+    <%end %>
+  </div>
+
+  <div class="col-8"> Orden de compra </div>
+
+</div>
+<div class="card card-default">
+  <div class="card-body">
+    <p class="d-flex">
+        <span><b>OC-
+          <%= @purchase_order.number%></b></span>
+      <span class="ml-auto"><b><%=@purchase_order.date.strftime("%d-%m-%Y")%></b></span>
+    </p>
+    <p class="d-flex">
+      <span><b>Proveedor: </b><%=@purchase_order.provider.person.name%></span>
+    </p>
+    <p class="d-flex">
+      <span><b>Estado: </b></span>
+      <% if @purchase_order.state == :invoiced %>
+        <span class="badge badge-success">
+          <%=@purchase_order.state.text%>
+        </span>
+    <%elsif @purchase_order.state == :received%>
+        <span class="badge badge-warning">
+          <%=@purchase_order.state.text%>
+        </span>
+    <%else %>
+        <span class="badge badge-danger">
+          <%=@purchase_order.state.text%>
+        </span>
+    <%end %>
+    </p>
+
+
+    <% unless @purchase_order.purchase_order_items.empty? %>
+      <div class="row">
+        <div class="col"></div>
+        <div class="col-6">
+          <table class="table  table-sm" >
+            <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody id="invoices-items-table">
+            <tr>
+              <td><b>Producto</b></td>
+              <td><b>Cantidad</b></td>
+              <td><b>Precio</b></td>
+            </tr>
+            <%= @purchase_order.purchase_order_items.each do |item| %>
+              <tr>
+                <td><%= item.product.description %></td>
+                <td><%= item.requested_quantity %></td>
+                <td><%= item.price %></td>
+              </tr>
+              <div style="display: none"><% end %></div>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+
+            </tbody>
+          </table>
+        </div>
+        <div class="col"></div>
+      </div>
+    <%end %>
+  </div>
+</div>
+<% if @purchase_order.state.received? %>
+  <%= form_tag(new_purchase_invoice_path, method: :get) do %>
+    <%= hidden_field_tag :note_number, value = @purchase_order.number %>
+    <%= submit_tag "Cargar Factura Compra", name:'nil', class: "btn btn-sm btn-primary"%>
+  <% end %>
+<% end %>

@@ -1,0 +1,13 @@
+<p></p>
+<div class="content-heading">
+  <div class="text-align-right">
+    <%= link_to clients_path do%>
+      <button class="btn btn-secondary">
+        <i class="fas fa-arrow-left text-primary fa-1x"></i>
+      </button>
+    <%end %>
+  </div>
+  <div class="col-8">Nuevo Cliente</div>
+</div>
+
+<%= render 'form', { client: @client, person: @person } %>

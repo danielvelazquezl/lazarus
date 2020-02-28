@@ -1,0 +1,7 @@
+<% js = escape_javascript(
+  render(
+    :partial => 'reports/cash_balance',
+    :locals => { :products => @products }
+  )
+) %>
+$("#results").html("<%= js %>");

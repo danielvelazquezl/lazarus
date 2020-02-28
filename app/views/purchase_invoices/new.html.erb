@@ -1,0 +1,27 @@
+<div class="content-heading">
+  <div class="text-align-right">
+    <%= link_to purchase_invoices_path do%>
+      <button class="btn btn-secondary" title="Volver atras">
+        <i class="fas fa-arrow-left text-primary fa-1x"></i>
+      </button>
+    <%end %>
+  </div>
+  <div class="col-8">Nueva Factura de Compra
+  </div>
+</div>
+<div class="ml-auto">
+  <%= form_tag(new_purchase_invoice_path, method: :get) do %>
+    <label>N° Orden de Compra:</label></br>
+    <%= text_field_tag :note_number %>
+    <%= submit_tag "Buscar", name:'nil', class: "btn btn-sm btn-primary"%>
+  <% end %>
+  </br>
+
+</div>
+<div id = "invoice_form">
+  <%if @purchase_invoice.purchase_order != nil %>
+    <%= render 'form', purchase_invoice: @purchase_invoice %>
+  <%else %>
+    <%= render 'form_new', purchase_invoice: @purchase_invoice %>
+  <%end %>
+</div>

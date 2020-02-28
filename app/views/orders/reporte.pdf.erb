@@ -1,0 +1,98 @@
+
+<div class="invoice-box">
+  <table cellpadding="0" cellspacing="0">
+    <tr class="top">
+      <td colspan="4">
+        <table>
+          <tr>
+            <td class="title">
+              <%= image_tag wicked_pdf_asset_base64('company_logo.png') %>
+            </td>
+            <td>
+              <h5>Orden N°: <%= @order.number %></h5>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <% if @order.order_type == :production then %>
+                <h2>Orden de Producción</h2>
+              <% else %>
+                <h2>Orden de Componente</h2>
+              <% end %>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+
+
+    <tr class="information">
+      <td colspan="4">
+        <table>
+          <tr>
+            <td>
+              <b>Fecha de pedido: </b><%= @order.date_request.strftime("%d-%m-%Y %H:%M") %><br>
+              <b>Encargado/a: </b><%= @order.person.name %><br>
+              <b>Depósito de origen: </b><%= @order.origin.description %><br>
+
+            </td>
+            <td>
+              <% if @order.date_finished == nil then %>
+              <% else %>
+                <b>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  Fecha de Finalizado:
+                </b><%= @order.date_request.strftime("%d-%m-%Y %H:%M") %>
+              <% end %>
+              <br>
+              <b>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                Estado: </b>
+              <%= @order.state.text %><br>
+              <b>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                Depósito de destino:
+              </b><%= @order.destination.description %><br>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr class="information">
+      <table>
+        <thead>
+        <tr class="heading">
+          <td>Producto</td>
+          <td>Cantidad</td>
+        </tr>
+        </thead>
+        <tbody>
+        <% @order.order_items.each do |m| %>
+          <tr class="center">
+            <td><%= Product.find_by(id: m.product_id).description %></td>
+            <td><%= m.quantity %></td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+
+    </tr>
+
+    <tr class="information">
+      <td colspan="4">
+        <table>
+          <tr>
+            <td></td>
+            <td>
+              <br><br><br><br><br>___________________________<br>
+              <b>Firma del Encargado/a &nbsp &nbsp &nbsp &nbsp</b>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+  </table>
+</div>

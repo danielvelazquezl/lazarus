@@ -1,0 +1,124 @@
+<%= form_with(model: order_ticket, local: true, html: { id: "order_ticket_form" }) do |form| %>
+  <% if order_ticket.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+      <%= pluralize(order_ticket.errors.count, "error") %> 
+      <% if order_ticket.errros.count > 1 %>
+        impidieron que este ticket de orden sea guardado:
+      <% else %>
+        impidió que este ticket de orden sea guardado:
+      <% end %>
+      </h2>
+      <ul>
+        <% order_ticket.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="card card-default">
+    <div class="card-body">
+      <p class="lead bb">NOTA DE PEDIDO</p>
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Número de Pedido:</strong>
+        </div>
+        <div class="col-1">
+          <input type="text" class="form-control valid" value="<%= @order_ticket.ticket_number %> " disabled>
+
+        </div>
+        <div class="col-3"></div>
+        <%= form.hidden_field :ticket_number %>
+        <div class="col-2">
+          <strong>Fecha:</strong>
+        </div>
+        <div class="col-4">
+          <%= form.date_field :date, :class => 'form-control'%>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Cliente:</strong>
+        </div>
+        <div class="col-4">
+          <%= form.select :client_id,
+                          Client.all.map { |c| [c.person.name, c.id] },
+                          class: "custom-select custom-select-sm" %>
+        </div>
+        <div class="col-2">
+          <strong>Empleado:</strong>
+        </div>
+        <div class="col-4">
+          <%= form.select :employee_id,
+                          Employee.all.map { |e| [e.person.name, e.id] },
+                          class: "custom-select custom-select-sm" %>
+        </div>
+      </div>
+
+      <%= form.hidden_field :state %>
+      <div class="form-group row">
+        <div class="col-2">
+          <strong><%= form.label 'Observaciones:'%></strong>
+        </div>
+        <div class="col">
+          <%= form.text_field :observation , class: 'form-control form-control-sm'%>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card card-default">
+    <div class="card-body">
+
+      <p class="lead bb">DETALLES</p>
+      <div class="row">
+        <div class="col"></div>
+        <div class="col-8">
+          <table class="table table-striped table-bordered table-hover">
+            <thead class="thead-dark">
+              <tr>
+                <th class="col-6">Producto</th>
+                <th class="col-4">Cantidad</th>
+                <th class="col-1">Opciones</th>
+              </tr>
+            </thead>
+            <tbody id="invoices-items-table">
+              <%= form.fields_for :order_ticket_items, @order_ticket_items do |f| %>
+                <%= render 'order_ticket_item', f: f %>
+              <% end %>
+            <tr>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
+
+            </tbody>
+          </table>
+          <%= link_to_add_fields "Agregar Producto", form, :order_ticket_items %>
+        </div>
+        <div class="col"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-12 col-xl-auto">
+      <%= form.submit 'Guardar', class: "btn btn-success" %>
+    </div>
+  </div>
+<% end %>
+
+<script type="text/javascript" >
+    <%= render "selects.js" %>
+    <%= render "validate.js" %>
+
+    //para agregar selectize a detalles de producto terminado
+  $(document).on('click','.add_fields',function (e) {
+      $('fieldset').last().children().children().last().children().first().children().first().children().first().selectize({
+          create: false,
+          sortField: 'text'
+      });
+  });
+</script>

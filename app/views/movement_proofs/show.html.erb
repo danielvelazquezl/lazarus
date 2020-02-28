@@ -1,0 +1,95 @@
+<div class="content-heading">
+  <div class="text-align-right">
+    <%= link_to movement_proofs_path do%>
+      <button class="btn btn-secondary">
+        <i class="fas fa-arrow-left text-primary fa-1x"></i>
+      </button>
+    <%end %>
+  </div>
+
+  <div class="col-8"> Detalles del Movimiento </div>
+
+</div>
+
+<div class="card card-default">
+  <div class="card-body">
+    <p class="lead bb">MOVIMIENTO</p>
+    <form class="form-horizontal">
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Encargado:</strong>
+        </div>
+        <div class="col-4">
+          <%=Person.find_by(id: @movement_proof.person_id).name %>
+        </div>
+        <div class="col-2">
+          <strong>Fecha:</strong>
+        </div>
+        <div class="col-4">
+          <%= @movement_proof.date.strftime("%d-%m-%Y %H:%m") %>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Motivo:</strong>
+        </div>
+        <div class="col-4">
+          <%= @movement_proof.movement_type.description %>
+        </div>
+        <div class="col-2">
+          <strong>Deposito:</strong>
+        </div>
+        <div class="col-4">
+          <%= @movement_proof.deposit.description %>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-2">
+          <strong>Descripcion:</strong>
+        </div>
+        <div class="col-4">
+          <%= @movement_proof.comment %>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="card">
+  <div class="card-body">
+    <p class="lead bb">DETALLES</p>
+    <div class="row">
+      <div class="col"></div>
+      <div class="col-6">
+        <table class="table table-striped table-bordered table-hover">
+          <thead class="thead-dark">
+          <tr>
+            <th class="col-5">Producto</th>
+            <th class="col-1">Cantidad</th>
+          </tr>
+          </thead>
+          <tbody id="invoices-items-table">
+          <% @movement_proof.movement_proof_details.each do |m| %>
+            <tr>
+              <td><%= m.product.description%></td>
+              <td><%= m.quantity %></td>
+            </tr>
+          <%end %>
+          </tbody>
+        </table>
+      </div>
+      <div class="col"></div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-12 col-xl-auto">
+    <%= link_to edit_movement_proof_path do%>
+      <button class="mb-1 btn btn-primary" type="button">Editar</button>
+    <% end %>
+  </div>
+</div>
+

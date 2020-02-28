@@ -1,0 +1,47 @@
+<table class="table table-striped table-hover w-100" >
+  <thead>
+  <tr>
+    <th class="text-center"><strong>CAJERO</strong></th>
+    <th class="text-center"><strong>FECHA DE INICIO</strong></th>
+    <th class="text-center"><strong>ESTADO</strong></th>
+    <th class="text-center"><strong>OPCION</strong></th>
+    <th colspan="1"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% open_close_cashes.each do |open_close_cash| %>
+    <tr>
+      <td class="text-center"><%= open_close_cash.employee.person.name %></td>
+      <td class="text-center"><%= open_close_cash.date_start.strftime("%d-%m-%Y") %></td>
+      <% if open_close_cash.state == true %>
+        <td  class="text-center">
+          <div class="badge badge-success">
+            Abierto
+          </div>
+        </td>
+      <%else %>
+        <td class="text-center">
+          <div class="badge badge-danger">
+            Cerrado
+          </div>
+        </td>
+      <%end %>
+      <% if open_close_cash.state === true %>
+        <td class="text-center"><%= link_to 'Cerrar', edit_open_close_cash_path(open_close_cash) %></td>
+      <% else%>
+        <td></td>
+      <%end %>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<div class="card card-body bg-gray-lighter">
+  <div>
+    <%= page_entries_info open_close_cashes, :model => 'open_close_cash', :class => 'align-middle' %>
+  </div>
+</div>
+
+<%= will_paginate open_close_cashes, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>
+

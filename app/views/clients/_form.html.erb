@@ -1,0 +1,75 @@
+<%= form_with(model: client, local: true, html: { id: "client_form" }) do |form| %>
+  <% if client.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+        <%= pluralize(client.errors.count, "error") %> 
+        <% if client.errors.count > 1 %>
+          impidieron que este cliente sea guardado:
+        <% else %>
+          impidió que este cliente sea guardado:
+        <% end %>
+      </h2>
+      <ul>
+        <% client.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="card card-default">
+    <div class="card-body">
+      <%= fields_for :person do |p| %>
+        <div class="form-group row">
+          <div class="col-2">
+            <strong>Nombre y Apellido</strong>
+          </div>
+          <div class="col-4">
+            <%= p.text_field :name, class: "form-control" %>
+          </div>
+          <div class="col-2">
+            <strong>E-mail</strong>
+          </div>
+          <div class="col-4">
+            <%= p.text_field :email, class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-2">
+            <strong>R.U.C.</strong>
+          </div>
+          <div class="col-4">
+            <%= form.text_field :ruc, class: "form-control" %>
+          </div>
+          <div class="col-2">
+            <strong>Teléfono</strong>
+          </div>
+          <div class="col-4">
+            <%= p.text_field :phone, class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-2">
+            <strong>Dirección</strong>
+          </div>
+          <div class="col-4">
+            <%= p.text_field :address, class: "form-control" %>
+          </div>
+        </div>
+      <% end %>
+      <% form.hidden_field :person_id %>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-12 col-xl-auto">
+      <%= form.submit 'Guardar nuevo cliente', class: "btn btn-success" %>
+    </div>
+  </div>
+<% end %>
+<script>
+    <%= render "validate.js" %>
+</script>

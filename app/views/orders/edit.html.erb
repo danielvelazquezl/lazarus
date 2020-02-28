@@ -1,0 +1,22 @@
+
+<div class="content-heading">
+  <%if @order.order_type == :production then%>
+    <%= link_to orders_path do%>
+      <button class="btn btn-secondary " title="Volver atras">
+        <i class="fas fa-arrow-left text-primary fa-1x"></i>
+      </button>
+    <%end %>
+    <div class="col-8">Editar Orden de Produccion</div>
+  <%else %>
+    <%= link_to component_orders_index_orders_path do%>
+      <button class="btn btn-secondary " title="Volver atras">
+        <i class="fas fa-arrow-left text-primary fa-1x"></i>
+      </button>
+    <%end %>
+    <div class="col-8">Editar Orden de Componentes</div>
+  <%end %>
+</div>
+
+<div class="card-body">
+  <%= render 'form', order: @order %>
+</div>

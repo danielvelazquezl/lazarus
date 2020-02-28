@@ -1,0 +1,22 @@
+<div class="content-heading">
+  <div class="text-align-right">
+    <%= link_to budget_requests_path do%>
+      <button class="btn btn-secondary">
+        <i class="fas fa-arrow-left text-primary fa-1x"></i>
+      </button>
+    <%end %>
+  </div>
+
+  <div class="col-8"> Pedido de cotización </div>
+
+  <div class="ml-auto">
+    <%= link_to edit_purchase_request_path(PurchaseRequest.find_by(id: @budget_request.purchase_request_id)) do%>
+      <button class="btn btn-primary">
+        Pedido de Compra
+      </button>
+    <%end %>
+  </div>
+</div>
+<div class="card-body">
+  <%= render 'form', budget_request: @budget_request %>
+</div>

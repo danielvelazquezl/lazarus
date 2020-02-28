@@ -1,0 +1,264 @@
+<%= form_with(model: sales_invoice, local: true) do |form| %>
+  <% if sales_invoice.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+      <%= pluralize(sales_invoice.errors.count, "error") %>
+      <% if sales_invoice.errors.count > 1 %>
+        impidieron que esta factura de venta sea guardada:
+      <% else %> 
+        impidió que esta factura de venta sea guardada:
+      <% end %>
+      </h2>
+      <ul>
+        <% sales_invoice.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="card card-default">
+    <div class="card-body">
+      <div class="row">
+        <div class="col-lg-6">
+          <div class="form-horizontal">
+            <div class="form-group row">
+              <div class="col-4">
+                <strong>Nota de Pedido:</strong>
+              </div>
+              <div class="col-8">
+                <input type="text" class="form-control valid" value="<%= @sales_invoice.order_ticket.ticket_number %>" disabled>
+                <%= form.hidden_field :order_ticket_id %>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-4">
+                <strong>Fecha de venta:</strong>
+              </div>
+              <div class="col-8">
+                <%= form.date_field :date, class: "form-control valid" %>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-4">
+                <strong>Vendedor:</strong>
+              </div>
+              <div class="col-8">
+                <%= form.select :employee_id,
+                                Employee.all.map { |e| [e.person.name, e.id] },
+                                class: "custom-select custom-select-sm" %>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-horizontal">
+            <div class="form-group row">
+              <div class="col-4">
+                <strong>Timbrado</strong>
+              </div>
+              <div class="col-8">
+                <%= form.text_field :stamped_id, class: "form-control valid", id: 'stamped', :value => Stamped.find(form.object.stamped_id).number, :readonly => true %>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-4">
+                <strong>N° Factura</strong>
+              </div>
+              <div class="col-8">
+                <p class="d-flex">
+                  <span id="mydiv">
+                    <%= form.select :stamped_id,
+                                                   options_from_collection_for_select(Stamped.all, "id", "name", form.object.stamped_id),
+                                                   class: 'form-control' %>
+                  </span>
+                  <span style="margin-left: 10px">
+                     <%= form.text_field :invoice_number %>
+                  </span>
+                </p>
+
+
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-4">
+                <strong>Deposito:</strong>
+              </div>
+              <div class="col-8">
+                <input type="text" class="form-control valid" value="<%= @sales_invoice.deposit.description %>" disabled>
+                <%= form.hidden_field :deposit_id %>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <p class="lead bb">Datos del Cliente</p>
+      <div class="row">
+
+        <div class="col-lg-6">
+          <div class="form-horizontal">
+            <div class="form-group row">
+              <div class="col-4">
+                <strong>Nombre:</strong>
+              </div>
+              <div class="col-8">
+                <input type="text" class="form-control valid" value="<%= @sales_invoice.client.person.name %>" disabled>
+                <%= form.hidden_field :client_id %>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-4">
+                <strong>Telefono:</strong>
+              </div>
+              <div class="col-8">
+                <input type="text" class="form-control valid" value="<%= @sales_invoice.client.person.phone %>" disabled>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="form-horizontal">
+            <div class="form-group row">
+              <div class="col-4">
+                <strong>RUC:</strong>
+              </div>
+              <div class="col-8">
+                <input type="text" class="form-control valid" value="<%= @sales_invoice.client.ruc %>" disabled>
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="col-4">
+                <strong>Direccion:</strong>
+              </div>
+              <div class="col-8">
+                <input type="text" class="form-control valid" value="<%= @sales_invoice.client.person.address %>" disabled>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <table class="table mt-4">
+        <thead class="thead-dark">
+        <tr>
+          <th scope="col">Producto</th>
+          <th scope="col">Precio</th>
+          <th scope="col">Cantidad</th>
+          <th scope="col">Subtotal</th>
+          <th scope="col">IVA</th>
+        </tr>
+        </thead>
+        <tbody id="invoices-items-table">
+
+        <%= form.fields_for :sales_invoices_items, @sales_invoice.sales_invoices_items do |f| %>
+          <tr>
+            <td><%= f.label :product_id, :value => Product.find(f.object.product_id).description %></td>
+            <td><%= f.label :price, class: 'price', :value => f.object.price %></td>
+            <td><%= f.text_field :quantity, :size => 3, class: 'quantity' %></td>
+            <td><%= f.label :sub_total, class: 'sub_total', :value => f.object.price * f.object.quantity %></td>
+            <td><%= f.label :iva, class: 'iva', :value => f.object.sub_total/11 %></td>
+            <%= f.hidden_field :product_id %>
+            <%= f.hidden_field :price %>
+            <%= f.hidden_field :sub_total %>
+            <%= f.hidden_field :iva %>
+            <%= f.hidden_field :sales_invoice_id %>
+          </tr>
+
+        <% end %>
+
+        <tr>
+          <td><strong>Total</strong></td>
+          <td></td>
+          <td></td>
+          <td><strong><%= form.label :total, id: 'total', :value =>  form.object.total%></strong></td>
+          <td><strong><%= form.label :iva, id: 'total_iva', :value => form.object.iva %></strong></td>
+        </tr>
+
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-12 col-xl-auto">
+      <%= form.submit 'Guardar', class: "btn btn-success" %>
+    </div>
+  </div>
+
+<% end %>
+
+<script>
+    <%= render "select.js" %>
+    $(document).ready(function () {
+
+        var stampeds = [];
+        <% @stampeds.each do |item|%>
+        var id = "<%=item.id %>";
+        var value = "<%=item.number%>";
+        var stamped = {id, value};
+
+        stampeds.push(stamped);
+        <%end %>
+
+
+        let total = 0;
+        let iva = 0;
+        $(".sub_total").each(function () {
+            total += parseInt($(this).text());
+        });
+        $("#total").text(total + ' Gs');
+        $(".iva").each(function () {
+            iva += parseInt($(this).text());
+        });
+        $("#total_iva").text(iva + ' Gs');
+
+        $(".quantity").change(function (event) {
+            // $(event.target).parent(".sub_total").val()
+            let quantity = $(event.target).val();
+            let price = $(event.target).parent().siblings().children(".price").text();
+            $(event.target).parent().siblings().children(".sub_total").text(price * quantity);
+            let sub_total = $(event.target).parent().siblings().children(".sub_total").text();
+            $(event.target).parent().siblings().children(".iva").text(parseInt(sub_total / 11));
+            // alert($(event.target).val());
+
+            let total = 0;
+            let iva = 0;
+            $(".sub_total").each(function () {
+                total += parseInt($(this).text());
+            });
+            $(".iva").each(function () {
+                iva += parseInt($(this).text());
+            });
+            $("#total").text(total +' Gs');
+            $("#total_iva").text(iva + ' Gs');
+
+        });
+        $(sales_invoice_stamped_id).change(function (event) {
+            let result;
+            for (var i = 0; i < stampeds.length; i++) {
+                if ($(event.target).val() === stampeds[i].id) {
+                    result = stampeds[i].value
+                }
+            }
+            $("#stamped").val(result);
+
+
+        });
+
+
+
+            //para agregar selectize
+
+                $('#sales_invoice_stamped_id').selectize({
+                    create: false,
+                    sortField: 'text'
+                });
+               let w = $('#mydiv').width()+20+'px';
+            $('#mydiv').css('width',w);
+
+
+    })
+</script>

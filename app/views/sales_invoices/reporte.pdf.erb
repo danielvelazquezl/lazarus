@@ -1,0 +1,108 @@
+<div class="invoice-box">
+  <table cellpadding="0" cellspacing="0">
+    <tr class="top">
+      <td colspan="4">
+        <table>
+          <tr>
+            <td class="title">
+              <%= image_tag wicked_pdf_asset_base64('company_logo.png') %>
+            </td>
+
+            <td>
+              Timbrado: <b><%= @sales_invoice.stamped.number %></b>
+              <br>
+              Fecha Inicio: <b><%= @sales_invoice.stamped.start_date.strftime('%d/%m/%Y') %></b>
+              <br>
+              Valido Hasta: <b><%= @sales_invoice.stamped.finish_date.strftime('%d/%m/%Y') %></b>
+              <br>
+              N° Factura: <b><%=@sales_invoice.stamped.name %> <%=@sales_invoice.invoice_number %></b>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td></td></tr>
+    <tr><td></td></tr>
+    <tr><td></td></tr>
+
+
+    <tr class="information">
+      <td colspan="4">
+        <table>
+          <tr>
+            <td>
+              Fecha: <b><%= @sales_invoice.date.strftime("%d-%m-%Y") %></b>
+            </td>
+            <td>
+              N° Pedido: <b><%= @sales_invoice.order_ticket.ticket_number %></b><br>
+            </td>
+            <td>
+              Vendedor: <b><%= @sales_invoice.employee.person.name %></b><br>
+            </td>
+            <td>
+              Condicion: <b>Contado</b><br>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              Cliente: <b><%= @sales_invoice.client.person.name %></b>
+            </td>
+            <td>
+              RUC: <b><%= @sales_invoice.client.ruc %></b>
+            </td>
+            <td>
+              Direccion: <b><%= @sales_invoice.client.person.address %></b>
+            </td>
+            <td>
+              Telefono: <b><%= @sales_invoice.client.person.phone %></b>
+            </td>
+          </tr>
+        </table>
+      </td>
+    </tr>
+
+    <tr><td></td></tr>
+    <tr><td></td></tr>
+    <tr><td></td></tr>
+
+    <tr class="heading_black">
+      <td>Producto</td>
+      <td class="right">Precio</td>
+      <td class="right">Cantidad</td>
+      <td>Subtotal</td>
+    </tr>
+
+
+
+    <% @sales_invoice.sales_invoices_items.each do |i| %>
+      <tr class="center">
+        <td><%= Product.find(i.product_id).description %></td>
+        <td class="right">
+          <%= number_to_currency(i.price, :unit => "",:separator => ".", :precision => 0) %>
+        </td>
+        <td class="right"><%= i.quantity %></td>
+        <td class>
+          <%= number_to_currency(i.sub_total, :unit => "",:separator => ".", :precision => 0) %>
+        </td>
+      </tr>
+    <% end %>
+
+    <tr>
+      <td colspan="4">
+      <table>
+        <tr>
+          <td class="title"></td>
+          <td>
+            Total IVA: <b><%= number_to_currency(@sales_invoice.iva, :unit => "Gs", :separator => ".", :precision => 0) %></b>
+            <br>
+            Total a pagar: <b><%= number_to_currency(@sales_invoice.total, :unit => "Gs", :separator => ".", :precision => 0) %></b>
+          </td>
+        </tr>
+      </table>
+      </td>
+    </tr>
+
+  </table>
+
+</div>

@@ -1,0 +1,71 @@
+<div class="content-heading">
+  <div> Formularios de Movimiento</div>
+
+  <div class="ml-auto">
+    <%= link_to new_movement_proof_path do %>
+      <button class="btn btn-secondary">
+        <i class="fas fa-plus text-primary fa-1x"></i>
+      </button>
+    <% end %>
+  </div>
+</div>
+
+<div class="card card-body bg-light">
+  <%= puts @filterrific.inspect %>
+  <%= form_for_filterrific @filterrific do |f| %>
+    <div class="form-group row">
+      <div class="col-4">
+        <label class="font-weight-bold">Buscar</label>
+        <%= f.text_field :search_query,
+                         :class => 'filterrific-periodically-observed form-control',
+                         placeholder: "por encargado, deposito, motivo y comentario" %>
+      </div>
+
+      <div>
+        <div class="col-12">
+          <label class="font-weight-bold">Deposito</label>
+          <%= f.select :with_deposit_id,
+                       @filterrific.select_options[:with_deposit_id],
+                       {:include_blank => '- Todos -'},
+                       {:class => 'form-control'} %>
+        </div>
+      </div>
+
+      <div>
+        <div class="col-12">
+          <label class="font-weight-bold">Encargado</label>
+          <%= f.select :with_person_id,
+                       @filterrific.select_options[:with_person_id],
+                       {:include_blank => '- Todos -'},
+                       {:class => 'form-control'} %>
+        </div>
+      </div>
+
+      <div>
+        <div class="col-12">
+          <label class="font-weight-bold">Ordenar por</label>
+          <%= f.select :sorted_by,
+                       @filterrific.select_options[:sorted_by],
+                       {},
+                       {:class => 'form-control'}
+          %>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="ml-auto">
+      <div>
+        <%= link_to "Limpiar filtros", reset_filterrific_url, :class => 'btn btn-secondary align-middle' %>
+      </div>
+    </div>
+
+  <% end %>
+</div>
+
+<div id="results">
+  <%= render(
+          partial: 'movement_proofs/list',
+          locals: {movement_proofs: @movement_proofs}
+      ) %>
+</div>

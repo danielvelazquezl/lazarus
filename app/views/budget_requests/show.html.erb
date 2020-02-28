@@ -1,0 +1,91 @@
+<div class="content-heading">
+  <div class="text-align-right">
+    <%= link_to budget_requests_path do%>
+      <button class="btn btn-secondary">
+        <i class="fas fa-arrow-left text-primary fa-1x"></i>
+      </button>
+    <%end %>
+  </div>
+
+  <div class="col-8"> Pedido de cotización </div>
+
+  <div class="ml-auto">
+    <%= link_to edit_purchase_request_path(PurchaseRequest.find_by(id: @budget_request.purchase_request_id)) do%>
+      <button class="btn btn-primary">
+        Pedido de Compra
+      </button>
+    <%end %>
+  </div>
+</div>
+<div class="card card-default">
+  <div class="card-body">
+    <p class="d-flex">
+        <span><b>PC-
+          <%= @budget_request.purchase_request.number%></b></span>
+      <span class="ml-auto"><b><%=@budget_request.date.strftime("%d-%m-%Y")%></b></span>
+    </p>
+    <p class="d-flex">
+      <span><b>Proveedor: </b><%=@budget_request.provider.person.name%></span>
+    </p>
+    <p class="d-flex">
+      <span><b>Estado: </b></span>
+       <% if @budget_request.state == :finished %>
+        <td>
+          <span class="badge badge-success">
+            <%=@budget_request.state.text%>
+          </span>
+        </td>
+      <%else %>
+        <td>
+          <span class="badge badge-danger">
+            <%=@budget_request.state.text%>
+          </span>
+        </td>
+      <%end %>
+    </p>
+    <p class="d-flex">
+        <span><b>Observación: </b>
+          <%= @budget_request.comment %>
+        </span>
+    </p>
+
+    <% unless @budget_request.budget_request_items.empty? %>
+    <div class="row">
+      <div class="col"></div>
+      <div class="col-6">
+        <table class="table  table-sm" >
+          <thead>
+          <tr>
+            <th scope="col"></th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+          </tr>
+          </thead>
+          <tbody id="invoices-items-table">
+            <tr>
+              <td><b>Proveedor</b></td>
+              <td><b>Estado</b></td>
+              <td><b>Fecha</b></td>
+            </tr>
+            <%= @budget_request.budget_request_items.each do |item| %>
+              <tr>
+                <td><%= item.product.description %></td>
+                <td><%= item.requested_quantity %></td>
+                <td><%= item.price %></td>
+              </tr>
+            <div style="display: none"><% end %></div>
+          <tr>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+
+          </tbody>
+        </table>
+      </div>
+      <div class="col"></div>
+    </div>
+      <%end %>
+  </div>
+</div>

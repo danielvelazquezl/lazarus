@@ -1,0 +1,46 @@
+<table class="table table-striped table-hover w-100">
+  <thead>
+  <tr>
+    <th  class="text-center">
+      <strong>N° FACTURA</strong>
+    </th>
+    <th  class="text-center">
+      <strong>PROVEEDOR</strong>
+    </th>
+    <th class="text-center">
+      <strong>FECHA</strong>
+    </th>
+    <th  class="text-center">
+      <strong>TOTAL</strong>
+    </th>
+    <th  class="text-center">
+      <strong>ACCION</strong>
+    </th>
+  </tr>
+  </thead>
+  <tbody>
+  <% purchase_invoices.each do |purchase_invoice| %>
+    <tr>
+      <td  class="text-center"><%= purchase_invoice.invoice_number %></td>
+      <td  class="text-center"><%= purchase_invoice.provider.person.name %></td>
+      <td  class="text-center"><%= purchase_invoice.date.strftime("%d-%m-%Y")%></td>
+      <td  class="text-center"><%= number_to_currency(purchase_invoice.total, :unit => "Gs", :separator => ".", :precision => 0) %></td>
+      <td  class="text-center">
+        <div class="btn-group" role="group">
+          <%= link_to purchase_invoice do %>
+            <button class="btn btn-sm btn-secondary"><i class="fas fa-search"></i></button>
+          <% end %>
+        </div>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<div class="card card-body bg-gray-lighter">
+  <div>
+    <%= page_entries_info purchase_invoices, :model => 'purchase_invoice', :class => 'align-middle' %>
+  </div>
+</div>
+
+<%= will_paginate purchase_invoices, renderer: WillPaginate::ActionView::BootstrapLinkRenderer %>

@@ -1,0 +1,44 @@
+<fieldset style="margin-top:-70px;">
+  <div class="row mt-5">
+    <div class="col-3">
+      <label>Forma de pago:</label>
+
+      <%= f.select :pay_method_id,
+                   options_from_collection_for_select(PayMethod.all, "id", "description", f.object.pay_method_id),{}, class:'pay_method_value' %>
+    </div>
+
+    <div class="col-3 bg-gray rounded" id="amount_div">
+      <label>Monto:</label></br>
+      <%= f.text_field :ammount, class: 'amount-value' %>
+      <div class="credit-card d-none">
+        <label>Nro. Voucher:</label>
+        <%= f.text_field :card_number, class: 'form-control' %>
+      </div>
+    </div>
+
+    <div class="col-3 bg-gray rounded check d-none">
+      <label>Nro. Cuenta:</label>
+      <%= f.text_field :account_number, class: 'validame2' %>
+      <label>Nro. Cheque:</label>
+      <%= f.text_field :check_number, class: 'validame2' %>
+      <br/><label>Titular:</label>
+      <br/><%= f.text_field :drawer, class: 'validame2' %>
+    </div>
+    <div class="col-3 bg-gray rounded bank d-none">
+      <label>Banco:</label>
+      <%= f.select :bank_id,
+                   options_from_collection_for_select(Bank.all, "id", "name", f.object.bank_id), {},
+                   { class: 'bank-select', prompt: "Seleccionar" } %>
+      <label>Fecha Emision:</label>
+      <%= f.date_field :emission_date, class: 'form-control' %>
+      <label>Fecha Vencimiento:</label>
+      <%= f.date_field :due_date, class: 'form-control' %>
+    </div>
+  </div>
+  <div>
+    <%= link_to "Eliminar",'#',class: "remove_fields" %>
+  </div>
+</fieldset>
+<script>
+  <%= render 'pay_forms.js' %>
+</script>

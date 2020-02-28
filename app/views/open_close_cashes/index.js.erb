@@ -1,0 +1,7 @@
+<% js = escape_javascript(
+ render(
+   :partial => 'open_close_cashes/list',
+   :locals => { :open_close_cashes => @open_close_cashes }
+ )
+) %>
+$("#results").html("<%= js %>");

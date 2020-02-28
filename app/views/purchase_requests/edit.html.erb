@@ -1,0 +1,15 @@
+<div class="content-heading">
+  <div class="text-align-right">
+    <%= link_to purchase_requests_path do%>
+      <button class="btn btn-secondary">
+        <i class="fas fa-arrow-left text-primary fa-1x"></i>
+      </button>
+    <%end %>
+  </div>
+
+  <div class="col-8"> Pedido de compra </div>
+
+</div>
+<div class="card-body">
+  <%= render 'form', purchase_request: @purchase_request %>
+</div>

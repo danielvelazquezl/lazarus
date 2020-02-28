@@ -1,0 +1,39 @@
+<p></p>
+<div class="content-heading">
+  <div class="col-8">Productos comprados</div>
+  <div class="ml-auto">
+    <%= link_to reports_purchased_products_url(@products, :format => :pdf) do %>
+      <button class="btn btn-secondary">
+        <i class="fas fa-print text-primary fa-1x"></i> Imprimir PDF
+      </button>
+    <% end %>
+  </div>
+</div>
+<div class="card card-body bg-light">
+  <%= puts @filterrific.inspect %>
+  <%= form_for_filterrific @filterrific do |f| %>
+    <div class="form-group row">
+      <!--div class="col-4">
+        <label class="font-weight-bold">Buscar</label>
+        <%#= f.text_field :search_query,
+                         :class => 'filterrific-periodically-observed form-control' %>
+      </div-->
+
+      <div>
+        <div class="col-12">
+          <label class="font-weight-bold">Ordenar por</label>
+          <%= f.select :sorted_by,
+                       @filterrific.select_options[:sorted_by],
+                       {},
+                       {:class => 'form-control'} %>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>
+<div id="results">
+  <%= render(
+          partial: 'reports/purchased',
+          locals: { products: @products }
+      ) %>
+</div>

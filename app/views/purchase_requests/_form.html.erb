@@ -1,0 +1,186 @@
+<%= form_with(model: purchase_request, local: true, html: { id: "purchase_request_form" }) do |form| %>
+  <% if purchase_request.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+      <%= pluralize(purchase_request.errors.count, "error") %> 
+      <% if purchase_request.errors.count > 1 %>
+        impidieron que este pedido de compra sea guardado:
+      <% else %>
+        impidió que este pedido de compra sea guardado:
+      <% end %>
+      </h2>
+
+      <ul>
+      <% purchase_request.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+      </ul>
+    </div>
+  <% end %>
+  <div class="card card-default">
+    <div class="card-body">
+      <p class="lead bb">Pedido de compra</p>
+      <p class="d-flex">
+        <span><b>Pedido de Compra - <%=@purchase_request.number%></b></span>
+        <span class="ml-auto"><b><%=@purchase_request.date.strftime("%d-%m-%Y")%></b></span>
+      </p>
+      <p class="d-flex">
+        <span><b>Estado: </b>
+          <% if @purchase_request.state == :generated %>
+            <span class="badge badge-warning"><%=@purchase_request.state.text%></span>
+          <% elsif @purchase_request.state == :pending%>
+            <span class="badge badge-danger"><%=@purchase_request.state.text%></span>
+          <% else %>
+            <span class="badge badge-success"><%=@purchase_request.state.text%></span>
+          <% end %>
+        </span>
+      </p>
+
+      <p>
+        <span> <b>Encarcado:</b>
+          <span>
+            <% if @budget == nil %>
+              <%= form.select :employee_id,
+                           Employee.all.map { |e| [e.person.name, e.id] },
+                           class: "employee-select" %>
+
+            <%else %>
+              <%= @purchase_request.employee.person.name %>
+            <%end %>
+          </span>
+
+        </span>
+      </p>
+      <p class="d-flex">
+        <span><b>Observación: </b>
+          <% if @budget == nil %>
+            <%= form.text_field :comment, :size => 100, class:'comment' %>
+          <%else %>
+              <%= @purchase_request.comment %>
+          <%end %>
+        </span>
+      </p>
+
+      <div class="row">
+        <div class="col"></div>
+        <div class="col-6">
+          <table class="table  table-sm" >
+          <thead>
+          <tr>
+            <th class="col-6">Producto</th>
+            <th class="col-4">Cantidad</th>
+            <th class="col-1">Opciones</th>
+          </tr>
+          </thead>
+          <tbody id="invoices-items-table">
+            <%= form.fields_for :purchase_request_items, @purchase_request.purchase_request_items do |f| %>
+              <tr>
+                <td><%= f.label :product_id, :value => Product.find(f.object.product_id).description %></td>
+                <% if @budget != nil %>
+                  <td><%= f.label :quantity, class: 'quantity', :value => f.object.quantity %></td>
+                  <%= f.hidden_field :quantity%>
+                  <%= f.hidden_field :product_id%>
+                <%else %>
+                  <td><%= f.text_field :quantity, :size => 3, :value => f.object.quantity, class: 'quantity' %></td>
+                <%end %>
+                <td></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+          <% if @budget == nil %>
+            <%=link_to_add_fields "Agregar Producto", form, :purchase_request_items%>
+          <% end %>
+        </div>
+        <div class="col"></div>
+
+      </div>
+      <% if @budget == nil %>
+        <div class="row">
+          <div class="col"></div>
+          <div class="col-12 col-xl-auto">
+            <%= form.submit 'Generar Pedido de Cotizacion', class: "btn btn-success" %>
+          </div>
+        </div>
+      <% end %>
+
+      <% if @budget != nil %>
+      <br>
+      <p class="lead bb">Pedidos de cotización</p>
+      <div class="row">
+        <div class="col"></div>
+        <div class="col-6">
+          <table class="table  table-sm" >
+            <thead>
+            <tr>
+              <th scope="col"></th>
+              <th scope="col"></th>
+              <th scope="col"></th>
+            </tr>
+            </thead>
+            <tbody id="invoices-items-table">
+              <tr>
+                <td><b>Proveedor</b></td>
+                <td><b>Estado</b></td>
+                <td><b>Fecha</b></td>
+                <td></td>
+              </tr>
+              <%= @budget_request.each do |budget_request| %>
+                <tr>
+                  <td><%= budget_request.provider.person.name %></td>
+                  <% if budget_request.state == :finished %>
+                    <td>
+                      <div class="badge badge-success">
+                        <%=budget_request.state.text%>
+                      </div>
+                    </td>
+                  <%else %>
+                    <td>
+                      <div class="badge badge-danger">
+                        <%=budget_request.state.text%>
+                      </div>
+                    </td>
+                  <%end %>
+                  <td><%= budget_request.date.strftime("%d-%m-%Y") %></td>
+                  <td>
+                    <%= link_to edit_budget_request_path(BudgetRequest.find_by(id: budget_request.id)) do %>
+                      <i class="fas fa-search text-primary"></i>
+                    <% end %>
+                  </td>
+                </tr>
+                  <div style="display: none"><% end %></div>
+              <tr>
+                <td></td>
+                <td></td>
+                <td></td>
+                <td></td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+        <div class="col"></div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>
+<% if @purchase_request.state.generated? %>
+  <%= form_tag(new_purchase_order_path, method: :get) do %>
+    <%= hidden_field_tag :request_number, value = @purchase_request.number %>
+    <%= submit_tag "Generar Orden", name:'nil', class: "btn btn-sm btn-primary"%>
+  <% end %>
+<% end %>
+
+<script type="text/javascript">
+  <%= render "validate.js" %>
+  <%= render "select.js" %>
+
+  //para agregar selectize a detalles de producto terminado
+  $(document).on('click','.add_fields',function (e) {
+      $('fieldset').last().children().children().last().children().first().children().first().children().first().selectize({
+          create: false,
+          sortField: 'text'
+      });
+  });
+</script>

@@ -1,0 +1,102 @@
+<%= form_with(model: employee, local: true, html: { id: "employee_form" }) do |form| %>
+
+  <% if employee.errors.any? %>
+    <div id="error_explanation">
+      <h2>
+      <%= pluralize(employee.errors.count, "error") %> 
+      <% if employee.errors.count > 1 %>
+        impidieron que este empleado sea guardado:
+      <% else %>
+        impidió que este empleado sea guardado:
+      <% end %>
+      </h2>
+      <ul>
+        <% employee.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="card card-default">
+    <div class="card-body">
+      <%= fields_for :person do |p| %>
+        <div class="form-group row">
+          <div class="col-2">
+            <strong>Nombre y Apellido</strong>
+          </div>
+          <div class="col-4">
+            <%= p.text_field :name, class: "form-control" %>
+          </div>
+          <div class="col-2">
+            <strong>E-mail</strong>
+          </div>
+          <div class="col-4">
+            <%= p.text_field :email, class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-2">
+            <strong>C.I.</strong>
+          </div>
+          <div class="col-4">
+            <%= form.text_field :ci, class: "form-control" %>
+          </div>
+          <div class="col-2">
+            <strong>Teléfono</strong>
+          </div>
+          <div class="col-4">
+            <%= p.text_field :phone, class: "form-control" %>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-2">
+            <strong>Sexo</strong>
+          </div>
+          <div class="col-4">
+            <%= form.select :sex, Employee.sex.options, class: "form-control", id: "sex", prompt: "Selecciona tu sexo" %>
+          </div>
+          <div class="col-2">
+            <strong>Fecha de nacimiento</strong>
+          </div>
+          <div class="col-4">
+            <%= form.date_field :birth_date, class: "form-control valid" %>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-2">
+            <strong>Cargo</strong>
+          </div>
+          <div class="col-4">
+            <%= form.select :charge, Employee.charge.options, class: "form-control", id: "charge", prompt: "Selecciona tu cargo" %>
+          </div>
+          <div class="col-2">
+            <strong>Dirección</strong>
+          </div>
+          <div class="col-4">
+            <%= p.text_field :address, class: "form-control" %>
+          </div>
+        </div>
+
+      <% end %>
+
+      <% form.hidden_field :person_id %>
+      <% form.hidden_field :user_id %>
+
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col"></div>
+    <div class="col-12 col-xl-auto">
+      <%= form.submit 'Guardar nuevo funcionario', class: "btn btn-success" %>
+    </div>
+  </div>
+<% end %>
+<script>
+    <%= render "validate.js" %>
+    <%= render "selects.js" %>
+</script>
