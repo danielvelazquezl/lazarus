@@ -104,3 +104,5 @@ gem 'bootstrap'
 gem 'listen'
 
 gem "actionview", ">= 5.2.2.1"
+
+gem "railties", ">= 5.2.2.1"
